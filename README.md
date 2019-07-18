@@ -1,8 +1,7 @@
 # Blood-Bank
  - ~likes~
  - Chat
- - search
- - ~image zoom~
+ - ~search~ - ~image zoom~
  - video
  - loading
  - post
