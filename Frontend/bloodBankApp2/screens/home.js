@@ -32,10 +32,9 @@ import DrawerContent from "./DrawerContent";
 import { ListItem, ButtonGroup } from "react-native-elements";
 import { Camera, Permissions, ImagePicker } from "expo";
 import Toast, { DURATION } from "react-native-easy-toast";
-import ImageView from 'react-native-image-view';
+import ImageView from "react-native-image-view";
 
-
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
 export class Details extends Component {
   render() {
@@ -912,7 +911,7 @@ export class Feed extends Component {
   static navigationOptions = { header: null };
   constructor(props) {
     super(props);
-    let objTemp
+    let objTemp;
     this.state = {
       token: this.props.screenProps.token,
       data: [],
@@ -920,8 +919,8 @@ export class Feed extends Component {
       data2: [],
       time: "",
       refreshing: false,
-      isImageViewVisible:false,
-      imageSource:""
+      isImageViewVisible: false,
+      imageSource: ""
     };
   }
   _onRefresh = () => {
@@ -936,7 +935,7 @@ export class Feed extends Component {
     })
       .then(response => {
         obj = JSON.parse(response._bodyInit);
-        objTemp = obj
+        objTemp = obj;
         this.setState({
           data: obj["groupPosts"],
           data1: obj["profilePosts"],
@@ -966,7 +965,7 @@ export class Feed extends Component {
           data2: obj["formPosts"]
         });
 
-        objTemp = this.state.data1
+        objTemp = this.state.data1;
 
         //console.log(this.state.data1[0]["likes"]);
       })
@@ -980,28 +979,21 @@ export class Feed extends Component {
   formData = new FormData();
   render() {
     let i = 0;
-    let condition = false;
-    if (
-      this.state.data.length === 0 &&
-      this.state.data1.length === 0 &&
-      this.state.data2.length === 0
-    ) {
-      condition = true;
-    }
+
     return (
       <ImageBackground source={require("../bg5.jpg")} style={{ flex: 1 }}>
         <ImageView
-            images={[
-              {
-                  source: {
-                      uri: this.state.imageSource,
-                  },
-                  title: '',
-                  width: width,
+          images={[
+            {
+              source: {
+                uri: this.state.imageSource
               },
+              title: "",
+              width: width
+            }
           ]}
-            imageIndex={0}
-            isVisible={this.state.isImageViewVisible}
+          imageIndex={0}
+          isVisible={this.state.isImageViewVisible}
         />
         <ScrollView
           refreshControl={
@@ -1017,19 +1009,6 @@ export class Feed extends Component {
             }
           ]}
         >
-          {condition ? (
-            <Text
-              style={{
-                fontSize: 18,
-                fontStyle: "italic",
-                color: "white",
-                alignSelf: "center",
-                paddingTop: 30
-              }}
-            >
-              Your Feed is Empty...!
-            </Text>
-          ) : null}
           <FlatList
             style={[
               styles.list,
@@ -1082,7 +1061,6 @@ export class Feed extends Component {
                                 uri: ip + item.group[0].image
                               }}
                             />
-
                           ) : null}
                           <Text style={styles.title}>
                             {item.group[0].title}
@@ -1166,24 +1144,26 @@ export class Feed extends Component {
               const item = post.item;
               if (item.image != null) {
                 image = (
-                  <TouchableWithoutFeedback onPress={()=>{
-                    this.setState({
-                      imageSource: ip + item.image.toString(),
-                      isImageViewVisible: true
-                    })
-                  }}>
-                  <Image
-                    style={[
-                      styles.cardImage,
-                      {
-                        borderTopLeftRadius: 5,
-                        borderTopRightRadius: 5
-                      }
-                    ]}
-                    source={{
-                      uri: ip + item.image.toString()
+                  <TouchableWithoutFeedback
+                    onPress={() => {
+                      this.setState({
+                        imageSource: ip + item.image.toString(),
+                        isImageViewVisible: true
+                      });
                     }}
-                  />
+                  >
+                    <Image
+                      style={[
+                        styles.cardImage,
+                        {
+                          borderTopLeftRadius: 5,
+                          borderTopRightRadius: 5
+                        }
+                      ]}
+                      source={{
+                        uri: ip + item.image.toString()
+                      }}
+                    />
                   </TouchableWithoutFeedback>
                 );
               } else {
@@ -1263,7 +1243,7 @@ export class Feed extends Component {
             data={this.state.data1}
             keyExtractor={item => {
               item.id.toString();
-              console.log(item["likes"])
+              console.log(item["likes"]);
             }}
             ItemSeparatorComponent={() => {
               return <View style={styles.separator} />;
@@ -1272,26 +1252,27 @@ export class Feed extends Component {
               const item = post.item;
               if (item.image != null) {
                 image = (
-                  <TouchableWithoutFeedback onPress={()=>{
-                    this.setState({
-                      imageSource: ip + item.image,
-                      isImageViewVisible: true
-                    })
-                  }}>
-                  <Image
-                    style={[
-                      styles.cardImage,
-                      {
-                        
-                        flex:1,
-                        borderTopLeftRadius: 5,
-                        borderTopRightRadius: 5
-                      }
-                    ]}
-                    source={{
-                      uri: ip + item.image
+                  <TouchableWithoutFeedback
+                    onPress={() => {
+                      this.setState({
+                        imageSource: ip + item.image,
+                        isImageViewVisible: true
+                      });
                     }}
-                  />
+                  >
+                    <Image
+                      style={[
+                        styles.cardImage,
+                        {
+                          flex: 1,
+                          borderTopLeftRadius: 5,
+                          borderTopRightRadius: 5
+                        }
+                      ]}
+                      source={{
+                        uri: ip + item.image
+                      }}
+                    />
                   </TouchableWithoutFeedback>
                 );
               } else {
@@ -1325,8 +1306,8 @@ export class Feed extends Component {
                             <Image
                               resizeMode="contain"
                               style={{
-                                width:30,
-                                height:30,
+                                width: 30,
+                                height: 30,
                                 borderRadius: 15,
                                 marginLeft: 1,
                                 marginRight: 5
@@ -1335,7 +1316,6 @@ export class Feed extends Component {
                                 uri: ip + item.user.profilePic
                               }}
                             />
-                            
                           ) : null}
                           <Text style={styles.title}>
                             {item.user.first_name + " " + item.user.last_name}
@@ -1364,7 +1344,7 @@ export class Feed extends Component {
                           style={styles.socialBarButton}
                           onPress={() => {
                             item["likes"] = item["likes"] + 1;
-                            this.setState({data1:this.state.data1})
+                            this.setState({ data1: this.state.data1 });
 
                             fetch(ip + "/likePost/", {
                               method: "post",
@@ -1381,15 +1361,21 @@ export class Feed extends Component {
                                 if (response.status === 200) {
                                   this.refs.toast.show("Post Liked", 1000);
                                 } else {
-                                  this.refs.toast.show("Could Not Like Post! Please try again after sometime!", 1000);
+                                  this.refs.toast.show(
+                                    "Could Not Like Post! Please try again after sometime!",
+                                    1000
+                                  );
                                   item["likes"] = item["likes"] - 1;
-                                  this.setState({data1:this.state.data1})
+                                  this.setState({ data1: this.state.data1 });
                                 }
                               })
                               .catch(err => {
-                                this.refs.toast.show("Could Not Like Post! Please try again after sometime!", 1000);
+                                this.refs.toast.show(
+                                  "Could Not Like Post! Please try again after sometime!",
+                                  1000
+                                );
                                 item["likes"] = item["likes"] - 1;
-                                this.setState({data1:this.state.data1})
+                                this.setState({ data1: this.state.data1 });
                                 console.log(err);
                               });
                           }}
@@ -1412,7 +1398,6 @@ export class Feed extends Component {
               );
             }}
           />
-          
         </ScrollView>
         <Toast
           ref="toast"
@@ -1741,7 +1726,7 @@ const styles = StyleSheet.create({
   cardImage: {
     flex: 1,
     width: undefined,
-    height:410
+    height: 410
   },
   /******** card components **************/
   title: {
