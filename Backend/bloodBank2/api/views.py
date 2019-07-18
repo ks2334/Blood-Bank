@@ -237,7 +237,13 @@ class Search(APIView):
         serializer = UserSerializer(res, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class SearchAll(APIView):
+    permission_classes = (IsAuthenticated,)
 
+    def get(self, request):
+        res = CustomUser.objects.all()
+        serializer = UserSerializer(res, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 # Admin
 
 class AddGroupPost(APIView):
