@@ -10,7 +10,7 @@ from rest_framework.parsers import MultiPartParser
 from collections import namedtuple
 from django.contrib.auth import authenticate, login, logout
 
-#Expo Notifications
+# Expo Notifications
 from exponent_server_sdk import DeviceNotRegisteredError
 from exponent_server_sdk import PushClient
 from exponent_server_sdk import PushMessage
@@ -237,6 +237,7 @@ class Search(APIView):
         serializer = UserSerializer(res, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 class SearchAll(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -244,6 +245,8 @@ class SearchAll(APIView):
         res = CustomUser.objects.all()
         serializer = UserSerializer(res, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 # Admin
 
 class AddGroupPost(APIView):

@@ -5,12 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bc56e477-2007-4968-84ba-46e9d5bf79f6" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/bloodBank2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/bloodBank2.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/host.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/host.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -20,11 +16,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="379">
-              <caret line="245" column="67" selection-start-line="245" selection-start-column="67" selection-end-line="245" selection-end-column="67" />
+            <state relative-caret-position="277">
+              <caret line="240" column="15" selection-start-line="240" selection-start-column="15" selection-end-line="240" selection-end-column="15" />
               <folding>
                 <element signature="e#0#45#0" expanded="true" />
               </folding>
@@ -74,10 +70,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/api/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1547">
+            <state relative-caret-position="1615">
               <caret line="95" column="3" selection-start-line="95" selection-start-column="3" selection-end-line="95" selection-end-column="3" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
@@ -216,6 +212,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.12822208" />
@@ -312,8 +309,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/api/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="379">
-          <caret line="245" column="67" selection-start-line="245" selection-start-column="67" selection-end-line="245" selection-end-column="67" />
+        <state relative-caret-position="277">
+          <caret line="240" column="15" selection-start-line="240" selection-start-column="15" selection-end-line="240" selection-end-column="15" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
           </folding>
@@ -356,7 +353,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/api/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1547">
+        <state relative-caret-position="1615">
           <caret line="95" column="3" selection-start-line="95" selection-start-column="3" selection-end-line="95" selection-end-column="3" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />

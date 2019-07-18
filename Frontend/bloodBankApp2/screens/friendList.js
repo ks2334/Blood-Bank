@@ -167,7 +167,7 @@ export default class FriendsList extends Component {
                       borderColor: "#DCDCDC",
                       borderWidth: 3
                     }}
-                    source={{ uri: item.profilePic }}
+                    source={{ uri: ip + item.profilePic }}
                   />
                 ) : (
                   <Image
