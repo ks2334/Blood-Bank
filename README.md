@@ -1,5 +1,5 @@
 # Blood-Bank
- - likes
+ - ~likes~
  - Chat
  - search
  - image zoom and video
