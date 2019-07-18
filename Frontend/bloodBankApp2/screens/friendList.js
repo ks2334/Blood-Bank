@@ -39,13 +39,35 @@ export default class FriendsList extends Component {
     this.state = {
       token: this.props.navigation.getParam("token"),
       data: this.props.navigation.getParam("friendRequests"),
-      dataSource: ds.cloneWithRows(this.props.navigation.getParam("friends"))
+      dataSource: ds.cloneWithRows(this.props.navigation.getParam("friends")),
+      friends: {}
     };
   }
 
   onClickListener = viewId => {
     Alert.alert("Alert", "Button pressed " + viewId);
   };
+
+  componentDidMount() {
+    fetch(ip + "/search//", {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: "Token " + this.state.token
+      }
+    })
+      .then(response => {
+        obj = JSON.parse(response._bodyInit);
+        this.setState({
+          data: obj
+        });
+      })
+
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
   render() {
     return (
@@ -63,21 +85,29 @@ export default class FriendsList extends Component {
               ref={"txtPassword"}
               placeholder="Search"
               underlineColorAndroid="transparent"
-              onChangeText={name_address => this.setState({ name_address })}
+              onChangeText={e => {
+                fetch(ip + "/search/" + e + "/", {
+                  method: "get",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                    Authorization: "Token " + this.state.token
+                  }
+                })
+                  .then(response => {
+                    obj = JSON.parse(response._bodyInit);
+                    this.setState({
+                      data: obj
+                    });
+                  })
+
+                  .catch(err => {
+                    console.log(err);
+                  });
+              }}
             />
           </View>
         </View>
-        <Text
-          style={{
-            paddingLeft: 10,
-            paddingTop: 15,
-            paddingBottom: 7,
-            fontSize: 22,
-            color: "gray"
-          }}
-        >
-          Friend Requests
-        </Text>
 
         <FlatList
           style={{
@@ -191,57 +221,6 @@ export default class FriendsList extends Component {
                       />
                     </TouchableOpacity>
                   </View>
-                </View>
-              </TouchableOpacity>
-            );
-          }}
-        />
-
-        <Text
-          style={{
-            paddingLeft: 10,
-            paddingTop: 15,
-            paddingBottom: 0,
-            fontSize: 22,
-            color: "gray"
-          }}
-        >
-          Your Friends
-        </Text>
-        <ListView
-          style={styles.notificationList}
-          dataSource={this.state.dataSource}
-          renderRow={user => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  console.log(user);
-                  this.props.navigation.navigate("Profile", {
-                    obj: user,
-                    token: this.state.token
-                  });
-                }}
-              >
-                <View style={styles.notificationBox}>
-                  {user.profilePic ? (
-                    <Image
-                      style={styles.image}
-                      source={{
-                        uri: user.profilePic
-                      }}
-                    />
-                  ) : (
-                    <Image
-                      style={styles.image}
-                      source={{
-                        uri:
-                          "https://bootdey.com/img/Content/avatar/avatar6.png"
-                      }}
-                    />
-                  )}
-                  <Text style={styles.name}>
-                    {user.first_name + " " + user.last_name}
-                  </Text>
                 </View>
               </TouchableOpacity>
             );
