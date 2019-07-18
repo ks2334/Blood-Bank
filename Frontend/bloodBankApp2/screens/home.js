@@ -6,6 +6,7 @@ import {
   View,
   Image,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   AppRegistry,
   ScrollView,
   FlatList,
@@ -13,7 +14,8 @@ import {
   Button,
   ImageBackground,
   TextInput,
-  RefreshControl
+  RefreshControl,
+  Dimensions
 } from "react-native";
 
 import FeatherIcon from "react-native-vector-icons/Feather";
@@ -30,6 +32,10 @@ import DrawerContent from "./DrawerContent";
 import { ListItem, ButtonGroup } from "react-native-elements";
 import { Camera, Permissions, ImagePicker } from "expo";
 import Toast, { DURATION } from "react-native-easy-toast";
+import ImageView from 'react-native-image-view';
+
+
+const { width, height } = Dimensions.get('window');
 
 export class Details extends Component {
   render() {
@@ -913,7 +919,9 @@ export class Feed extends Component {
       data1: [],
       data2: [],
       time: "",
-      refreshing: false
+      refreshing: false,
+      isImageViewVisible:false,
+      imageSource:""
     };
   }
   _onRefresh = () => {
@@ -982,6 +990,19 @@ export class Feed extends Component {
     }
     return (
       <ImageBackground source={require("../bg5.jpg")} style={{ flex: 1 }}>
+        <ImageView
+            images={[
+              {
+                  source: {
+                      uri: this.state.imageSource,
+                  },
+                  title: '',
+                  width: width,
+              },
+          ]}
+            imageIndex={0}
+            isVisible={this.state.isImageViewVisible}
+        />
         <ScrollView
           refreshControl={
             <RefreshControl
@@ -1061,6 +1082,7 @@ export class Feed extends Component {
                                 uri: ip + item.group[0].image
                               }}
                             />
+
                           ) : null}
                           <Text style={styles.title}>
                             {item.group[0].title}
@@ -1144,6 +1166,12 @@ export class Feed extends Component {
               const item = post.item;
               if (item.image != null) {
                 image = (
+                  <TouchableWithoutFeedback onPress={()=>{
+                    this.setState({
+                      imageSource: ip + item.image.toString(),
+                      isImageViewVisible: true
+                    })
+                  }}>
                   <Image
                     style={[
                       styles.cardImage,
@@ -1156,6 +1184,7 @@ export class Feed extends Component {
                       uri: ip + item.image.toString()
                     }}
                   />
+                  </TouchableWithoutFeedback>
                 );
               } else {
                 image = null;
@@ -1243,10 +1272,18 @@ export class Feed extends Component {
               const item = post.item;
               if (item.image != null) {
                 image = (
+                  <TouchableWithoutFeedback onPress={()=>{
+                    this.setState({
+                      imageSource: ip + item.image,
+                      isImageViewVisible: true
+                    })
+                  }}>
                   <Image
                     style={[
                       styles.cardImage,
                       {
+                        
+                        flex:1,
                         borderTopLeftRadius: 5,
                         borderTopRightRadius: 5
                       }
@@ -1255,6 +1292,7 @@ export class Feed extends Component {
                       uri: ip + item.image
                     }}
                   />
+                  </TouchableWithoutFeedback>
                 );
               } else {
                 image = null;
@@ -1285,9 +1323,10 @@ export class Feed extends Component {
                         >
                           {item.user.profilePic ? (
                             <Image
+                              resizeMode="contain"
                               style={{
-                                width: 30,
-                                height: 30,
+                                width:30,
+                                height:30,
                                 borderRadius: 15,
                                 marginLeft: 1,
                                 marginRight: 5
@@ -1296,6 +1335,7 @@ export class Feed extends Component {
                                 uri: ip + item.user.profilePic
                               }}
                             />
+                            
                           ) : null}
                           <Text style={styles.title}>
                             {item.user.first_name + " " + item.user.last_name}
@@ -1700,8 +1740,8 @@ const styles = StyleSheet.create({
   },
   cardImage: {
     flex: 1,
-    height: 250,
-    width: null
+    width: undefined,
+    height:410
   },
   /******** card components **************/
   title: {
