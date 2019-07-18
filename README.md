@@ -2,7 +2,8 @@
  - ~likes~
  - Chat
  - search
- - image zoom and video
+ - ~image zoom~
+ - video
  - loading
  - post
  - notifications
