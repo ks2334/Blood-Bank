@@ -906,6 +906,7 @@ export class Feed extends Component {
   static navigationOptions = { header: null };
   constructor(props) {
     super(props);
+    let objTemp
     this.state = {
       token: this.props.screenProps.token,
       data: [],
@@ -927,6 +928,7 @@ export class Feed extends Component {
     })
       .then(response => {
         obj = JSON.parse(response._bodyInit);
+        objTemp = obj
         this.setState({
           data: obj["groupPosts"],
           data1: obj["profilePosts"],
@@ -956,7 +958,9 @@ export class Feed extends Component {
           data2: obj["formPosts"]
         });
 
-        console.log(this.state.data1);
+        objTemp = this.state.data1
+
+        //console.log(this.state.data1[0]["likes"]);
       })
       .catch(err => {
         console.log(err);
@@ -1230,6 +1234,7 @@ export class Feed extends Component {
             data={this.state.data1}
             keyExtractor={item => {
               item.id.toString();
+              console.log(item["likes"])
             }}
             ItemSeparatorComponent={() => {
               return <View style={styles.separator} />;
@@ -1318,6 +1323,9 @@ export class Feed extends Component {
                         <TouchableOpacity
                           style={styles.socialBarButton}
                           onPress={() => {
+                            item["likes"] = item["likes"] + 1;
+                            this.setState({data1:this.state.data1})
+
                             fetch(ip + "/likePost/", {
                               method: "post",
                               headers: {
@@ -1331,12 +1339,17 @@ export class Feed extends Component {
                             })
                               .then(response => {
                                 if (response.status === 200) {
-                                  this.setState((item.likes += 1));
+                                  this.refs.toast.show("Post Liked", 1000);
                                 } else {
-                                  alert("Try Again");
+                                  this.refs.toast.show("Could Not Like Post! Please try again after sometime!", 1000);
+                                  item["likes"] = item["likes"] - 1;
+                                  this.setState({data1:this.state.data1})
                                 }
                               })
                               .catch(err => {
+                                this.refs.toast.show("Could Not Like Post! Please try again after sometime!", 1000);
+                                item["likes"] = item["likes"] - 1;
+                                this.setState({data1:this.state.data1})
                                 console.log(err);
                               });
                           }}
@@ -1359,7 +1372,18 @@ export class Feed extends Component {
               );
             }}
           />
+          
         </ScrollView>
+        <Toast
+          ref="toast"
+          style={{ backgroundColor: "black", marginTop: 20 }}
+          position="bottom"
+          positionValue={200}
+          fadeInDuration={750}
+          fadeOutDuration={1000}
+          opacity={0.8}
+          textStyle={{ color: "white" }}
+        />
       </ImageBackground>
     );
   }
