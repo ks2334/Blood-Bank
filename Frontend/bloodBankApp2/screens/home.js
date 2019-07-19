@@ -339,7 +339,7 @@ export class Profile extends Component {
       .then(response2 => {
         obj = JSON.parse(response2._bodyInit);
         this.setState({ data: obj["suggestions"], data1: obj["profilePosts"] });
-        console.log(obj);
+        
         this.setState({ refreshing: false });
       })
       .catch(err => {
@@ -359,7 +359,7 @@ export class Profile extends Component {
       .then(response2 => {
         obj = JSON.parse(response2._bodyInit);
         this.setState({ data: obj["suggestions"], data1: obj["profilePosts"] });
-        console.log(obj);
+        
       })
       .catch(err => {
         console.log(err);
@@ -604,7 +604,7 @@ export class Groups extends Component {
   }
 
   render() {
-    console.log(this.state.data);
+
     return (
       <ScrollView
         style={styles.container}
@@ -737,7 +737,7 @@ export class Notifications extends Component {
   componentDidMount() {}
 
   render() {
-    console.log(this.state.data);
+
     return (
       <ScrollView style={styles.container}>
         <Text
@@ -979,7 +979,6 @@ export class Feed extends Component {
 
         objTemp = this.state.data1;
 
-        //console.log(this.state.data1[0]["likes"]);
       })
       .catch(err => {
         console.log(err);

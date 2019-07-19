@@ -14,7 +14,8 @@ import {
   FlatList,
   ImageBackground,
   Animated,
-  AsyncStorage
+  AsyncStorage,
+  Linking
 } from "react-native";
 import {
   createAppContainer,
@@ -190,7 +191,17 @@ export class Login extends React.Component {
 
         <TouchableOpacity
           style={styles.btnForgotPassword}
-          onPress={() => this.onClickListener("restore_password")}
+          onPress={() => {
+            Linking.canOpenURL(ip + "/forgotPassword/").then(supported => {
+              if (supported) {
+                Linking.openURL(ip + "/forgotPassword/");
+              } else {
+                console.log(
+                  "Don't know how to open URI: " + ip + "/forgotPassword/"
+                );
+              }
+            });
+          }}
         >
           <Text style={styles.btnText}>Forgot your password?</Text>
         </TouchableOpacity>
@@ -364,7 +375,6 @@ export class Register extends React.Component {
         type: "image/jpg"
       });
       this.setState({ profilePic: result.uri });
-      console.log(JSON.stringify(this.formData._parts[0][1]));
     }
   };
 
@@ -634,8 +644,6 @@ export class Register extends React.Component {
                 } else {
                   this.setState({ gender: false });
                 }
-
-                console.log(this.state.gender);
               }}
             />
           </View>
@@ -663,7 +671,6 @@ export class Register extends React.Component {
             }}
             onValueChange={(itemValue, itemIndex) => {
               this.setState({ bg: itemValue });
-              console.log(this.state.bg);
             }}
           >
             <Picker.Item label="A+" value="A+" />

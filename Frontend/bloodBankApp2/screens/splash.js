@@ -24,18 +24,16 @@ export default class Splash extends React.Component {
       });
       
       SecureStore.deleteItemAsync("test1").then(response => {
-        console.log(response);
+        
       });
 
       */
 
       let isLoggedIn = "false";
       SecureStore.getItemAsync("isLoggedIn").then(response => {
-        console.log(response);
         isLoggedIn = response;
         if (isLoggedIn === "true") {
           SecureStore.getItemAsync("token").then(response => {
-            console.log(response);
             this.props.navigation.replace("Home", {
               token: response
             });

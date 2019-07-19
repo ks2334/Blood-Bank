@@ -335,7 +335,6 @@ export class Register extends React.Component {
         type: "image/jpg"
       });
       this.setState({ profilePic: result.uri });
-      console.log(JSON.stringify(this.formData._parts[0][1]));
     }
   };
 
@@ -604,7 +603,6 @@ export class Register extends React.Component {
                   this.setState({ gender: false });
                 }
 
-                console.log(this.state.gender);
               }}
             />
           </View>
@@ -632,7 +630,6 @@ export class Register extends React.Component {
             }}
             onValueChange={(itemValue, itemIndex) => {
               this.setState({ bg: itemValue });
-              console.log(this.state.bg);
             }}
           >
             <Picker.Item label="A+" value="A+" />
@@ -679,10 +676,8 @@ export class Register extends React.Component {
                   .then(response => {
                     alert(response._bodyText);
                     if (response.status === 400) {
-                      console.log("Error");
                       this.setState({ error: response._bodyText });
                     } else if (response.status === "201") {
-                      console.log("Registered");
                       alert("Registered");
                     }
                   })

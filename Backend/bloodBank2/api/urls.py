@@ -51,7 +51,10 @@ urlpatterns = [
     path('friendPosts/<int:pk>/', views.getFriendPosts.as_view()),
     path('search/<str:query>/', views.Search.as_view()),
     path('search//', views.SearchAll.as_view()),
-    path('setNotificationToken/',views.SetNotificationToken.as_view())
+    path('setNotificationToken/',views.SetNotificationToken.as_view()),
+    path('forgotPassword/', views.forgotPassword),
+    path('resetPassword/', views.resetPassword),
+    path('reset/<id>/', views.setPassword)
 
 ]
 

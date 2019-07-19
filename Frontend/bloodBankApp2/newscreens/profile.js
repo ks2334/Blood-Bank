@@ -39,7 +39,6 @@ export default class Profile extends Component {
     })
       .then(response => {
         obj = JSON.parse(response._bodyInit)[0];
-        console.log(obj);
         this.setState({
           name: obj.first_name + " " + obj.last_name,
           email: obj.email,
@@ -56,7 +55,6 @@ export default class Profile extends Component {
   }
 
   render() {
-    console.log("Profile - " + this.state.token);
     return (
       <ScrollView style={styles.container}>
         <View style={styles.header} />

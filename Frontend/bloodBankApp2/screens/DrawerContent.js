@@ -110,7 +110,7 @@ export default class DrawerContent extends React.Component {
                     this.props.close();
                   }
                   if (item.id === 1) {
-                    alert("navigate here to search");
+                    this.props.nav.navigate("FriendsList", {});
                   }
                   if (item.id === 2) {
                     this.props.nav.navigate("login");

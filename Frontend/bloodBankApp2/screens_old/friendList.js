@@ -114,7 +114,6 @@ export default class FriendsList extends Component {
                         this.setState({
                           dataSource: [...this.state.dataSource, item]
                         });
-                        console.log(this.state.dataSource);
                       } else {
                         alert("Try Again");
                       }
@@ -225,7 +224,6 @@ export default class FriendsList extends Component {
             return (
               <TouchableOpacity
                 onPress={() => {
-                  console.log(user);
                   this.props.navigation.navigate("Profile", {
                     obj: user
                   });

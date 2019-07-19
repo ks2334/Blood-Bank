@@ -62,7 +62,6 @@ export class Profile extends Component {
     })
       .then(response => {
         obj = JSON.parse(response._bodyInit)[0];
-        console.log(obj);
         this.setState({
           name: obj.first_name + " " + obj.last_name,
           email: obj.email,
@@ -88,7 +87,6 @@ export class Profile extends Component {
       .then(response2 => {
         obj = JSON.parse(response2._bodyInit);
         this.setState({ data: obj });
-        console.log(obj);
       })
       .catch(err => {
         console.log(err);
@@ -218,7 +216,7 @@ export class Groups extends Component {
       .then(response => {
         obj = JSON.parse(response._bodyInit);
         this.setState({ data: obj });
-        console.log(obj);
+        
       })
       .catch(err => {
         console.log(err);
@@ -229,7 +227,7 @@ export class Groups extends Component {
   }
 
   render() {
-    console.log(this.state.data);
+
     return (
       <View style={styles.container}>
         <Text

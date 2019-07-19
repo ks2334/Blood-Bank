@@ -72,7 +72,6 @@ export class Profile extends Component {
       .then(response2 => {
         obj = JSON.parse(response2._bodyInit);
         this.setState({ data: obj["suggestions"], data1: obj["profilePosts"] });
-        console.log(obj);
       })
       .catch(err => {
         console.log(err);
@@ -340,7 +339,8 @@ export class Profile extends Component {
                       <Image
                         style={styles.cardImage}
                         source={{
-                          uri: "http://192.168.43.66:8000" + item.image.toString()
+                          uri:
+                            "http://192.168.43.66:8000" + item.image.toString()
                         }}
                       />
                     );
@@ -458,7 +458,6 @@ export class Groups extends Component {
       .then(response => {
         obj = JSON.parse(response._bodyInit);
         this.setState({ data: obj["yourGroups"], data1: obj["otherGroups"] });
-        console.log(obj["yourGroups"]);
       })
       .catch(err => {
         console.log(err);
@@ -469,7 +468,6 @@ export class Groups extends Component {
   }
 
   render() {
-    console.log(this.state.data);
     return (
       <ScrollView style={styles.container}>
         <Text
@@ -830,7 +828,8 @@ export class Feed extends Component {
                             }}
                             source={{
                               uri:
-                                "http://192.168.43.66:8000" + item.group[0].image
+                                "http://192.168.43.66:8000" +
+                                item.group[0].image
                             }}
                           />
                         ) : null}
@@ -969,7 +968,7 @@ export class Feed extends Component {
                             })
                               .then(response => {
                                 if (response.status === 200) {
-                                  console.log(this.state.data1[index]);
+                                  this.state.data1[index];
                                 } else {
                                   alert("Try Again");
                                 }

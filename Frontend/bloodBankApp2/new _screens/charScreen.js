@@ -49,7 +49,6 @@ export default class Chat extends Component {
             return item.id;
           }}
           renderItem={(message) => {
-            console.log(item);
             const item = message.item;
             let inMessage = item.type === 'in';
             let itemStyle = inMessage ? styles.itemIn : styles.itemOut;

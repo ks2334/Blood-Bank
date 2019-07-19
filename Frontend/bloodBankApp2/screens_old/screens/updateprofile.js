@@ -135,7 +135,6 @@ export default class updateprofile extends React.Component {
         type: "image/jpg"
       });
       this.setState({ profilePic: result.uri });
-      console.log(JSON.stringify(this.formData._parts[0][1]));
     }
   };
 
@@ -415,7 +414,6 @@ export default class updateprofile extends React.Component {
                   });
                 }
 
-                console.log(this.state.gender);
               }}
             />
           </View>
@@ -443,7 +441,6 @@ export default class updateprofile extends React.Component {
             }}
             onValueChange={(itemValue, itemIndex) => {
               this.setState({ bg: itemValue });
-              console.log(this.state.bg);
             }}
           >
             <Picker.Item label="A+" value="A+" />

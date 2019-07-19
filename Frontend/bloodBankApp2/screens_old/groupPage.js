@@ -47,10 +47,9 @@ export default class GroupPage extends Component {
       .then(response => {
         object = JSON.parse(response._bodyInit);
         this.setState({ data: object });
-        console.log(object);
+        object;
       })
       .catch(err => {
-        console.log(err);
       });
   }
 
