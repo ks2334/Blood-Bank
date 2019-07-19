@@ -8,6 +8,8 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser
 from collections import namedtuple
+import urllib.request
+import urllib.parse
 from django.contrib.auth import authenticate, login, logout
 
 # Expo Notifications
@@ -404,3 +406,16 @@ def send_push_message(token, message, extra=None):
         PushMessage(to=token,
                     body=message,
                     data=extra))
+
+
+def sendSMS(apikey, numbers, sender, message):
+    data = urllib.parse.urlencode({'apikey': apikey, 'numbers': numbers,
+                                   'message': message, 'sender': sender})
+    data = data.encode('utf-8')
+    request = urllib.request.Request("https://api.textlocal.in/send/?")
+    f = urllib.request.urlopen(request, data)
+    fr = f.read()
+    return (fr)
+
+#resp = sendSMS("DEr70itGrxI-glogKbbyS6pVu7oAoH8qAojixjpNkQ","9527997632","Kunal","Hello World")
+#print(resp)
