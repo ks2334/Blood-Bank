@@ -119,7 +119,7 @@ export default class FriendsList extends Component {
             alignItems: "center"
           }}
           data={this.state.data}
-          horizontal={true}
+          vertical={true}
           keyExtractor={item => {
             return item.id;
           }}
@@ -128,6 +128,7 @@ export default class FriendsList extends Component {
               <TouchableOpacity
                 style={{
                   marginVertical: 5,
+                  width: 300,
                   backgroundColor: "white",
                   borderRadius: 5,
                   marginHorizontal: 10,
@@ -159,20 +160,20 @@ export default class FriendsList extends Component {
                 {item.profilePic ? (
                   <Image
                     style={{
-                      height: 120,
-                      width: 120,
+                      height: 90,
+                      width: 90,
                       borderRadius: 60,
                       alignSelf: "center",
                       borderColor: "#DCDCDC",
                       borderWidth: 3
                     }}
-                    source={{ uri: item.profilePic }}
+                    source={{ uri: ip + item.profilePic }}
                   />
                 ) : (
                   <Image
                     style={{
-                      height: 120,
-                      width: 120,
+                      height: 90,
+                      width: 90,
                       borderRadius: 60,
                       alignSelf: "center",
                       borderColor: "#DCDCDC",

@@ -755,7 +755,7 @@ export class Register extends React.Component {
                     alert("Please select a profile photo !");
                     return;
                   } else {
-                    fetch("http://192.168.43.18:8000/post/", {
+                    fetch(ip + "/post/", {
                       method: "post",
                       headers: {
                         Accept: "application/json",
@@ -770,7 +770,7 @@ export class Register extends React.Component {
                         } else if (response.status === "201") {
                           alert("Registered");
                         }
-                        fetch("http://192.168.43.18:8000/api-token-auth/", {
+                        fetch(ip + "/api-token-auth/", {
                           method: "post",
                           headers: {
                             "Content-Type": "application/json",
