@@ -7,7 +7,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Image
+  Image,
+  Linking
 } from "react-native";
 
 import Entypo from "react-native-vector-icons/Entypo";
@@ -173,9 +174,61 @@ export default class DrawerContent extends React.Component {
               paddingBottom: 20
             }}
           >
-            <SocialIcon type="facebook" />
-            <SocialIcon type="instagram" />
-            <SocialIcon type="twitter" />
+            <TouchableOpacity
+              onPress={() => {
+                Linking.canOpenURL(
+                  "https://www.facebook.com/JankalyanBBP/"
+                ).then(supported => {
+                  if (supported) {
+                    Linking.openURL("https://www.facebook.com/JankalyanBBP/");
+                  } else {
+                    console.log(
+                      "Don't know how to open URI: " +
+                        "https://www.facebook.com/JankalyanBBP/"
+                    );
+                  }
+                });
+              }}
+            >
+              <SocialIcon type="facebook" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                Linking.canOpenURL(
+                  "https://www.facebook.com/JankalyanBBP/"
+                ).then(supported => {
+                  if (supported) {
+                    Linking.openURL("https://www.facebook.com/JankalyanBBP/");
+                  } else {
+                    console.log(
+                      "Don't know how to open URI: " +
+                        "https://www.facebook.com/JankalyanBBP/"
+                    );
+                  }
+                });
+              }}
+            >
+              <SocialIcon type="instagram" />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                Linking.canOpenURL(
+                  "https://www.facebook.com/JankalyanBBP/"
+                ).then(supported => {
+                  if (supported) {
+                    Linking.openURL("https://www.facebook.com/JankalyanBBP/");
+                  } else {
+                    console.log(
+                      "Don't know how to open URI: " +
+                        "https://www.facebook.com/JankalyanBBP/"
+                    );
+                  }
+                });
+              }}
+            >
+              <SocialIcon type="twitter" />
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </View>
