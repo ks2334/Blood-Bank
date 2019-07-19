@@ -13,7 +13,7 @@
  - ### Admin Levels
  - ### Forgot your password
  - phone verification
- - Social Media Links
+ - ~Social Media Links~
  - ### Donation Popup
  - ### Group Default Images
  - Remove Response Alerts
