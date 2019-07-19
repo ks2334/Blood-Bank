@@ -25,6 +25,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {
   createAppContainer,
   createBottomTabNavigator,
+  NavigationEvents,
   createMaterialTopTabNavigator
 } from "react-navigation";
 import Drawer from "react-native-drawer";
@@ -802,6 +803,12 @@ export class Post extends Component {
     this.setState({ hasCameraPermission: status === "granted" });
   }
 
+  async remount(payload){
+
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    this.setState({ hasCameraPermission: status === "granted" });
+  }
+
   render() {
     const buttons = ["Gallery", "Skip"];
     const { hasCameraPermission } = this.state;
@@ -812,6 +819,11 @@ export class Post extends Component {
     } else {
       return (
         <View style={{ flex: 1 }}>
+          <NavigationEvents
+            onDidFocus={ async (payload) => {
+              await this.remount(payload)
+            }}
+          />
           <Camera
             style={{ flex: 1 }}
             type={this.state.type}
@@ -1624,8 +1636,13 @@ const Tabs = createAppContainer(
         style: {},
         showLabel: true,
         activeBackgroundColor: "#ddd"
-      }
+      },
+      
+    },
+    {
+      lazy:false
     }
+
   )
 );
 
