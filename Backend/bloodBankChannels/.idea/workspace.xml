@@ -4,7 +4,72 @@
     <bookmark url="file://$PROJECT_DIR$/api/serializers.py" line="197" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bc56e477-2007-4968-84ba-46e9d5bf79f6" name="Default Changelist" comment="" />
+    <list default="true" id="bc56e477-2007-4968-84ba-46e9d5bf79f6" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../../.expo/packager-info.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../.expo/packager-info.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../.expo/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../.expo/settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/templates/admin-panel.html" beforeDir="false" afterPath="$PROJECT_DIR$/api/templates/admin-panel.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/.expo-shared/assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/.expo-shared/assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/assets/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/assets/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/assets/splash.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/google-services.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/google-services.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/new _screens/charScreen.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/new _screens/friendList.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/new _screens/login.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/newscreens/DrawerContent.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/newscreens/friendList.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/newscreens/login.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/newscreens/profile.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/newscreens/splash.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/DrawerContent.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/DrawerContent.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/aboutUs.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/aboutUs.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/host.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/host.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/App.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/DrawerContent.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/aboutUs.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/app.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/cardGroup.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/cardPost.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/friendList.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/groupPage.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/home.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/home1.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/login.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/post.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/profile.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/profile2.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/register.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/DrawerContent.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/aboutUs.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/cardGroup.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/cardPost.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/contact.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/friendList.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/groupPage.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/groupPageList.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/home.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/home1.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/login.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/post.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/profile.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/profile2.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/register.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/searchFriend.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/splash.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/updateprofile.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/splash.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/updateprofile.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Janklyan Blood Bank (1).pptx" beforeDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,21 +79,9 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/api/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="249">
-              <caret line="55" column="54" lean-forward="true" selection-start-line="55" selection-start-column="54" selection-end-line="55" selection-end-column="54" />
-              <folding>
-                <element signature="e#634#666#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/templates/reset_password.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
+            <state relative-caret-position="289">
               <caret line="17" column="28" selection-start-line="17" selection-start-column="28" selection-end-line="17" selection-end-column="28" />
             </state>
           </provider>
@@ -37,7 +90,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bloodBank2/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-918">
+            <state relative-caret-position="425">
               <caret line="25" column="12" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="12" />
             </state>
           </provider>
@@ -46,8 +99,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="473" column="19" selection-start-line="473" selection-start-column="19" selection-end-line="473" selection-end-column="19" />
+            <state relative-caret-position="28">
+              <caret line="402" column="17" selection-start-line="402" selection-start-column="17" selection-end-line="402" selection-end-column="17" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -56,9 +109,21 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/api/consumers.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+              <folding>
+                <element signature="e#20#76#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/templates/password_confirm.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
+            <state relative-caret-position="255">
               <caret line="15" column="25" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="25" />
             </state>
           </provider>
@@ -67,11 +132,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="27" column="36" lean-forward="true" selection-start-line="27" selection-start-column="36" selection-end-line="27" selection-end-column="36" />
+            <state relative-caret-position="697">
+              <caret line="45" column="107" selection-start-line="45" selection-start-column="107" selection-end-line="45" selection-end-column="107" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/templates/admin-panel.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="986">
+              <caret line="58" selection-start-line="58" selection-end-line="58" />
             </state>
           </provider>
         </entry>
@@ -84,8 +158,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/admin.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+            <state relative-caret-position="187">
+              <caret line="12" selection-start-line="12" selection-end-line="12" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
               </folding>
@@ -96,8 +170,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/serializers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="80" column="59" selection-start-line="80" selection-start-column="59" selection-end-line="80" selection-end-column="59" />
+            <state relative-caret-position="1938">
+              <caret line="115" selection-start-line="115" selection-end-line="115" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
               </folding>
@@ -145,18 +219,18 @@
       <list>
         <option value="$PROJECT_DIR$/bloodBank2/urls.py" />
         <option value="$PROJECT_DIR$/api/templates/login.html" />
-        <option value="$PROJECT_DIR$/api/templates/admin-panel.html" />
         <option value="$PROJECT_DIR$/api/consumers.py" />
         <option value="$PROJECT_DIR$/api/routing.py" />
         <option value="$PROJECT_DIR$/bloodBank2/routing.py" />
         <option value="$PROJECT_DIR$/api/admin.py" />
         <option value="$PROJECT_DIR$/bloodBank2/settings.py" />
-        <option value="$PROJECT_DIR$/api/serializers.py" />
-        <option value="$PROJECT_DIR$/api/models.py" />
         <option value="$PROJECT_DIR$/api/templates/reset_password.html" />
         <option value="$PROJECT_DIR$/api/urls.py" />
-        <option value="$PROJECT_DIR$/api/views.py" />
         <option value="$PROJECT_DIR$/api/templates/password_confirm.html" />
+        <option value="$PROJECT_DIR$/api/models.py" />
+        <option value="$PROJECT_DIR$/api/templates/admin-panel.html" />
+        <option value="$PROJECT_DIR$/api/serializers.py" />
+        <option value="$PROJECT_DIR$/api/views.py" />
       </list>
     </option>
   </component>
@@ -183,6 +257,12 @@
               <item name="bloodBankChannels" type="b2602c69:ProjectViewProjectNode" />
               <item name="bloodBankChannels" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="bloodBankChannels" type="b2602c69:ProjectViewProjectNode" />
+              <item name="bloodBankChannels" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="bloodBankChannels" type="b2602c69:ProjectViewProjectNode" />
@@ -241,7 +321,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.12822208" />
@@ -269,7 +348,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/api/views.py</url>
-          <line>444</line>
+          <line>448</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
@@ -301,13 +380,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../bloodBank2/api/views.py" />
-    <entry file="file://$PROJECT_DIR$/api/templates/admin-panel.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="501">
-          <caret line="144" column="147" selection-start-line="144" selection-start-column="147" selection-end-line="144" selection-end-column="147" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/db.sqlite3">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-6018" />
@@ -316,16 +388,6 @@
     <entry file="file://D:/Blood-Bank-master/Backend/bloodBank2/api/views.py" />
     <entry file="file://$PROJECT_DIR$/api/templates/chat.html">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/consumers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="11" selection-start-line="17" selection-start-column="11" selection-end-line="17" selection-end-column="11" />
-          <folding>
-            <element signature="e#20#76#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/bloodBank2/routing.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -350,50 +412,10 @@
     <entry file="file://$PROJECT_DIR$/api/templates/chatRoom.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/apps.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bloodBank2/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-918">
-          <caret line="25" column="12" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/serializers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="80" column="59" selection-start-line="80" selection-start-column="59" selection-end-line="80" selection-end-column="59" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="27" column="36" lean-forward="true" selection-start-line="27" selection-start-column="36" selection-end-line="27" selection-end-column="36" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/api/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="249">
-          <caret line="55" column="54" lean-forward="true" selection-start-line="55" selection-start-column="54" selection-end-line="55" selection-end-column="54" />
+        <state relative-caret-position="833">
+          <caret line="55" column="54" selection-start-line="55" selection-start-column="54" selection-end-line="55" selection-end-column="54" />
           <folding>
             <element signature="e#634#666#0" expanded="true" />
           </folding>
@@ -402,25 +424,82 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/api/templates/reset_password.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
+        <state relative-caret-position="289">
           <caret line="17" column="28" selection-start-line="17" selection-start-column="28" selection-end-line="17" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bloodBank2/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" column="12" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/templates/password_confirm.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="25" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="697">
+          <caret line="45" column="107" selection-start-line="45" selection-start-column="107" selection-end-line="45" selection-end-column="107" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/templates/admin-panel.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="986">
+          <caret line="58" selection-start-line="58" selection-end-line="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/apps.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/serializers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1938">
+          <caret line="115" selection-start-line="115" selection-end-line="115" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/api/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="473" column="19" selection-start-line="473" selection-start-column="19" selection-end-line="473" selection-end-column="19" />
+        <state relative-caret-position="28">
+          <caret line="402" column="17" selection-start-line="402" selection-start-column="17" selection-end-line="402" selection-end-column="17" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/templates/password_confirm.html">
+    <entry file="file://$PROJECT_DIR$/api/consumers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="15" column="25" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="25" />
+        <state relative-caret-position="170">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+          <folding>
+            <element signature="e#20#76#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

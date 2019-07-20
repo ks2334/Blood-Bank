@@ -339,7 +339,7 @@ export class Profile extends Component {
       .then(response2 => {
         obj = JSON.parse(response2._bodyInit);
         this.setState({ data: obj["suggestions"], data1: obj["profilePosts"] });
-        
+
         this.setState({ refreshing: false });
       })
       .catch(err => {
@@ -359,7 +359,6 @@ export class Profile extends Component {
       .then(response2 => {
         obj = JSON.parse(response2._bodyInit);
         this.setState({ data: obj["suggestions"], data1: obj["profilePosts"] });
-        
       })
       .catch(err => {
         console.log(err);
@@ -604,7 +603,6 @@ export class Groups extends Component {
   }
 
   render() {
-
     return (
       <ScrollView
         style={styles.container}
@@ -737,7 +735,6 @@ export class Notifications extends Component {
   componentDidMount() {}
 
   render() {
-
     return (
       <ScrollView style={styles.container}>
         <Text
@@ -802,8 +799,7 @@ export class Post extends Component {
     this.setState({ hasCameraPermission: status === "granted" });
   }
 
-  async remount(payload){
-
+  async remount(payload) {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({ hasCameraPermission: status === "granted" });
   }
@@ -819,8 +815,8 @@ export class Post extends Component {
       return (
         <View style={{ flex: 1 }}>
           <NavigationEvents
-            onDidFocus={ async (payload) => {
-              await this.remount(payload)
+            onDidFocus={async payload => {
+              await this.remount(payload);
             }}
           />
           <Camera
@@ -978,7 +974,6 @@ export class Feed extends Component {
         });
 
         objTemp = this.state.data1;
-
       })
       .catch(err => {
         console.log(err);
@@ -1029,7 +1024,7 @@ export class Feed extends Component {
             ]}
             data={this.state.data2}
             keyExtractor={item => {
-              item.group[0].id.toString();
+              item.group[0].id;
             }}
             ItemSeparatorComponent={() => {
               return <View style={styles.separator} />;
@@ -1620,13 +1615,11 @@ const Tabs = createAppContainer(
         style: {},
         showLabel: true,
         activeBackgroundColor: "#ddd"
-      },
-      
+      }
     },
     {
-      lazy:false
+      lazy: false
     }
-
   )
 );
 

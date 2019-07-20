@@ -302,7 +302,7 @@ class createFormPost(APIView):
         if serializer.is_valid():
             serializer.save()
             requests = []
-            groups = Group.objects.all()
+            groups = Group.objects.filter(admin=request.user)
             posts = FormPost.objects.all()
             for group in groups:
                 requests += group.pendingGroupRequest.all()
@@ -387,8 +387,10 @@ def acceptGroupRequest(request, userid, groupid):
     group.pendingGroupRequest.remove(user)
     group.user.add(user)
     requests = []
-    groups = Group.objects.all()
-    posts = FormPost.objects.all()
+    groups = Group.objects.filter(admin=request.user)
+    posts = []
+    for group in groups:
+        posts += FormPost.objects.filter(group=group)
     for group in groups:
         requests += group.pendingGroupRequest.all()
     return render(request, 'admin-panel.html', {'requests': requests, 'groups': groups, 'posts': posts})
@@ -399,8 +401,10 @@ def removeUser(request, userid, groupid):
     group = Group.objects.get(id=groupid)
     group.user.remove(user)
     requests = []
-    groups = Group.objects.all()
-    posts = FormPost.objects.all()
+    groups = Group.objects.filter(admin=request.user)
+    posts = []
+    for group in groups:
+        posts += FormPost.objects.filter(group=group)
     for group in groups:
         requests += group.pendingGroupRequest.all()
     return render(request, 'admin-panel.html', {'requests': requests, 'groups': groups, 'posts': posts})

@@ -36,16 +36,11 @@ export default class DrawerContent extends React.Component {
       },
       {
         id: 1,
-        title: "Search",
-        icon: <EvilIcons name="search" size={25} color={"gray"} />
-      },
-      {
-        id: 2,
         title: "Logout",
         icon: <SimpleLineIcons name="logout" size={25} color={"gray"} />
       },
       {
-        id: 3,
+        id: 2,
         title: "About Us",
         icon: (
           <Ionicons
@@ -56,12 +51,12 @@ export default class DrawerContent extends React.Component {
         )
       },
       {
-        id: 4,
+        id: 3,
         title: "Contact Us",
         icon: <AntDesign name="mail" size={25} color={"gray"} />
       },
       {
-        id: 5,
+        id: 4,
         title: "Invite Friends",
         icon: <AntDesign name="plus" size={25} color={"gray"} />
       }
@@ -109,10 +104,8 @@ export default class DrawerContent extends React.Component {
                     this.props.nav.navigate("Home");
                     this.props.close();
                   }
+
                   if (item.id === 1) {
-                    this.props.nav.navigate("FriendsList", {});
-                  }
-                  if (item.id === 2) {
                     this.props.nav.navigate("login");
                     SecureStore.setItemAsync("isLoggedIn", "false").then(
                       response => {
@@ -144,15 +137,15 @@ export default class DrawerContent extends React.Component {
                     });
                     this.props.close();
                   }
-                  if (item.id === 3) {
+                  if (item.id === 2) {
                     this.props.nav.navigate("AboutUs");
                     this.props.close();
                   }
-                  if (item.id === 4) {
+                  if (item.id === 3) {
                     this.props.nav.navigate("Contact");
                     this.props.close();
                   }
-                  if (item.id === 5) {
+                  if (item.id === 4) {
                     alert("navigate here to invite Us");
                   }
                 }}
