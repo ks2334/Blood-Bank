@@ -10,7 +10,7 @@
  - post in group
  - friends page
  - ### Phone number already exists
- - ### Admin Levels
+ - ### ~Admin Levels~
  - ### ~Forgot your password~
  - phone verification
  - ~Social Media Links~
