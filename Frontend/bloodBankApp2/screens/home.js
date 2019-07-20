@@ -425,7 +425,7 @@ export class Profile extends Component {
                 marginBottom: 3
               }}
             >
-              Friend Sugesstions
+              Friend Requests
             </Text>
             <FlatList
               style={styles.list}
@@ -454,6 +454,7 @@ export class Profile extends Component {
                         "AddProfile",
                         {
                           obj: item,
+                          type: "request",
                           token: this.state.token
                         }
                       );

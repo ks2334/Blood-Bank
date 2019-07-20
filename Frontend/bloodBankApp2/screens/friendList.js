@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { ip } from "./host.js";
 import {
   StyleSheet,
   Text,
@@ -14,7 +13,7 @@ import {
   FlatList,
   TouchableOpacity
 } from "react-native";
-
+import { ip } from "./host.js";
 import FeatherIcon from "react-native-vector-icons/Feather";
 
 export default class FriendsList extends Component {
@@ -39,14 +38,10 @@ export default class FriendsList extends Component {
     this.state = {
       token: this.props.navigation.getParam("token"),
       data: this.props.navigation.getParam("friendRequests"),
-      dataSource: ds.cloneWithRows(this.props.navigation.getParam("friends")),
-      friends: {}
+      data1: [],
+      dataSource: ds.cloneWithRows(this.props.navigation.getParam("friends"))
     };
   }
-
-  onClickListener = viewId => {
-    Alert.alert("Alert", "Button pressed " + viewId);
-  };
 
   componentDidMount() {
     fetch(ip + "/search//", {
@@ -60,7 +55,7 @@ export default class FriendsList extends Component {
       .then(response => {
         obj = JSON.parse(response._bodyInit);
         this.setState({
-          data: obj
+          data1: obj
         });
       })
 
@@ -97,7 +92,7 @@ export default class FriendsList extends Component {
                   .then(response => {
                     obj = JSON.parse(response._bodyInit);
                     this.setState({
-                      data: obj
+                      data1: obj
                     });
                   })
 
@@ -108,6 +103,17 @@ export default class FriendsList extends Component {
             />
           </View>
         </View>
+        <Text
+          style={{
+            paddingLeft: 10,
+            paddingTop: 15,
+            paddingBottom: 7,
+            fontSize: 22,
+            color: "gray"
+          }}
+        >
+          Friend Suggestions
+        </Text>
 
         <FlatList
           style={{
@@ -118,8 +124,8 @@ export default class FriendsList extends Component {
           contentContainerStyle={{
             alignItems: "center"
           }}
-          data={this.state.data}
-          vertical={true}
+          data={this.state.data1}
+          horizontal={true}
           keyExtractor={item => {
             return item.id;
           }}
@@ -128,7 +134,6 @@ export default class FriendsList extends Component {
               <TouchableOpacity
                 style={{
                   marginVertical: 5,
-                  width: 300,
                   backgroundColor: "white",
                   borderRadius: 5,
                   marginHorizontal: 10,
@@ -140,7 +145,6 @@ export default class FriendsList extends Component {
                 onPress={() => {
                   this.props.navigation.navigate("AddProfile", {
                     obj: item,
-                    type: "request",
                     token: this.state.token
                   });
                 }}
@@ -160,8 +164,8 @@ export default class FriendsList extends Component {
                 {item.profilePic ? (
                   <Image
                     style={{
-                      height: 90,
-                      width: 90,
+                      height: 120,
+                      width: 120,
                       borderRadius: 60,
                       alignSelf: "center",
                       borderColor: "#DCDCDC",
@@ -172,8 +176,8 @@ export default class FriendsList extends Component {
                 ) : (
                   <Image
                     style={{
-                      height: 90,
-                      width: 90,
+                      height: 120,
+                      width: 120,
                       borderRadius: 60,
                       alignSelf: "center",
                       borderColor: "#DCDCDC",
@@ -222,6 +226,56 @@ export default class FriendsList extends Component {
                       />
                     </TouchableOpacity>
                   </View>
+                </View>
+              </TouchableOpacity>
+            );
+          }}
+        />
+
+        <Text
+          style={{
+            paddingLeft: 10,
+            paddingTop: 15,
+            paddingBottom: 0,
+            fontSize: 22,
+            color: "gray"
+          }}
+        >
+          Your Friends
+        </Text>
+        <ListView
+          style={styles.notificationList}
+          dataSource={this.state.dataSource}
+          renderRow={user => {
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate("Profile", {
+                    obj: user,
+                    token: this.state.token
+                  });
+                }}
+              >
+                <View style={styles.notificationBox}>
+                  {user.profilePic ? (
+                    <Image
+                      style={styles.image}
+                      source={{
+                        uri: user.profilePic
+                      }}
+                    />
+                  ) : (
+                    <Image
+                      style={styles.image}
+                      source={{
+                        uri:
+                          "https://bootdey.com/img/Content/avatar/avatar6.png"
+                      }}
+                    />
+                  )}
+                  <Text style={styles.name}>
+                    {user.first_name + " " + user.last_name}
+                  </Text>
                 </View>
               </TouchableOpacity>
             );

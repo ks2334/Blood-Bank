@@ -708,10 +708,8 @@ export class Register extends React.Component {
                 return;
               }
 
-              alert("Here");
               // Get the token that uniquely identifies this device
               let token = await Notifications.getExpoPushTokenAsync();
-              alert(token);
 
               if (this.state.password === this.state.cpassword) {
                 this.formData.append("first_name", this.state.firstName);
