@@ -56,6 +56,8 @@ urlpatterns = [
     path('chatRoom/<str:room_name>/', views.chatRoom),
     path('forgotPassword/', views.forgotPassword),
     path('resetPassword/', views.resetPassword),
+    path('reset/', views.setPassword),
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

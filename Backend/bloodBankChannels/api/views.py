@@ -1,3 +1,5 @@
+import random
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from rest_framework.generics import UpdateAPIView
@@ -354,8 +356,8 @@ def logged(request):
                 if user.privilgeLevel == 1:
                     return redirect("../admin-panel/")
                 elif user.privilgeLevel == 0 and user.is_superuser:
-                    #Super Admin Panel
-                    return redirect("../admin-panel/")
+                    # Super Admin Panel
+                    return redirect("../admin/")
                 else:
                     return HttpResponse("<h1>Not Authorized to access!</h1>")
         else:
@@ -367,8 +369,11 @@ def logged(request):
 def adminPanel(request):
     if request.user.is_authenticated:
         requests = []
-        groups = Group.objects.all()
-        posts = FormPost.objects.all()
+        groups = Group.objects.filter(admin=request.user)
+        posts = []
+        for group in groups:
+            posts += FormPost.objects.filter(group=group)
+        print(posts)
         for group in groups:
             requests += group.pendingGroupRequest.all()
         return render(request, 'admin-panel.html', {'requests': requests, 'groups': groups, 'posts': posts})
@@ -446,19 +451,26 @@ def forgotPassword(request):
 
 def resetPassword(request):
     phone = request.POST['phone']
-    user = CustomUser.objects.filter(phone=phone).first()
-    otp = random.randint(100000, 999999)
-    print(user.phone)
-    resp = sendSMS("DEr70itGrxI-glogKbbyS6pVu7oAoH8qAojixjpNkQ", "7709833124", "Kunal", otp)
-    return render(request, 'password_confirm.html', {"a": "Password reset link sent on your phone ..."})
+    if CustomUser.objects.filter(phone=phone).exists():
+        user = CustomUser.objects.filter(phone=phone).first()
+        user.otp = random.randint(100000, 999999)
+        user.save()
+        print(user.phone)
+        resp = sendSMS("DEr70itGrxI-ik05lJzaFlxONNzyD5uYTHYKWzwWUW", user.phone, "TXTLCL", "your otp is : " + str(user.otp))
+        print(resp)
+        return render(request, 'password_confirm.html', {"a": "Password reset link sent on your phone ...","phone":user.phone})
+    return render(request, 'reset_password.html',{"msg": "This user is not on our records ..."})
 
 
 
-def setPassword(request, otp):
+def setPassword(request):
     pass1 = request.POST['password1']
     pass2 = request.POST['password2']
-    number = request.POST['otp']
-    if pass1 == pass2 and number == otp:
-        CustomUser.objects.get(id=id).set_password(pass1)
+    otp = request.POST['otp']
+    phone = request.POST['phone']
+    user = CustomUser.objects.filter(phone=phone).first()
+    if pass1 == pass2 and len(user.otp) == 6 and user.otp == otp:
+        user.set_password(pass1)
+        user.save()
         return HttpResponse("your password has been changed successfully !")
     return render(request, 'password_confirm.html', {"a": "something went wrong ..."})

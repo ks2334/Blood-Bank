@@ -25,6 +25,7 @@ class CustomUser(AbstractUser):
     pushToken = models.CharField(max_length=100, default="")
     privilgeLevel = models.IntegerField(default=2)
     hasChatPrivilege = models.BooleanField(default=False)
+    otp = models.CharField(null=True, max_length=6)
 
     USERNAME_FIELD = 'phone'
     REQUIRED_FIELDS = ['username', 'email']
@@ -39,7 +40,7 @@ class Group(models.Model):
     user = models.ManyToManyField(CustomUser, blank=True)
     image = models.ImageField(upload_to="media/", blank=True, null=True)
     pendingGroupRequest = models.ManyToManyField(CustomUser, related_name="user_content_type", blank=True)
-    admin = models.ForeignKey(CustomUser, related_name="subadmin_user",on_delete=models.CASCADE,null=True)
+    admin = models.ForeignKey(CustomUser, related_name="subadmin_user", on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.title
