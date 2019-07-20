@@ -2,36 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a212f8f2-6d38-42cc-9d34-027cbe72d81b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/api/templates/main-admin-panel.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/templates/password_confirm.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/templates/reset_password.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/bloodBank2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/bloodBank2.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/R_User_Library.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/new _screens/charScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/new _screens/charScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/newscreens/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/newscreens/login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/newscreens/profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/newscreens/profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/DrawerContent.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/DrawerContent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/host.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/host.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/splash.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/splash.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/updateprofile.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens/updateprofile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/friendList.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/friendList.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/groupPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/groupPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/home1.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/home1.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/home1.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/home1.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/updateprofile.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/screens/updateprofile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/updateprofile.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/bloodBankApp2/screens_old/updateprofile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bloodBankChannels/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../bloodBankChannels/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bloodBankChannels/api/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/../bloodBankChannels/api/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bloodBankChannels/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/../bloodBankChannels/api/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -64,11 +38,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="89">
-              <caret line="431" column="4" lean-forward="true" selection-start-line="431" selection-start-column="4" selection-end-line="431" selection-end-column="4" />
+            <state relative-caret-position="306">
+              <caret line="424" selection-start-line="424" selection-end-line="446" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -107,11 +81,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/api/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="850">
-              <caret line="56" column="42" lean-forward="true" selection-start-line="56" selection-start-column="42" selection-end-line="56" selection-end-column="42" />
+            <state relative-caret-position="154">
+              <caret line="54" column="2" selection-start-line="54" selection-start-column="2" selection-end-line="56" selection-end-column="42" />
             </state>
           </provider>
         </entry>
@@ -150,8 +124,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="91" />
-    <option name="y" value="-9" />
+    <option name="x" value="65" />
+    <option name="y" value="20" />
     <option name="width" value="1855" />
     <option name="height" value="1060" />
   </component>
@@ -188,7 +162,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../bloodBankChannels" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -266,13 +240,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="850">
-          <caret line="56" column="42" lean-forward="true" selection-start-line="56" selection-start-column="42" selection-end-line="56" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/api/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-153">
@@ -298,11 +265,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/api/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="89">
-          <caret line="431" column="4" lean-forward="true" selection-start-line="431" selection-start-column="4" selection-end-line="431" selection-end-column="4" />
+        <state relative-caret-position="306">
+          <caret line="424" selection-start-line="424" selection-end-line="446" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="54" column="2" selection-start-line="54" selection-start-column="2" selection-end-line="56" selection-end-column="42" />
         </state>
       </provider>
     </entry>

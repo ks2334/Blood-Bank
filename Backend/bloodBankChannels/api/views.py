@@ -438,3 +438,27 @@ def chatRoom(request, room_name):
     return render(request, 'chatRoom.html', {
         'room_name_json': mark_safe(json.dumps(room_name))
     })
+
+
+def forgotPassword(request):
+    return render(request, 'reset_password.html')
+
+
+def resetPassword(request):
+    phone = request.POST['phone']
+    user = CustomUser.objects.filter(phone=phone).first()
+    otp = random.randint(100000, 999999)
+    print(user.phone)
+    resp = sendSMS("DEr70itGrxI-glogKbbyS6pVu7oAoH8qAojixjpNkQ", "7709833124", "Kunal", otp)
+    return render(request, 'password_confirm.html', {"a": "Password reset link sent on your phone ..."})
+
+
+
+def setPassword(request, otp):
+    pass1 = request.POST['password1']
+    pass2 = request.POST['password2']
+    number = request.POST['otp']
+    if pass1 == pass2 and number == otp:
+        CustomUser.objects.get(id=id).set_password(pass1)
+        return HttpResponse("your password has been changed successfully !")
+    return render(request, 'password_confirm.html', {"a": "something went wrong ..."})
