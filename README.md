@@ -9,7 +9,7 @@
  - notifications
  - post in group
  - friends page
- - ### Phone number already exists
+ - ### ~Phone number already exists~
  - ### ~Admin Levels~
  - ### ~Forgot your password~
  - phone verification
