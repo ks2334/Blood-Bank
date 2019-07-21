@@ -298,6 +298,7 @@ export class Profile extends Component {
       email: "",
       phone: "",
       bg: "",
+      donationDate: "",
       dob: "",
       address: "",
       selectedIndex: null,
@@ -416,6 +417,59 @@ export class Profile extends Component {
                 backgroundColor: "rgba(250,250,250,0.2)"
               }}
             />
+            <Text
+              style={{
+                alignSelf: "flex-start",
+                fontSize: 20,
+                marginLeft: 10,
+                marginTop: 12,
+                marginBottom: 3,
+                fontWeight: "bold",
+                color: "green"
+              }}
+            >
+              You Can Donate on or onwards :{" "}
+              {this.props.screenProps.homeState.donationDate}
+            </Text>
+            <TouchableOpacity
+              style={{ marginLeft: 10 }}
+              onPress={() =>
+                fetch(ip + "/resetDonate/", {
+                  method: "get",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json"
+                  },
+
+                  credentials: "include"
+                })
+                  .then(response => {
+                    if (response.status === 200) {
+                      token = response._bodyInit.toString();
+                      token = token.substring(10, token.length - 2);
+
+                      this._onRefresh();
+                    }
+                  })
+                  .catch(err => {
+                    alert(err);
+                  })
+              }
+            >
+              <Text
+                style={{
+                  alignSelf: "flex-start",
+                  fontSize: 20,
+                  marginLeft: 10,
+                  marginTop: 12,
+                  marginBottom: 3,
+                  fontWeight: "bold",
+                  color: "red"
+                }}
+              >
+                I Donated Blood Today !
+              </Text>
+            </TouchableOpacity>
             <Text
               style={{
                 alignSelf: "flex-start",
@@ -1475,6 +1529,8 @@ export default class Home extends Component {
           bg: obj.bloodGroup,
           address: obj.address,
           profilePic: obj.profilePic,
+          donationDate: obj.donationDate,
+
           aadhar: obj.adhaarNo,
           officeAddress: obj.officeAddress,
           profession: obj.profession,

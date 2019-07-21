@@ -62,6 +62,7 @@ export default class Profile extends Component {
       education: obj.education,
       profession: obj.profession,
       officeAddress: obj.officeAddress,
+      donationDate: obj.donationDate,
       data: [],
       refreshing: false
     };
@@ -154,6 +155,7 @@ export default class Profile extends Component {
               }}
             />
           )}
+
           <View style={styles.body}>
             <View style={styles.bodyContent}>
               <Text style={styles.Profilename}>{this.state.name}</Text>
