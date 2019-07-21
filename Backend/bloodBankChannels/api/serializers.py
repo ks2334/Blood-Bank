@@ -78,7 +78,7 @@ class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = (
-            'id', 'title', 'description', 'user', 'image'
+            'id', 'title', 'description', 'user', 'image', 'admin'
         )
 
 

@@ -54,6 +54,9 @@ urlpatterns = [
     path('setNotificationToken/', views.SetNotificationToken.as_view()),
     path('chatIndex/', views.chatIndex),
     path('chatRoom/<str:room_name>/', views.chatRoom),
+    path('forgotPassword/', views.forgotPassword),
+    path('resetPassword/', views.resetPassword),
+    path('reset/', views.setPassword),
 
 ]
 

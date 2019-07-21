@@ -56,10 +56,7 @@
         <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">MAIN</div>
         <ul class="sidebar-menu list-unstyled">
               <li class="sidebar-list-item"><a href="index.html" class="sidebar-link text-muted active"><i class="o-home-1 mr-3 text-gray"></i><span>Home</span></a></li>
-              <form action="/group-add/" method="post">
-                {%csrf_token%}
-                <li class="sidebar-list-item"><button style="background-color: rgba(0,0,0,0);width: 100%;padding: 0px;border: 0px;" type="submit"><a type="" class="sidebar-link text-muted" ><i class="o-survey-1 mr-3 text-gray"></i><span>Add Group</span></a></button></li>
-            </form>
+
               <form action="/admin-post/" method="post">
                 {%csrf_token%}
                 <li class="sidebar-list-item"><button style="background-color: rgba(0,0,0,0);width: 100%;padding: 0px;border: 0px;" type="submit"><a type="" class="sidebar-link text-muted" ><i class="o-survey-1 mr-3 text-gray"></i><span>New Group Post</span></a></button></li>

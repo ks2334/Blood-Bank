@@ -22,9 +22,10 @@ class CustomUser(AbstractUser):
     profession = models.CharField(max_length=30, unique=False, default="", editable=True)
     emergencyContact = models.IntegerField(default=0, editable=True)
     officeAddress = models.CharField(max_length=100, default="", editable=True)
-    pushToken = models.CharField(max_length=100, default="")
+    pushToken = models.CharField(max_length=100, default="",blank=True)
     privilgeLevel = models.IntegerField(default=2)
     hasChatPrivilege = models.BooleanField(default=False)
+    otp = models.CharField(null=True, max_length=6,blank=True)
 
     USERNAME_FIELD = 'phone'
     REQUIRED_FIELDS = ['username', 'email']
@@ -33,13 +34,17 @@ class CustomUser(AbstractUser):
         return self.first_name + " " + self.last_name + " - " + str(self.phone)
 
 
+
+
+
 class Group(models.Model):
     title = models.CharField(max_length=20)
     description = models.CharField(max_length=150)
     user = models.ManyToManyField(CustomUser, blank=True)
     image = models.ImageField(upload_to="media/", blank=True, null=True)
     pendingGroupRequest = models.ManyToManyField(CustomUser, related_name="user_content_type", blank=True)
-    admin = models.ForeignKey(CustomUser, related_name="subadmin_user",on_delete=models.CASCADE,null=True)
+    admin = models.ForeignKey(CustomUser, related_name="subadmin_user", on_delete=models.CASCADE, null=True)
+
 
     def __str__(self):
         return self.title
