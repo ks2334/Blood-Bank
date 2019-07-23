@@ -209,6 +209,13 @@ export class Login extends React.Component {
         <TouchableOpacity
           style={[styles.buttonContainer, styles.loginButton]}
           onPress={() => {
+            if (this.state.email.length !== 10) {
+              alert("Enter the valid phone number !");
+              return;
+            } else if (this.state.password === "") {
+              alert("Please set a valid password !");
+              return;
+            }
             this.refs.toast.show("Signing In", 600);
             fetch(ip + "/api-token-auth/", {
               method: "post",

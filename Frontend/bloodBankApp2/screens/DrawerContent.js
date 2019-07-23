@@ -146,7 +146,7 @@ export default class DrawerContent extends React.Component {
                     this.props.close();
                   }
                   if (item.id === 4) {
-                    alert("navigate here to invite Us");
+                    alert("Coming soon...");
                   }
                 }}
               >
@@ -184,43 +184,6 @@ export default class DrawerContent extends React.Component {
               }}
             >
               <SocialIcon type="facebook" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                Linking.canOpenURL(
-                  "https://www.facebook.com/JankalyanBBP/"
-                ).then(supported => {
-                  if (supported) {
-                    Linking.openURL("https://www.facebook.com/JankalyanBBP/");
-                  } else {
-                    console.log(
-                      "Don't know how to open URI: " +
-                        "https://www.facebook.com/JankalyanBBP/"
-                    );
-                  }
-                });
-              }}
-            >
-              <SocialIcon type="instagram" />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => {
-                Linking.canOpenURL(
-                  "https://www.facebook.com/JankalyanBBP/"
-                ).then(supported => {
-                  if (supported) {
-                    Linking.openURL("https://www.facebook.com/JankalyanBBP/");
-                  } else {
-                    console.log(
-                      "Don't know how to open URI: " +
-                        "https://www.facebook.com/JankalyanBBP/"
-                    );
-                  }
-                });
-              }}
-            >
-              <SocialIcon type="twitter" />
             </TouchableOpacity>
           </View>
         </ScrollView>

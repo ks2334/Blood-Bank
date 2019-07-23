@@ -40,15 +40,22 @@ export default class AboutUs extends Component {
               }}
             />
             <Text style={styles.companyName}>Janakalayan Blood Bank</Text>
-            <Text style={styles.slogan}>We create awesome apps!</Text>
+            <Text style={styles.slogan}>
+              A drop of Blood can save a thousand lives !
+            </Text>
             <View style={styles.descriptionContent}>
               <Text style={styles.description}>
-                Lorem ipsum dolor sit amet, altera conceptam ei cum. Hinc
-                temporibus repudiandae eu mel, cum impetus legendos ei. Fugit
-                everti dissentias duo cu, nihil fabellas id pri, nonumy verear
-                ea pri. Sit et nisl eros. Ad sapientem forensibus est, ne vis
-                sonet iuvaret, his sint fabulas dolores ad. Repudiare gubergren
-                voluptatum ius ne, nec nostro possim nostrud ad,
+                Jankalyan Raktapedhi (JKRP) Pune is housed in its own
+                magnificent premises with built up area of about 7500 sq. ft.
+                The premises is designed to cater to most exacting requirements
+                of Standard Blood Bank and spaces allotted for holding
+                workshops, seminars, classrooms for conducting classes for
+                training and updating of laboratory Technicians as well as for
+                other staff for creating awareness about the latest developments
+                in Transfusion Medicine and Voluntary Blood Donation movement.
+                Practicing Physicians and Surgeons are welcomed to meet at the
+                Blood Bank for updating information on Blood Transfusion through
+                training programme.
               </Text>
             </View>
           </View>
