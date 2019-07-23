@@ -1,3 +1,3 @@
-const ip = "http://jankalyanbloodbank.tk/";
+const ip = "http://jankalyanbloodbank.tk";
 
 export { ip };

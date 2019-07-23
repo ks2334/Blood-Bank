@@ -1,4 +1,5 @@
 import random
+from datetime import date
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
@@ -15,7 +16,6 @@ import urllib.parse
 from django.contrib.auth import authenticate, login, logout
 from django.utils.safestring import mark_safe
 import json
-
 # Expo Notifications
 from exponent_server_sdk import DeviceNotRegisteredError
 from exponent_server_sdk import PushClient
@@ -478,3 +478,11 @@ def setPassword(request):
         user.save()
         return HttpResponse("your password has been changed successfully !")
     return render(request, 'password_confirm.html', {"a": "something went wrong ..."})
+
+
+
+def resetDonate(request):
+    user = request.user
+    user.donationDate = date.today() + datetime.timedelta(3*30)
+    user.save()
+    return HttpResponse("your password has been changed successfully !")

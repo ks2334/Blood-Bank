@@ -769,6 +769,7 @@ export class Register extends React.Component {
                       body: this.formData
                     })
                       .then(response => {
+                        alert(response);
                         if (response.status === 400) {
                           this.setState({ error: response._bodyText });
                           alert(this.state.error);
