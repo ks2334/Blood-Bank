@@ -359,7 +359,7 @@ export class Profile extends Component {
     })
       .then(response2 => {
         obj = JSON.parse(response2._bodyInit);
-        this.setState({ data: obj["suggestions"], data1: obj["profilePosts"] });
+        this.setState({ data: obj["requests"], data1: obj["profilePosts"] });
       })
       .catch(err => {
         console.log(err);

@@ -158,14 +158,14 @@ class ProfileView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
-        ProfileTuple = namedtuple("Profile", ('suggestions', 'profilePosts'))
+        ProfileTuple = namedtuple("Profile", ('requests', 'profilePosts'))
 
         posts = request.user.profilepost_set.all().order_by('-id')
 
         friends = request.user.friends.all() | CustomUser.objects.filter(
             phone=request.user.phone) | request.user.friendRequests.all()
-        s = CustomUser.objects.difference(friends)
-        profile = ProfileTuple(suggestions=s[:5], profilePosts=posts)
+        s = request.user.friendRequests.all()
+        profile = ProfileTuple(requests=s[:5], profilePosts=posts)
         serializer = ProfileSerializer(profile)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

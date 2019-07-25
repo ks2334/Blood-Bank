@@ -696,6 +696,8 @@ export class Register extends React.Component {
               const { status: existingStatus } = await Permissions.getAsync(
                 Permissions.NOTIFICATIONS
               );
+              this.refs.toast.show("Regitering...", 600);
+
               let finalStatus = existingStatus;
 
               // only ask if permissions have not already been determined, because
@@ -776,7 +778,6 @@ export class Register extends React.Component {
                       body: this.formData
                     })
                       .then(response => {
-                        alert(response);
                         if (response.status === 400) {
                           this.setState({ error: response._bodyText });
                           alert(this.state.error);
@@ -826,6 +827,16 @@ export class Register extends React.Component {
             <Text style={styles.loginText}>Register</Text>
           </TouchableOpacity>
         </View>
+        <Toast
+          ref="toast"
+          style={{ backgroundColor: "black", marginTop: 20 }}
+          position="top"
+          positionValue={200}
+          fadeInDuration={750}
+          fadeOutDuration={1000}
+          opacity={0.8}
+          textStyle={{ color: "white" }}
+        />
       </KeyboardAwareScrollView>
     );
   }

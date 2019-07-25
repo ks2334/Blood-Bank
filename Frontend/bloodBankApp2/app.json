@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "bloodBankApp",
+    "name": "Jankalyan Blood Bank",
     "slug": "bloodBankApp",
     "privacy": "public",
     "sdkVersion": "32.0.0",
@@ -17,8 +17,9 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.example.bloodBank",
-      "googleServicesFile": "./google-services.json"
+      "package": "com.jankalyan.bloodBank",
+      "googleServicesFile": "./google-services.json",
+      "versionCode": 2
     }
   }
 }
