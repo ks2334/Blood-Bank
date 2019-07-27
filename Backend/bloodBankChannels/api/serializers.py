@@ -200,7 +200,7 @@ class FeedSerializer(serializers.Serializer):
 
 
 class ProfileSerializer(serializers.Serializer):
-    suggestions = UserSerializer(many=True)
+    requests = UserSerializer(many=True)
     profilePosts = ProfilePostSerializer(many=True)
 
 
