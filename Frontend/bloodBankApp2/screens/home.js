@@ -294,6 +294,7 @@ export class Profile extends Component {
     super(props);
     this.state = {
       token: this.props.screenProps.token,
+      id: "",
       name: "",
       email: "",
       phone: "",
@@ -319,8 +320,6 @@ export class Profile extends Component {
         name: this.props.screenProps.homeState.name
       });
     } else if (selectedIndex === 1) {
-      this.props.navigation.navigate("Notification");
-    } else if (selectedIndex === 2) {
       this.props.screenProps.rootNavigation.navigate("updateprofile", {
         data: this.props.screenProps.homeState,
         token: this.props.screenProps.token
@@ -339,7 +338,7 @@ export class Profile extends Component {
     })
       .then(response2 => {
         obj = JSON.parse(response2._bodyInit);
-        this.setState({ data: obj["suggestions"], data1: obj["profilePosts"] });
+        this.setState({ data: obj["requests"], data1: obj["profilePosts"] });
 
         this.setState({ refreshing: false });
       })
@@ -348,7 +347,6 @@ export class Profile extends Component {
       });
   };
   componentDidMount() {
-    console.log(ip);
     fetch(ip + "/getProfileView/", {
       method: "get",
       headers: {
@@ -367,7 +365,7 @@ export class Profile extends Component {
   }
 
   render() {
-    const buttons = ["Friends", "Notifications", "Update"];
+    const buttons = ["Friends", "Update"];
     return (
       <ScrollView
         contentContainerStyle={{ marginBottom: 10 }}
@@ -428,33 +426,41 @@ export class Profile extends Component {
                 color: "green"
               }}
             >
-              You Can Donate on or onwards :{" "}
-              {this.props.screenProps.homeState.donationDate}
+              You Can Donate on or onwards :{this.state.donationDate}
             </Text>
             <TouchableOpacity
               style={{ marginLeft: 10 }}
-              onPress={() =>
-                fetch(ip + "/resetDonate/", {
-                  method: "get",
-                  headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json"
-                  },
+              onPress={() => {
+                console.log(this.state.donationDate);
+                fetch(
+                  ip +
+                    "/resetDonate/" +
+                    this.props.screenProps.homeState.id +
+                    "/",
+                  {
+                    method: "get",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Accept: "application/json"
+                    },
 
-                  credentials: "include"
-                })
+                    credentials: "include"
+                  }
+                )
                   .then(response => {
+                    console.log(response);
+
                     if (response.status === 200) {
+                      console.log(response);
                       token = response._bodyInit.toString();
                       token = token.substring(10, token.length - 2);
-
                       this._onRefresh();
                     }
                   })
                   .catch(err => {
                     alert(err);
-                  })
-              }
+                  });
+              }}
             >
               <Text
                 style={{
@@ -1488,6 +1494,7 @@ export default class Home extends Component {
       bg: "",
       dob: "",
       address: "",
+      donationDate: "",
       profilePic: null,
       aadhar: "",
       officeAddress: "",
@@ -1499,6 +1506,10 @@ export default class Home extends Component {
       id: ""
     };
   }
+
+  gotoFriends = () => {
+    this.props.navigate("FriendsList");
+  };
 
   closeControlPanel = () => {
     this._drawer.close();
@@ -1530,7 +1541,6 @@ export default class Home extends Component {
           address: obj.address,
           profilePic: obj.profilePic,
           donationDate: obj.donationDate,
-
           aadhar: obj.adhaarNo,
           officeAddress: obj.officeAddress,
           profession: obj.profession,
@@ -1646,15 +1656,7 @@ const Tabs = createAppContainer(
           )
         }
       },
-      Notifications: {
-        screen: Notifications,
-        navigationOptions: {
-          tabBarLabel: "Notifications",
-          tabBarIcon: ({ tintColor }) => (
-            <EvilIcons name="bell" size={25} color={tintColor} />
-          )
-        }
-      },
+
       Profile: {
         screen: Profile,
         navigationOptions: {

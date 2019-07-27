@@ -20,7 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'first_name', 'last_name', 'email', 'password', 'dob', 'address', 'bloodGroup', 'gender',
                   'phone', 'username', 'profilePic', 'friends', 'friendRequests', 'education', 'profession',
                   'emergencyContact', 'officeAddress',
-                  'adhaarNo','pushToken')
+                  'adhaarNo', 'pushToken')
         extra_kwargs = {'profilePic': {'required': False},
                         'friends': {'required': False},
                         'friendRequests': {'required': False},
@@ -45,8 +45,10 @@ class UserSerializer(serializers.ModelSerializer):
             adhaarNo=validated_data['adhaarNo'],
             pushToken=validated_data['pushToken']
         )
-
-        user.profilePic = validated_data['profilePic']
+        try:
+            user.profilePic = validated_data['profilePic']
+        except:
+            user.profilePic = None
         user.set_password(validated_data['password'])
         user.save()
         return user
@@ -93,7 +95,6 @@ class ProfilePostSerializer(serializers.ModelSerializer):
 
 
 class ProfilePostFriendSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = ProfilePost
         fields = (
@@ -164,6 +165,7 @@ class GroupSerializerAdmin(serializers.ModelSerializer):
 
 class FormPostSerializer(serializers.ModelSerializer):
     group = serializers.PrimaryKeyRelatedField(many=True, queryset=Group.objects.all())
+
     class Meta:
         model = FormPost
         fields = (
@@ -173,11 +175,12 @@ class FormPostSerializer(serializers.ModelSerializer):
 
 class FormDataSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(many=True, queryset=CustomUser.objects.all())
-    post = serializers.PrimaryKeyRelatedField(many=True,queryset=FormPost.objects.all())
+    post = serializers.PrimaryKeyRelatedField(many=True, queryset=FormPost.objects.all())
+
     class Meta:
         model = FormData
         fields = (
-            'id', 'time', 'user','post'
+            'id', 'time', 'user', 'post'
         )
 
     def create(self, validated_data):

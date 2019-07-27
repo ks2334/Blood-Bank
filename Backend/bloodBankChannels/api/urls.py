@@ -57,7 +57,7 @@ urlpatterns = [
     path('forgotPassword/', views.forgotPassword),
     path('resetPassword/', views.resetPassword),
     path('reset/', views.setPassword),
-    path('resetDonate/', views.resetDonate),
+    path('resetDonate/<int:id>/', views.resetDonate),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

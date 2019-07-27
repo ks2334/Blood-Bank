@@ -765,9 +765,6 @@ export class Register extends React.Component {
                   } else if (this.state.secondPhoneNumber.length !== 10) {
                     alert("Please enter a valid emergency contact !");
                     return;
-                  } else if (this.state.profilePic === null) {
-                    alert("Please select a profile photo !");
-                    return;
                   } else {
                     fetch(ip + "/post/", {
                       method: "post",

@@ -19,7 +19,7 @@
     "android": {
       "package": "com.jankalyan.bloodBank",
       "googleServicesFile": "./google-services.json",
-      "versionCode": 2
+      "versionCode": 3
     }
   }
 }

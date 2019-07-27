@@ -1,32 +1,28 @@
-import random
-from datetime import date
-
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from rest_framework.generics import UpdateAPIView
-from .serializers import *
-from rest_framework import generics, status
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.parsers import MultiPartParser
-from collections import namedtuple
-import urllib.request
-import urllib.parse
-from django.contrib.auth import authenticate, login, logout
-from django.utils.safestring import mark_safe
 import json
+import random
+import urllib.parse
+import urllib.request
+from collections import namedtuple
+from datetime import timedelta
+from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, redirect
+from django.utils.safestring import mark_safe
 # Expo Notifications
-from exponent_server_sdk import DeviceNotRegisteredError
 from exponent_server_sdk import PushClient
 from exponent_server_sdk import PushMessage
-from exponent_server_sdk import PushResponseError
-from exponent_server_sdk import PushServerError
-from requests.exceptions import ConnectionError
-from requests.exceptions import HTTPError
+from rest_framework import generics, status
+from rest_framework.generics import UpdateAPIView
+from rest_framework.parsers import MultiPartParser
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .serializers import *
 
 
 # Create your views here.
+
+
 def index(request):
     return render(request, 'login.html')
 
@@ -460,11 +456,12 @@ def resetPassword(request):
         user.otp = random.randint(100000, 999999)
         user.save()
         print(user.phone)
-        resp = sendSMS("DEr70itGrxI-ik05lJzaFlxONNzyD5uYTHYKWzwWUW", user.phone, "TXTLCL", "your otp is : " + str(user.otp))
+        resp = sendSMS("DEr70itGrxI-ik05lJzaFlxONNzyD5uYTHYKWzwWUW", user.phone, "TXTLCL",
+                       "your otp is : " + str(user.otp))
         print(resp)
-        return render(request, 'password_confirm.html', {"a": "Password reset link sent on your phone ...","phone":user.phone})
-    return render(request, 'reset_password.html',{"msg": "This user is not on our records ..."})
-
+        return render(request, 'password_confirm.html',
+                      {"a": "Password reset otp has been sent on your phone ...", "phone": user.phone})
+    return render(request, 'reset_password.html', {"msg": "This user is not on our records ..."})
 
 
 def setPassword(request):
@@ -480,9 +477,9 @@ def setPassword(request):
     return render(request, 'password_confirm.html', {"a": "something went wrong ..."})
 
 
-
-def resetDonate(request):
-    user = request.user
-    user.donationDate = date.today() + datetime.timedelta(3*30)
+def resetDonate(request,id):
+    user = CustomUser.objects.get(id=id)
+    print(user)
+    user.donationDate = datetime.today() + timedelta(6 * 30)
     user.save()
-    return HttpResponse("your password has been changed successfully !")
+    return JsonResponse(user, status=status.HTTP_200_OK)
