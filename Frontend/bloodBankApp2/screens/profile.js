@@ -301,7 +301,7 @@ export default class Profile extends Component {
                   flex: 1
                 }}
               >
-                <FlatList
+                <View
                   style={[
                     styles.list,
                     {
