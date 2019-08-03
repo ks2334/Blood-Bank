@@ -1,39 +1,104 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
+from django.contrib.auth.models import AnonymousUser
+from .models import ChatData, Logs, CustomUser, Group
 import json
+import time
+
+
+# Protocol
+# US:To:Msg
+# UR:from:Msg
+# GS:groupName:Msg
+# GR:groupName:senderName:Msg
+
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_group_name = 'chat_%s' % self.room_name
-
-        # Join room group
-        await self.channel_layer.group_add(
-            self.room_group_name,
-            self.channel_name
-        )
-
-        await self.accept()
+        if self.scope["user"] != AnonymousUser() and self.scope["user"].is_authenticated:
+            self.user = self.scope["user"]
+            self.user.channelName = self.channel_name
+            print(self.user)
+            self.user.save()
+            await self.accept()
+        else:
+            await self.close()
 
     async def disconnect(self, close_code):
         # Leave room group
-        await self.channel_layer.group_discard(
-            self.room_group_name,
-            self.channel_name
-        )
+        self.user.channelName = None
+        self.user.save()
 
     # Receive message from WebSocket
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
+        try:
+            msgType, receiver, msg = message.split(": ")
+            print(msgType, receiver, msg)
+            if msgType == "User":
+                receiver = CustomUser.objects.get(phone=receiver)
+                ChatData.objects.create(user1=self.scope["user"], isGroup=False, user2=receiver, message=msg)
+                if receiver.channelName is not None:
+                    await self.channel_layer.send(
+                        receiver.channelName,
+                        {
+                            'type': 'chat_message',
+                            'message': "UR: " + self.scope["user"].phone + ": " + msg
+                        }
+                    )
+                if self.user.channelName is not None:
+                    await self.channel_layer.send(
+                        self.user.channelName,
+                        {
+                            'type': 'chat_message',
+                            'message': "US: " + receiver.phone + ": " + msg
+                        }
+                    )
+            elif msgType == "Group":
+                group = Group.objects.get(title=receiver)
+                ChatData.objects.create(user1=self.scope["user"], isGroup=True, group=group, message=msg)
 
-        # Send message to room group
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                'type': 'chat_message',
-                'message': message
-            }
-        )
+                if self.user.channelName is not None:
+                    await self.channel_layer.send(
+                        self.user.channelName,
+                        {
+                            'type': 'chat_message',
+                            'message': "GS: " + group.title + ": " + msg
+                        }
+                    )
+
+                for i in CustomUser.objects.filter(group__id=group.id).exclude(channelName=None):
+                    await self.channel_layer.send(
+                        i.channelName,
+                        {
+                            'type': 'chat_message',
+                            'message': "GR: " + group.title + ": " + self.scope["user"].phone + ": " + msg
+                        }
+                    )
+
+            else:
+                if self.user.channelName is not None:
+                    await self.channel_layer.send(
+                        self.user.channelName,
+                        {
+                            'type': 'chat_message',
+                            'message': "Invalid"
+                        }
+                    )
+                self.close()
+            # receiver = CustomUser.objects.get(phone=receiver)
+            # Send message to User
+
+        except:
+            if self.user.channelName is not None:
+                await self.channel_layer.send(
+                    self.user.channelName,
+                    {
+                        'type': 'chat_message',
+                        'message': "Invalid"
+                    }
+                )
+            self.close()
 
     # Receive message from room group
     async def chat_message(self, event):

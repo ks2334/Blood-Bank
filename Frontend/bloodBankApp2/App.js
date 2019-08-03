@@ -5,6 +5,7 @@ import Splash from "./screens/splash";
 import SignIn from "./screens/login";
 import Profile from "./screens/profile";
 import Home from "./screens/home";
+import HomeChat from "./screens/homeChat";
 import FriendsList from "./screens/friendList";
 import updateprofile from "./screens/updateprofile";
 import PostForm from "./screens/post";
@@ -27,7 +28,7 @@ const Screens = createAppContainer(
       screen: Profile
     },
     Home: {
-      screen: Home
+      screen: HomeChat
     },
     FriendsList: {
       screen: FriendsList

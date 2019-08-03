@@ -169,7 +169,7 @@ class FormPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = FormPost
         fields = (
-            'id', 'postDetails', 'timestamp', 'group'
+            'id', 'postDetails', 'time', 'group'
         )
 
 
@@ -215,3 +215,86 @@ class GroupViewSerializer(serializers.Serializer):
 class FriendListViewSerializer(serializers.Serializer):
     friends = UserSerializer(many=True)
     friendRequests = UserSerializer(many=True)
+
+
+class WSTokenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WSTokens
+        fields = "__all__"
+
+
+class UserChatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('id', 'first_name', 'last_name', 'bloodGroup', 'gender',
+                  'phone', 'profilePic')
+        extra_kwargs = {'profilePic': {'required': False}}
+
+
+class GroupChatSerializer(serializers.ModelSerializer):
+    user = UserChatSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Group
+        fields = (
+            'id', 'title', 'description', 'user', 'image', 'admin'
+        )
+
+
+class GroupChatAvailableSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = (
+            'id', 'title', 'description', 'image'
+        )
+
+
+class GroupChatSerializer2(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = [
+            'title'
+        ]
+
+
+class GroupPostChatSerializer(serializers.ModelSerializer):
+    group = serializers.StringRelatedField(many=True)
+
+    # GroupChatSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = GroupPost
+        fields = (
+            'id', 'postDetails', 'time', 'group', 'image'
+        )
+
+
+class FormPostChatSerializer(serializers.ModelSerializer):
+    group = serializers.StringRelatedField(many=True)
+
+    class Meta:
+        model = FormPost
+        fields = (
+            'id', 'postDetails', 'time', 'group'
+        )
+
+
+class ChatDataSerializer(serializers.ModelSerializer):
+    group = serializers.StringRelatedField(many=False, allow_null=True)
+    user1 = UserChatSerializer(many=False, read_only=True)
+    user2 = UserChatSerializer(many=False, allow_null=True, read_only=True)
+
+    class Meta:
+        model = ChatData
+        fields = (
+            'id', 'user1', 'isGroup', 'user2', 'group', 'message', 'time'
+        )
+
+
+class GetChatDataSerializer(serializers.Serializer):
+    wsToken = WSTokenSerializer(many=False)
+    availableGroups = GroupChatAvailableSerializer(many=True)
+    userGroups = GroupChatSerializer(many=True)
+    imageData = GroupPostChatSerializer(many=True)
+    formData = FormPostChatSerializer(many=True)
+    textData = ChatDataSerializer(many=True)

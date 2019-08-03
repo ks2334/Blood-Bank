@@ -18,6 +18,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import *
+from django.utils.crypto import get_random_string
 
 
 # Create your views here.
@@ -147,6 +148,54 @@ class GetGroupPosts(APIView):
 
         groupPosts = Posts(groupPosts=gp, formPosts=fp)
         serializer = GroupPageSerializer(groupPosts)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class GetChatDataView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        Posts = namedtuple("ChatData",
+                           ('imageData', 'formData', 'textData', 'availableGroups', 'userGroups', 'wsToken'))
+        g = request.user.group_set.all()
+        imageData = None
+        formData = None
+        textData = None
+
+        for cnt, i in enumerate(g):
+            gp = GroupPost.objects.filter(group=i.pk)
+            fp = FormPost.objects.filter(group=i.pk)
+            tp = ChatData.objects.filter(group=i.pk, isGroup=True)
+            if cnt == 0:
+                imageData = gp
+                formData = fp
+                textData = tp
+            else:
+                imageData = imageData | gp
+                formData = formData | fp
+                textData = textData | tp
+
+        tp = ChatData.objects.filter(user1=request.user, isGroup=False)
+        textData = textData | tp
+        tp = ChatData.objects.filter(user2=request.user, isGroup=False)
+        textData = textData | tp
+
+        token = get_random_string(length=50)
+        w = WSTokens.objects.filter(user=request.user)
+        if w is not None:
+            w.delete()
+        while True:
+            try:
+                w = WSTokens.objects.create(user=request.user, token=token)
+                break
+            except Exception as e:
+                token = get_random_string(length=50)
+
+        chatPosts = Posts(imageData=imageData.distinct(), formData=formData.distinct(), textData=textData.distinct(),
+                          availableGroups=Group.objects.exclude(user=request.user),
+                          userGroups=request.user.group_set.all(),
+                          wsToken=w)
+        serializer = GetChatDataSerializer(chatPosts)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -340,6 +389,25 @@ class getFriendPosts(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class getWSToken(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        token = get_random_string(length=50)
+        w = WSTokens.objects.filter(user=request.user)
+        if w is not None:
+            w.delete()
+        while True:
+            try:
+                w = WSTokens.objects.create(user=request.user, token=token)
+                break
+            except Exception as e:
+                token = get_random_string(length=50)
+
+        serializer = WSTokenSerializer(w, many=False)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 def logged(request):
     if request.method == "POST":
         username = request.POST['username']
@@ -477,7 +545,7 @@ def setPassword(request):
     return render(request, 'password_confirm.html', {"a": "something went wrong ..."})
 
 
-def resetDonate(request,id):
+def resetDonate(request, id):
     user = CustomUser.objects.get(id=id)
     print(user)
     user.donationDate = datetime.today() + timedelta(6 * 30)
