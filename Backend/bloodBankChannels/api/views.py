@@ -18,12 +18,15 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import *
+from django.utils.crypto import get_random_string
 
 
 # Create your views here.
 
 
 def index(request):
+    if request.user.is_authenticated:
+        return redirect("/admin-panel")
     return render(request, 'login.html')
 
 
@@ -262,7 +265,7 @@ class AddGroupPost(APIView):
         print(request.data)
         if serializer.is_valid():
             serializer.save()
-            return HttpResponse('post created')
+            return adminPanel(request)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -277,7 +280,7 @@ class CreateGroup(APIView):
         print(request.data)
         if serializer.is_valid():
             serializer.save()
-            return HttpResponse('Group Created Successfully !')
+            return redirect("../admin-panel")
         return HttpResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -372,7 +375,9 @@ def adminPanel(request):
         print(posts)
         for group in groups:
             requests += group.pendingGroupRequest.all()
-        return render(request, 'admin-panel.html', {'requests': requests, 'groups': groups, 'posts': posts})
+
+        return render(request, 'admin-panel.html', {'requests': requests, 'groups': groups, 'posts': posts,'msg':"Post Created Successfully !"})
+
     else:
         return redirect("/")
 
@@ -477,9 +482,78 @@ def setPassword(request):
     return render(request, 'password_confirm.html', {"a": "something went wrong ..."})
 
 
-def resetDonate(request,id):
+def resetDonate(request, id):
     user = CustomUser.objects.get(id=id)
     print(user)
     user.donationDate = datetime.today() + timedelta(6 * 30)
     user.save()
     return JsonResponse(user, status=status.HTTP_200_OK)
+
+
+class GetChatDataView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        Posts = namedtuple("ChatData",
+                           ('imageData', 'formData', 'textData', 'availableGroups', 'userGroups', 'wsToken'))
+        g = request.user.group_set.all()
+        imageData = None
+        formData = None
+        textData = None
+
+        for cnt, i in enumerate(g):
+            gp = GroupPost.objects.filter(group=i.pk)
+            fp = FormPost.objects.filter(group=i.pk)
+            tp = ChatData.objects.filter(group=i.pk, isGroup=True)
+            if cnt == 0:
+                imageData = gp
+                formData = fp
+                textData = tp
+            else:
+                imageData = imageData | gp
+                formData = formData | fp
+                textData = textData | tp
+
+        tp = ChatData.objects.filter(user1=request.user, isGroup=False)
+        textData = textData | tp
+        tp = ChatData.objects.filter(user2=request.user, isGroup=False)
+        textData = textData | tp
+
+        token = get_random_string(length=50)
+        w = WSTokens.objects.filter(user=request.user)
+        while True:
+            try:
+                if w is not None:
+                    w.token=token
+                    w.save()
+                else:
+                    w = WSTokens.objects.create(user=request.user, token=token)
+                break
+            except Exception as e:
+                token = get_random_string(length=50)
+
+        chatPosts = Posts(imageData=imageData.distinct(), formData=formData.distinct(), textData=textData.distinct(),
+                          availableGroups=Group.objects.exclude(user=request.user),
+                          userGroups=request.user.group_set.all(),
+                          wsToken=w)
+        serializer = GetChatDataSerializer(chatPosts)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class getWSToken(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        token = get_random_string(length=50)
+        w = WSTokens.objects.filter(user=request.user)
+        if w is not None:
+            w.delete()
+        while True:
+            try:
+                w = WSTokens.objects.create(user=request.user, token=token)
+                break
+            except Exception as e:
+                token = get_random_string(length=50)
+
+        serializer = WSTokenSerializer(w, many=False)
+        return Response(serializer.data, status=status.HTTP_200_OK)

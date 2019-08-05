@@ -1183,7 +1183,7 @@ export class Feed extends Component {
                         />
 
                         <Text style={styles.time}>
-                          {item.time.toString().substring(0, 10)}
+                          {item.timestamp.toString().substring(0, 10)}
                         </Text>
                       </View>
                     </View>

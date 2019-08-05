@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ip } from "./host.js";
+import { ip,wsip } from "./host.js";
 import {
   StyleSheet,
   Text,
@@ -22,16 +22,19 @@ import FeatherIcon from "react-native-vector-icons/Feather";
 import Entypo from "react-native-vector-icons/Entypo";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {
   createAppContainer,
   createBottomTabNavigator,
   NavigationEvents,
-  createMaterialTopTabNavigator
+  createMaterialTopTabNavigator,
+  NavigationActions
+
 } from "react-navigation";
 import Drawer from "react-native-drawer";
 import DrawerContent from "./DrawerContent";
 import { ListItem, ButtonGroup } from "react-native-elements";
-import { Camera, Permissions, ImagePicker } from "expo";
+import { Camera, Permissions, ImagePicker,AppLoading } from "expo";
 import Toast, { DURATION } from "react-native-easy-toast";
 import ImageView from "react-native-image-view";
 
@@ -615,56 +618,16 @@ export class Groups extends Component {
     super(props);
     this.state = {
       token: this.props.screenProps.token,
-      data: [],
-      data1: [],
-      refreshing: false
+      data:""
     };
+  }  
+
+  componentDidMount(){
+    this.setState({data:this.props.screenProps.homeState.allData})
   }
 
-  _onRefresh = () => {
-    this.setState({ refreshing: true });
-    fetch(ip + "/groups/", {
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: "Token " + this.state.token
-      }
-    })
-      .then(response => {
-        obj = JSON.parse(response._bodyInit);
-        this.setState({ data: obj["yourGroups"], data1: obj["otherGroups"] });
-        console.log(obj["yourGroups"]);
-        this.setState({ refreshing: false });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-  componentDidMount() {
-    fetch(ip + "/groups/", {
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: "Token " + this.state.token
-      }
-    })
-      .then(response => {
-        obj = JSON.parse(response._bodyInit);
-        this.setState({ data: obj["yourGroups"], data1: obj["otherGroups"] });
-        console.log(obj["yourGroups"]);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-  clickEventListener(item) {
-    alert(item.image);
-  }
-
-  render() {
-    return (
+  render(){
+    return(
       <ScrollView
         style={styles.container}
         refreshControl={
@@ -685,11 +648,84 @@ export class Groups extends Component {
         >
           Your Groups
         </Text>
-        {this.state.data.map((l, i) => (
+
+        {this.props.screenProps.homeState.yourGroups==""? (<Text style={{
+            paddingLeft: 15,
+            paddingTop: 8,
+            paddingBottom: 2,
+            fontSize: 15,
+            color: "black"
+          }}>You are not a member of any group yet!</Text>) :(this.props.screenProps.homeState.yourGroups.map((l, i) => (
           <TouchableOpacity
             onPress={() => {
+              
+              this.props.screenProps.rootNavigation.push("GroupPage", {
+                obj: this.state.data["groupData"][l.title.toString()],
+                token: this.state.token,
+                flag:false,
+                addMessage:this.props.screenProps.addMessage
+              });
+              this.props.screenProps.openChat("Group",l.title)
+            }}
+          >
+            {l.image ? (
+              <ListItem
+                key={i}
+                avatar={{
+                  uri: ip + l.image
+                }}
+                title={l.title}
+                subtitle={l.description}
+                rightIcon={
+                  l.messageCount!==0?
+                  <Text style={{color:"white",fontWeight:"bold",backgroundColor:"rgb(25, 80, 120)",fontSize:15,padding:10,borderRadius:10}}>{l.messageCount}</Text>:
+                  undefined
+              
+                }
+              />
+            ) : (
+              <ListItem
+                key={i}
+                avatar={{
+                  uri: ip + l.image
+                }}
+                title={l.title}
+                subtitle={l.description}
+                rightIcon={
+                  l.messageCount!==0?
+                  <Text style={{color:"white",fontWeight:"bold",backgroundColor:"rgb(25, 80, 120)",fontSize:15,padding:10,borderRadius:10}}>{l.messageCount}</Text>:
+                  undefined
+                }
+              />
+            )}
+          </TouchableOpacity>
+        )))}
+
+
+        <Text
+          style={{
+            paddingLeft: 10,
+            paddingTop: 10,
+            paddingBottom: 5,
+            fontSize: 22,
+            color: "gray"
+          }}
+        >
+          Your Chats
+        </Text>
+
+        {this.props.screenProps.homeState.yourChats==""? (<Text style={{
+            paddingLeft: 15,
+            paddingTop: 8,
+            paddingBottom: 2,
+            fontSize: 15,
+            color: "black"
+          }}>You do not have any chats yet!</Text>) :(this.props.screenProps.homeState.yourChats.map((l, i) => (
+          <TouchableOpacity
+            onPress={() => {
+              this.props.screenProps.openChat("User",l.title)
               this.props.screenProps.rootNavigation.navigate("GroupPage", {
-                obj: l,
+                obj: this.props.screenProps.homeState.allData["userData"][l.title.toString()],
                 token: this.state.token
               });
             }}
@@ -701,20 +737,27 @@ export class Groups extends Component {
                   uri: ip + l.image
                 }}
                 title={l.title}
-                subtitle={l.description}
+                rightIcon={
+                  l.messageCount!==0?
+                  <Text style={{color:"white",fontWeight:"bold",backgroundColor:"rgb(25, 80, 120)",fontSize:15,padding:10,borderRadius:10}}>{l.messageCount}</Text>:undefined
+                }
               />
             ) : (
               <ListItem
                 key={i}
-                leftAvatar={{
+                avatar={{
                   uri: ip + l.image
                 }}
                 title={l.title}
-                subtitle={l.description}
+                rightIcon={
+                  l.messageCount!==0?
+                  <Text style={{color:"white",fontWeight:"bold",backgroundColor:"rgb(25, 80, 120)",fontSize:15,padding:10,borderRadius:10}}>{l.messageCount}</Text>:undefined
+                }
               />
             )}
           </TouchableOpacity>
-        ))}
+        )))}
+
 
         <Text
           style={{
@@ -725,10 +768,15 @@ export class Groups extends Component {
             color: "gray"
           }}
         >
-          Other Groups
+          Available Groups
         </Text>
-
-        {this.state.data1.map((l, i) => (
+        {this.props.screenProps.homeState.availableGroups==""? (<Text style={{
+            paddingLeft: 15,
+            paddingTop: 8,
+            paddingBottom: 2,
+            fontSize: 15,
+            color: "black"
+          }}>There are no groups to join at the moment!</Text>) : (this.props.screenProps.homeState.availableGroups.map((l, i) => (
           <TouchableOpacity
             onPress={() => {
               fetch(ip + "/joinGroup/", {
@@ -769,7 +817,7 @@ export class Groups extends Component {
             ) : (
               <ListItem
                 key={i + 100}
-                leftAvatar={{
+                avatar={{
                   uri: ip + l.image
                 }}
                 title={l.title}
@@ -779,40 +827,67 @@ export class Groups extends Component {
                 }
               />
             )}
-          </TouchableOpacity>
+          </TouchableOpacity>)
         ))}
-      </ScrollView>
-    );
-  }
-}
 
-export class Notifications extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      token: this.props.screenProps.token
-    };
-  }
-  componentDidMount() {}
-
-  render() {
-    return (
-      <ScrollView style={styles.container}>
         <Text
           style={{
             paddingLeft: 10,
-            paddingTop: 10,
-            paddingBottom: 5,
+            paddingTop: 15,
+            paddingBottom: 7,
             fontSize: 22,
             color: "gray"
           }}
         >
-          Notifications
+          Your Friends
         </Text>
-      </ScrollView>
-    );
+
+        {this.props.screenProps.homeState.friends.length===0? (<Text style={{
+            paddingLeft: 15,
+            paddingTop: 8,
+            paddingBottom: 2,
+            fontSize: 15,
+            color: "black"
+          }}>Please Add some friends</Text>) :(this.props.screenProps.homeState.friends.map((element,i) => (
+          <TouchableOpacity
+            onPress={() => {
+              this.props.screenProps.openChat("User",element.first_name+" "+element.last_name)
+              this.props.screenProps.rootNavigation.navigate("GroupPage", {
+                obj: this.props.screenProps.homeState.allData["userData"][element.first_name+" "+element.last_name],
+                token: this.state.token
+              });
+            }}
+          >
+            {element.profilePic ? (
+              <ListItem
+                key={i}
+                avatar={{
+                  uri: element.profilePic
+                }}
+                title={element.first_name+" "+element.last_name}
+                
+              />
+            ) : (
+              <ListItem
+                key={i}
+                avatar={{
+                  uri: element.profilePic
+                }}
+                title={element.first_name+" "+element.last_name}
+                
+              />
+            )}
+          </TouchableOpacity>
+        )))}
+
+             
+            
+        </ScrollView>
+    )
   }
+
 }
+
 
 export class Post extends Component {
   constructor(props) {
@@ -847,7 +922,7 @@ export class Post extends Component {
     });
 
     if (!result.cancelled) {
-      console.log(result);
+      //console.log(result);
       this.props.screenProps.rootNavigation.navigate("Post", {
         photo: result,
         token: this.props.screenProps.token
@@ -932,7 +1007,7 @@ export class Post extends Component {
                   if (this.camera) {
                     result = await this.camera.takePictureAsync();
                     if (result) {
-                      console.log(result);
+                      //console.log(result);
                       this.props.screenProps.rootNavigation.navigate("Post", {
                         photo: result,
                         token: this.props.screenProps.token
@@ -1310,7 +1385,6 @@ export class Feed extends Component {
             data={this.state.data1}
             keyExtractor={item => {
               item.id.toString();
-              console.log(item["likes"]);
             }}
             ItemSeparatorComponent={() => {
               return <View style={styles.separator} />;
@@ -1481,9 +1555,8 @@ export class Feed extends Component {
   }
 }
 
-var self;
 
-export default class Home extends Component {
+export default class HomeChat extends Component {
   constructor(props) {
     super(props);
     self = this.openControlPanel;
@@ -1503,8 +1576,16 @@ export default class Home extends Component {
       emergencyContact: "",
       friends: [],
       friendRequest: [],
-      id: ""
+      id: "",
+      wsToken : "",
+      yourGroups:"",
+      availableGroups:"",
+      yourFriends:"",
+      yourChats:"",
+      allData:""
     };
+
+    this.ws = undefined 
   }
 
   gotoFriends = () => {
@@ -1517,6 +1598,226 @@ export default class Home extends Component {
   openControlPanel = () => {
     this._drawer.open();
   };
+
+
+  sort(obj){
+    currentPhone = this.state.phone
+    let groupData = {}
+    let userData = {}
+    obj["userGroups"].forEach(element => {
+      groupData[element.title] = {
+        "information":element,
+        "unreadMessagesCount":0,
+        "latest":new Date("2018"),
+        "messages":[]
+      }
+    });
+
+    //console.log(Object.keys(data))
+
+    imageData = obj["imageData"]
+    formData = obj["formData"]
+    textData = obj["textData"]
+    
+    imageData.forEach(element => {
+      img = element.image
+      message = element.postDetails
+      time = new Date(element.time)
+      for(i=0;i<element.group.length;i++){
+        if(element.group[i] in groupData){
+          groupData[element.group[i]]["messages"].push({
+            _id: 1,
+            text: message,
+            createdAt: time,
+            image:img,
+            user: {
+              _id: 2,
+              name: "Admin",
+              avatar: "https://placeimg.com/140/140/any"
+            }
+          })
+          groupData[element.group[i]]["unreadMessagesCount"] += 1
+          if(time>groupData[element.group[i]]["latest"]){
+            groupData[element.group[i]]["latest"] = time
+          }
+        }
+        
+      }
+    });
+
+    formData.forEach(element => {
+      message = element.postDetails
+      time = new Date(element.time)
+      for(i=0;i<element.group.length;i++){
+        if(element.group[i] in groupData){
+          groupData[element.group[i]]["messages"].push({
+            _id: 1,
+            text:message,
+            createdAt: time,
+            quickReplies: {},
+            user: {
+              _id: 2,
+              name: "Admin",
+              avatar: "https://placeimg.com/140/140/any"
+            }
+          })
+          groupData[element.group[i]]["unreadMessagesCount"] += 1
+          if(time>groupData[element.group[i]]["latest"]){
+            groupData[element.group[i]]["latest"] = time
+          }
+        }
+        
+      }
+    });
+
+    textData.forEach(element=>{
+      message = element.message
+      time = new Date(element.time)
+
+      if(element.isGroup){
+        if(element.group in groupData){
+          if(element.user1.phone === currentPhone){
+            groupData[element.group]["messages"].push({
+              _id: 1,
+              text:message,
+              createdAt: time,
+              user: {
+                _id: 1,
+                name: element.user1.first_name + " " + element.user1.last_name,
+                avatar: ip + element.user1.profilePic
+              }
+            })
+          }
+          else{
+            groupData[element.group]["messages"].push({
+              _id: 1,
+              text:message,
+              createdAt: time,
+              user: {
+                _id: 2,
+                name: element.user1.first_name + " " + element.user1.last_name,
+                avatar: ip + element.user1.profilePic
+              }
+            })
+            groupData[element.group]["unreadMessagesCount"] += 1
+          }
+          
+          if(time>groupData[element.group]["latest"]){
+            groupData[element.group]["latest"] = time
+          }
+          
+        }
+      }
+      else{
+        if(element.user1.phone === currentPhone){
+          name = element.user2.first_name + " " + element.user2.last_name
+          if(!(name in userData)){
+            userData[name] = {
+              "information":element.user2,
+              "unreadMessagesCount":0,
+              "messages":[],
+              "latest":new Date("2018")
+            }
+          }
+
+          userData[name]["messages"].push({
+            _id: 1,
+            text:message,
+            createdAt: time,
+            user: {
+              _id: 1,
+              name: element.user1.first_name + " " + element.user1.last_name,
+              avatar: ip + element.user1.profilePic
+            }
+          })
+          
+          userData[name]["unreadMessagesCount"] += 1
+          if(time>userData[name]["latest"]){
+            userData[name]["latest"] = time
+          }
+        }
+
+        else if(element.user2.phone === currentPhone){
+          name = element.user1.first_name + " " + element.user1.last_name
+          if(!(name in userData)){
+            userData[name] = {
+              "information":element.user1,
+              "unreadMessagesCount":0,
+              "messages":[],
+              "latest":new Date("2018")
+            }
+          }
+
+          userData[name]["messages"].push({
+            _id: 2,
+            text:message,
+            createdAt: time,
+            user: {
+              _id: 1,
+              name: element.user1.first_name + " " + element.user1.last_name,
+              avatar: ip + element.user1.profilePic
+            }
+          })
+          userData[name]["unreadMessagesCount"] += 1
+
+          if(time>userData[name]["latest"]){
+            userData[name]["latest"] = time
+          }
+          
+        }
+      }
+
+    });
+
+    
+    //console.log(groupData);
+    //console.log(userData);
+
+    groupArray = []
+    userArray = []
+
+    for (var key in groupData) {
+      if (groupData.hasOwnProperty(key)) {
+          //console.log(key + " -> " + groupData[key]);
+          groupArray.push({
+            "title":key,
+            "description": groupData[key]["information"]["description"],
+            "image": groupData[key]["information"]["image"],
+            "latest": groupData[key]["latest"],
+            "messageCount": groupData[key]["unreadMessagesCount"]
+
+          })
+      }
+    }
+
+
+    for (var key in userData) {
+      if (userData.hasOwnProperty(key)) {
+          //console.log(key + " -> " + groupData[key]);
+          userArray.push({
+            "title":key,
+            "image": userData[key]["information"]["profilePic"],
+            "latest": userData[key]["latest"],
+            "messageCount": userData[key]["unreadMessagesCount"]
+
+          })
+      }
+    }
+
+    groupArray = groupArray.slice(0);
+    groupArray.sort(function(a,b) {
+        return b.latest - a.latest;
+    });
+
+    userArray = userArray.slice(0);
+    userArray.sort(function(a,b) {
+        return b.latest - a.latest;
+    });
+
+
+    this.setState({yourGroups:groupArray,yourChats:userArray, allData:{"groupData":groupData,"userData":userData}});
+
+  }
 
   componentDidMount() {
     this.props.navigation.setParams({
@@ -1554,7 +1855,85 @@ export default class Home extends Component {
       .catch(err => {
         console.log(err);
       });
+
+     
+      fetch(ip + "/chatFetch/", {
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Token " + this.props.navigation.getParam("token")
+        }
+      })
+        .then(response => {
+          obj = JSON.parse(response._bodyInit);
+          this.setState({ wsToken:obj["wsToken"]["token"], availableGroups:obj["availableGroups"]});
+          this.sort(obj)
+
+          this.ws = new WebSocket(wsip + '/ws/chat/appRoom/',["Token",this.state.wsToken]);
+
+
+          this.ws.onopen = () => {
+            // connection opened
+            console.log("Websocket Opened")
+            //this.ws.send('something'); // send a message
+          };
+          
+          this.ws.onmessage = e => {
+            // a message was received
+            console.log("Websocket Message Received")
+            console.log(e.data);
+          };
+          
+          this.ws.onerror = e => {
+            // an error occurred
+            console.log("Websocket Error")
+            console.log(e.message);
+          };
+          
+          this.ws.onclose = e => {
+            // connection closed
+            console.log("Websocket Closed")
+            //console.log(e.code);
+          };
+  
+          //console.log(this.state.yourGroups)
+          //console.log(this.state.yourChats)
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+
+
+        /*setTimeout(()=>{
+          this.addMessage("A+",{
+            _id: 1,
+            text: "Testinngggggg",
+            createdAt: new Date(),
+            user: {
+              _id: 2,
+              name: "Admin",
+              avatar: "https://placeimg.com/140/140/any"
+            }
+          })
+
+          this.props.screenProps.update()
+          
+          console.log("Timer Done")
+        },20000)*/
+
+        
+
+        
+
+
+        
   }
+
+
+
+  
 
   static navigationOptions = ({ navigation }) => {
     return {
@@ -1585,6 +1964,68 @@ export default class Home extends Component {
       }
     };
   };
+
+
+  openChat = (type,group) => {
+    if(type==="Group"){
+      groupArray = this.state.yourGroups
+      groupArray.forEach(element => {
+        if(element.title===group){
+          element.messageCount = 0;
+        }
+      });
+
+      this.setState({yourGroups:groupArray})
+    }
+    else{
+      console.log(group)
+      if(group in this.state.yourChats){
+        userArray = this.state.yourChats
+        userArray.forEach(element => {
+          if(element.title===group){
+            element.messageCount = 0;
+          }
+        });
+
+        this.setState({yourChats:userArray})
+      }
+      else{
+        userArray = this.state.yourChats
+        userArray.push({
+          "title":group,
+          "image": "",
+          "latest": "",
+          "messageCount": 0
+
+        })
+
+        this.setState({yourChats:userArray})
+      }
+    }
+    
+  }
+
+  addMessage = (group,message)=>{
+    allData = this.state.allData 
+    allData["groupData"][group].messages.push(message)
+    allData["groupData"][group].unreadMessagesCount += 1
+    this.props.navigation.setParams({
+      obj:this.state.allData["groupData"][group],
+      flag:true
+
+    })
+    this.setState({allData:allData})
+
+    //this.props.screenProps.update()
+  }
+
+
+
+  
+
+  
+
+
 
   render() {
     return (
@@ -1617,7 +2058,10 @@ export default class Home extends Component {
             screenProps={{
               rootNavigation: this.props.navigation,
               token: this.props.navigation.getParam("token"),
-              homeState: this.state
+              homeState: this.state,
+              openChat:this.openChat,
+              addMessage:this.addMessage
+
             }}
           />
         </View>

@@ -139,7 +139,8 @@ export default class ProfileNotFriend extends Component {
                     })
                       .then(response => {
                         if (response.status === 200) {
-                          alert("Friend Request Accepted");
+                          //alert("Friend Request Accepted");
+                          alert(obj.toString());
                           this.props.navigation.navigate("Profile", {
                             obj: this.props.navigation.getParam("obj")
                           });
