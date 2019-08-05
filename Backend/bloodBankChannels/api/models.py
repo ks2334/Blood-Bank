@@ -26,7 +26,7 @@ class CustomUser(AbstractUser):
     hasChatPrivilege = models.BooleanField(default=False)
     otp = models.CharField(null=True, max_length=6, blank=True)
     channelName = models.CharField(null=True, blank=True, max_length=50, default=None)
-    donationDate = models.DateField(null=True, blank=True, auto_now=True)
+    donationDate = models.DateField(null=True, blank=True, default=datetime.now())
 
     USERNAME_FIELD = 'phone'
     REQUIRED_FIELDS = ['username', 'email']

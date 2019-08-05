@@ -46,7 +46,6 @@ class Register(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = UserSerializer(data=request.data)
-        print(request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -58,6 +57,7 @@ class Profile(generics.ListAPIView):
     serializer_class = UserSerializer
 
     def get_queryset(self):
+
         return CustomUser.objects.filter(phone=self.request.user.phone)
 
 
@@ -333,13 +333,14 @@ class GetFormPosts(APIView):
 
 
 class getFriendPosts(APIView):
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, pk):
         p = CustomUser.objects.get(pk=pk)
         posts = p.profilepost_set.all()
 
-        #serializer = ProfilePostFriendSerializer(posts, many=True)
-        return Response(posts, status=status.HTTP_200_OK)
+        serializer = ProfilePostFriendSerializer(posts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 def logged(request):
@@ -483,10 +484,9 @@ def setPassword(request):
 
 def resetDonate(request, id):
     user = CustomUser.objects.get(id=id)
-    print(user)
-    user.donationDate = datetime.today() + timedelta(6 * 30)
+    user.donationDate = datetime.today() + timedelta(3 * 30)
     user.save()
-    return JsonResponse(user, status=status.HTTP_200_OK)
+    return JsonResponse({}, status=status.HTTP_200_OK)
 
 
 class GetChatDataView(APIView):

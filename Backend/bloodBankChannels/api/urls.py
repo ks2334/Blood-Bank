@@ -48,7 +48,7 @@ urlpatterns = [
     path('getFormPost/<int:pk>/', views.GetFormPosts.as_view()),
     path('send-response/', views.getFormResponse.as_view()),
     path('logout/', views.logoutAdmin),
-    path('friendPosts/<int:pk>/', views.getFriendPosts.as_view()),
+    path('friendPosts/<int:pk>/', views.getFriendPosts),
     path('search/<str:query>/', views.Search.as_view()),
     path('search//', views.SearchAll.as_view()),
     path('setNotificationToken/', views.SetNotificationToken.as_view()),

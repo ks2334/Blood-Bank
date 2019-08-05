@@ -43,7 +43,8 @@ export default class ProfileNotFriend extends Component {
       aadhar: obj.adhaarNo,
       education: obj.education,
       profession: obj.profession,
-      officeAddress: obj.officeAddress
+      officeAddress: obj.officeAddress,
+      donationDate: obj.donationDate
     };
   }
 

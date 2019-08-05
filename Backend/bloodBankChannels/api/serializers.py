@@ -7,7 +7,7 @@ class FriendFieldSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ('id', 'first_name', 'last_name', 'email', 'dob', 'address', 'bloodGroup', 'gender',
                   'phone', 'username', 'profilePic', 'friends', 'friendRequests', 'education', 'profession',
-                  'emergencyContact', 'officeAddress')
+                  'emergencyContact', 'officeAddress','donationDate')
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -19,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'first_name', 'last_name', 'email', 'password', 'dob', 'address', 'bloodGroup', 'gender',
                   'phone', 'username', 'profilePic', 'friends', 'friendRequests', 'education', 'profession',
                   'emergencyContact', 'officeAddress',
-                   'pushToken', 'hasChatPrivilege', 'donationDate')
+                  'pushToken', 'hasChatPrivilege', 'donationDate')
         extra_kwargs = {'profilePic': {'required': False},
                         'friends': {'required': False},
                         'friendRequests': {'required': False},

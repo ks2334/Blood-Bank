@@ -415,67 +415,7 @@ export class Profile extends Component {
                 backgroundColor: "rgba(250,250,250,0.2)"
               }}
             />
-            <Text
-              style={{
-                alignSelf: "flex-start",
-                fontSize: 20,
-                marginLeft: 10,
-                marginTop: 12,
-                marginBottom: 3,
-                fontWeight: "bold",
-                color: "green"
-              }}
-            >
-              You Can Donate on or onwards :{this.state.donationDate}
-            </Text>
-            <TouchableOpacity
-              style={{ marginLeft: 10 }}
-              onPress={() => {
-                console.log(this.state.donationDate);
-                fetch(
-                  ip +
-                    "/resetDonate/" +
-                    this.props.screenProps.homeState.id +
-                    "/",
-                  {
-                    method: "get",
-                    headers: {
-                      "Content-Type": "application/json",
-                      Accept: "application/json"
-                    },
 
-                    credentials: "include"
-                  }
-                )
-                  .then(response => {
-                    console.log(response);
-
-                    if (response.status === 200) {
-                      console.log(response);
-                      token = response._bodyInit.toString();
-                      token = token.substring(10, token.length - 2);
-                      this._onRefresh();
-                    }
-                  })
-                  .catch(err => {
-                    alert(err);
-                  });
-              }}
-            >
-              <Text
-                style={{
-                  alignSelf: "flex-start",
-                  fontSize: 20,
-                  marginLeft: 10,
-                  marginTop: 12,
-                  marginBottom: 3,
-                  fontWeight: "bold",
-                  color: "red"
-                }}
-              >
-                I Donated Blood Today !
-              </Text>
-            </TouchableOpacity>
             <Text
               style={{
                 alignSelf: "flex-start",
