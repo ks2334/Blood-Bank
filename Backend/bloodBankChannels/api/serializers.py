@@ -19,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'first_name', 'last_name', 'email', 'password', 'dob', 'address', 'bloodGroup', 'gender',
                   'phone', 'username', 'profilePic', 'friends', 'friendRequests', 'education', 'profession',
                   'emergencyContact', 'officeAddress',
-                  'adhaarNo', 'pushToken', 'hasChatPrivilege', 'donationDate')
+                   'pushToken', 'hasChatPrivilege', 'donationDate')
         extra_kwargs = {'profilePic': {'required': False},
                         'friends': {'required': False},
                         'friendRequests': {'required': False},
@@ -43,7 +43,6 @@ class UserSerializer(serializers.ModelSerializer):
             profession=validated_data['profession'],
             emergencyContact=validated_data['emergencyContact'],
             officeAddress=validated_data['officeAddress'],
-            adhaarNo=validated_data['adhaarNo'],
             pushToken=validated_data['pushToken']
         )
         try:
@@ -69,7 +68,6 @@ class UserSerializer(serializers.ModelSerializer):
         instance.profession = validated_data.get('profession', instance.profession)
         instance.emergencyContact = validated_data.get('emergencyContact', instance.emergencyContact)
         instance.officeAddress = validated_data.get('officeAddress', instance.officeAddress)
-        instance.adhaarNo = validated_data.get('adhaarNo', instance.adhaarNo)
         instance.profilePic = validated_data.get('profilePic', instance.profilePic)
         instance.save()
         return instance

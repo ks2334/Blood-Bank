@@ -309,7 +309,7 @@ export default class Profile extends Component {
                       marginHorizontal: 0
                     }
                   ]}
-                  data={this.state.data}
+                  data={this.obj}
                   keyExtractor={item => {
                     return item.id;
                   }}

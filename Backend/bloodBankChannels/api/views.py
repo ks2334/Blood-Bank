@@ -333,14 +333,13 @@ class GetFormPosts(APIView):
 
 
 class getFriendPosts(APIView):
-    permission_classes = (IsAuthenticated,)
 
     def get(self, request, pk):
         p = CustomUser.objects.get(pk=pk)
         posts = p.profilepost_set.all()
 
-        serializer = ProfilePostFriendSerializer(posts, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        #serializer = ProfilePostFriendSerializer(posts, many=True)
+        return Response(posts, status=status.HTTP_200_OK)
 
 
 def logged(request):
