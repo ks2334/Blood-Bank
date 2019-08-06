@@ -7,7 +7,7 @@ class FriendFieldSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ('id', 'first_name', 'last_name', 'email', 'dob', 'address', 'bloodGroup', 'gender',
                   'phone', 'username', 'profilePic', 'friends', 'friendRequests', 'education', 'profession',
-                  'emergencyContact', 'officeAddress','donationDate')
+                  'emergencyContact', 'officeAddress', 'donationDate')
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -16,8 +16,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('id', 'first_name', 'last_name', 'email', 'password', 'dob', 'address', 'bloodGroup', 'gender',
-                  'phone', 'username', 'profilePic', 'friends', 'friendRequests', 'education', 'profession',
+        fields = ('id', 'first_name', 'last_name', 'email', 'dob', 'address', 'bloodGroup', 'gender',
+                  'phone', 'profilePic', 'friends', 'friendRequests', 'education', 'profession',
                   'emergencyContact', 'officeAddress',
                   'pushToken', 'hasChatPrivilege', 'donationDate')
         extra_kwargs = {'profilePic': {'required': False},
@@ -27,6 +27,40 @@ class UserSerializer(serializers.ModelSerializer):
                         'donationDate': {'required': False},
                         'hasChatPrivilege': {'required': False},
                         }
+
+
+class UserSerializerWithoutFriends(serializers.ModelSerializer):
+
+    class Meta:
+        model = CustomUser
+        fields = ('id', 'first_name', 'last_name', 'email', 'dob', 'address', 'bloodGroup', 'gender',
+                  'phone', 'profilePic', 'education', 'profession',
+                  'emergencyContact', 'officeAddress',
+                  'pushToken', 'hasChatPrivilege', 'donationDate')
+        extra_kwargs = {'profilePic': {'required': False},
+                        'friends': {'required': False},
+                        'friendRequests': {'required': False},
+                        'pushToken': {'required': False},
+                        'donationDate': {'required': False},
+                        'hasChatPrivilege': {'required': False},
+                        }
+
+
+
+class UserRegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('id', 'first_name', 'last_name', 'email', 'dob', 'address', 'bloodGroup', 'gender',
+                  'phone', 'profilePic', 'education', 'profession',
+                  'emergencyContact', 'officeAddress')
+        extra_kwargs = {'profilePic': {'required': False},
+                        'email': {'required': False},
+                        'dob': {'required': False},
+                        'address': {'required': False},
+                        'education': {'required': False},
+                        'profession': {'required': False},
+                        'emergencyContact': {'required': False},
+                        'officeAddress': {'required': False}, }
 
     def create(self, validated_data):
         user = CustomUser(
@@ -63,7 +97,7 @@ class UserSerializer(serializers.ModelSerializer):
         instance.phone = validated_data.get('phone', instance.phone)
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
-        instance.username = validated_data.get('username', instance.username)
+        instance.username = validated_data.get('phone', instance.username)
         instance.education = validated_data.get('education', instance.education)
         instance.profession = validated_data.get('profession', instance.profession)
         instance.emergencyContact = validated_data.get('emergencyContact', instance.emergencyContact)
@@ -74,7 +108,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class GroupSerializer(serializers.ModelSerializer):
-    user = UserSerializer(many=True, read_only=True)
+    user = UserSerializerWithoutFriends(many=True, read_only=True)
 
     class Meta:
         model = Group
@@ -84,7 +118,7 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class ProfilePostSerializer(serializers.ModelSerializer):
-    user = UserSerializer(many=False, read_only=True)
+    user = UserSerializerWithoutFriends(many=False, read_only=True)
 
     class Meta:
         model = ProfilePost
@@ -202,7 +236,7 @@ class FeedSerializer(serializers.Serializer):
 
 
 class ProfileSerializer(serializers.Serializer):
-    requests = UserSerializer(many=True)
+    requests = UserSerializerWithoutFriends(many=True)
     profilePosts = ProfilePostSerializer(many=True)
 
 

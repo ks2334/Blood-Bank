@@ -15,6 +15,7 @@ import GroupPageChat from "./screens/groupPageChat"
 import ProfileNotFriend from "./screens/profile2";
 import Contact from "./screens/contact";
 import GroupDescriptionPage from "./screens/groupPageList";
+import ProfileDescriptionPage from "./screens/profilePageFromChat"
 export default class App extends React.Component {
 
   update = ()=>{
@@ -56,6 +57,9 @@ const Screens = createAppContainer(
     },
     GroupDescriptionPage: {
       screen: GroupDescriptionPage
+    },
+    ProfileDescriptionPage: {
+      screen: ProfileDescriptionPage
     },
     AddProfile: {
       screen: ProfileNotFriend

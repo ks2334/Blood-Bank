@@ -698,7 +698,6 @@ export class Groups extends Component {
               this.props.screenProps.rootNavigation.push("GroupPage", {
                 obj: this.state.data["groupData"][l.title.toString()],
                 token: this.state.token,
-                flag:false,
                 addMessage:this.props.screenProps.addMessage
               });
               this.props.screenProps.openChat("Group",l.title)
@@ -762,7 +761,8 @@ export class Groups extends Component {
               this.props.screenProps.openChat("User",l.title)
               this.props.screenProps.rootNavigation.navigate("GroupPage", {
                 obj: this.props.screenProps.homeState.allData["userData"][l.title.toString()],
-                token: this.state.token
+                token: this.state.token,
+                addMessage:this.props.screenProps.addMessage
               });
             }}
           >
@@ -887,10 +887,11 @@ export class Groups extends Component {
           }}>Please Add some friends</Text>) :(this.props.screenProps.homeState.friends.map((element,i) => (
           <TouchableOpacity
             onPress={() => {
-              this.props.screenProps.openChat("User",element.first_name+" "+element.last_name)
+              this.props.screenProps.openNewChat(element)
               this.props.screenProps.rootNavigation.navigate("GroupPage", {
                 obj: this.props.screenProps.homeState.allData["userData"][element.first_name+" "+element.last_name],
-                token: this.state.token
+                token: this.state.token,
+                addMessage:this.props.screenProps.addMessage
               });
             }}
           >
@@ -1774,6 +1775,7 @@ export default class HomeChat extends Component {
         }
 
         else if(element.user2.phone === currentPhone){
+          console.log("You are User2: ",message)
           name = element.user1.first_name + " " + element.user1.last_name
           if(!(name in userData)){
             userData[name] = {
@@ -1789,7 +1791,7 @@ export default class HomeChat extends Component {
             text:message,
             createdAt: time,
             user: {
-              _id: 1,
+              _id: 2,
               name: element.user1.first_name + " " + element.user1.last_name,
               avatar: ip + element.user1.profilePic
             }
@@ -2002,53 +2004,67 @@ export default class HomeChat extends Component {
   };
 
 
-  openChat = (type,group) => {
+  openChat = (type,name) => {
     if(type==="Group"){
       groupArray = this.state.yourGroups
       groupArray.forEach(element => {
-        if(element.title===group){
+        if(element.title===name){
           element.messageCount = 0;
         }
       });
 
       this.setState({yourGroups:groupArray})
     }
-    else{
-      console.log(group)
-      if(group in this.state.yourChats){
-        userArray = this.state.yourChats
-        userArray.forEach(element => {
-          if(element.title===group){
-            element.messageCount = 0;
-          }
-        });
+    else if(type==="User"){
+      userArray = this.state.yourChats
+      userArray.forEach(element => {
+        if(element.title===name){
+          element.messageCount = 0;
+        }
+      });
 
-        this.setState({yourChats:userArray})
-      }
-      else{
-        userArray = this.state.yourChats
-        userArray.push({
-          "title":group,
-          "image": "",
-          "latest": "",
-          "messageCount": 0
-
-        })
-
-        this.setState({yourChats:userArray})
-      }
+      this.setState({yourChats:userArray})
     }
     
   }
 
-  addMessage = (group,message)=>{
-    allData = this.state.allData 
-    allData["groupData"][group].messages.push(message)
-    allData["groupData"][group].unreadMessagesCount += 1
-    this.props.navigation.setParams({
-      obj:this.state.allData["groupData"][group],
-      flag:true
 
+  openNewChat = (element) => {
+    allData = this.state.allData
+
+    allData["userData"][element.first_name+" "+element.last_name] = {
+      "information":element,
+      "unreadMessagesCount":0,
+      "messages":[],
+      "latest":new Date("2018")
+    }
+
+
+    this.setState({allData:allData})
+
+  }
+
+
+  addChat = (element) => {
+    userArray = this.state.yourChats
+    userArray.push({
+      "title":element.first_name+" "+element.last_name,
+      "image": element.profilePic,
+      "latest": new Date("2018"),
+      "messageCount": 0
+
+    })
+    this.setState({yourChats:userArray})
+
+  }
+
+  addMessage = (type,name,message)=>{
+    allData = this.state.allData 
+    allData[type][name].messages.push(message)
+    allData[type][name].unreadMessagesCount += 1
+    this.props.navigation.setParams({
+      obj:this.state.allData[type][name],
+      flag:true
     })
     this.setState({allData:allData})
 
@@ -2096,7 +2112,9 @@ export default class HomeChat extends Component {
               token: this.props.navigation.getParam("token"),
               homeState: this.state,
               openChat:this.openChat,
-              addMessage:this.addMessage
+              addMessage:this.addMessage,
+              addChat:this.addChat,
+              openNewChat:this.openNewChat
 
             }}
           />

@@ -306,6 +306,7 @@ export class Register extends React.Component {
       education: "",
       secondPhoneNumber: "",
       officeAddress: "",
+      aadhar: "",
       error: "",
       data: [
         { label: "Male", layout: "row", value: "Male" },
@@ -592,7 +593,15 @@ export class Register extends React.Component {
               }
             />
           </View>
-
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.inputs}
+              placeholder="Aadhar Number*"
+              autoCapitalize="none"
+              underlineColorAndroid="transparent"
+              onChangeText={a => this.setState({ aadhar: a })}
+            />
+          </View>
           <View style={styles.inputContainer}>
             <TouchableOpacity
               style={[
@@ -684,10 +693,13 @@ export class Register extends React.Component {
             title="Sign Up"
             style={[styles.buttonContainer, styles.loginButton]}
             onPress={async () => {
+
+              this.refs.toast.show("Regitering...", 600);
+              console.log("Registering")
               const { status: existingStatus } = await Permissions.getAsync(
                 Permissions.NOTIFICATIONS
               );
-              this.refs.toast.show("Regitering...", 600);
+              
 
               let finalStatus = existingStatus;
 
@@ -722,6 +734,7 @@ export class Register extends React.Component {
                 this.formData.append("dob", this.state.dob);
                 this.formData.append("phone", this.state.PhoneNumber);
                 this.formData.append("education", this.state.education);
+                this.formData.append("adhaarNo", this.state.aadhar);
                 this.formData.append("profession", this.state.profession);
                 this.formData.append(
                   "emergencyContact",
@@ -751,6 +764,9 @@ export class Register extends React.Component {
                     return;
                   } else if (this.state.gender === null) {
                     alert("Please set a valid gender !");
+                    return;
+                  } else if (this.state.secondPhoneNumber.length !== 10) {
+                    alert("Please enter a valid emergency contact !");
                     return;
                   } else {
                     fetch(ip + "/post/", {

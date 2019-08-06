@@ -23,18 +23,26 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.index, name="index"),
-    path('post/', views.Register.as_view()),
+
+    path('register/', views.Register.as_view()),
     path('profile/', views.Profile.as_view()),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+
     path('groups/', views.Groups.as_view()),
     path('friend/', views.Friend.as_view()),
     path('userUpdate/<int:pk>/', views.UserUpdateView.as_view()),
     path('friendRequests/', views.FriendRequest.as_view()),
+
     path('feed/', views.FeedView.as_view()),
     path('getProfileView/', views.ProfileView.as_view()),
     path('profilePost/', views.PostProfile.as_view()),
+
+    ###
     path('friendList/', views.FriendListView.as_view()),
+    ###
+    ###
     path('getGroupPost/<int:pk>/', views.GetGroupPosts.as_view()),
+    ###
     path('likePost/', views.LikePost.as_view()),
     path('joinGroup/', views.JoinGroup.as_view()),
     path('admin-post/', views.AddGroupPost.as_view()),

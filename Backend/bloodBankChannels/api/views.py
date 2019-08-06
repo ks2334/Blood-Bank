@@ -33,7 +33,7 @@ def index(request):
 
 class UserUpdateView(UpdateAPIView):
     permission_classes = (IsAuthenticated,)
-    serializer_class = UserSerializer
+    serializer_class = UserRegisterSerializer
 
     def get_queryset(self):
         return CustomUser.objects.all()
@@ -41,12 +41,12 @@ class UserUpdateView(UpdateAPIView):
 
 class Register(APIView):
     queryset = CustomUser.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = UserRegisterSerializer
 
     parser_classes = (MultiPartParser,)
 
     def post(self, request, *args, **kwargs):
-        serializer = UserSerializer(data=request.data)
+        serializer = UserRegisterSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -75,9 +75,10 @@ class Groups(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+#####
 class Friend(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
-    serializer_class = UserSerializer
+    serializer_class = UserSerializerWithoutFriends
 
     def post(self, request, *args, **kwargs):
         phone = request.data["phone"]
@@ -91,7 +92,7 @@ class Friend(generics.ListAPIView):
 
 class FriendRequest(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
-    serializer_class = UserSerializer
+    serializer_class = UserSerializerWithoutFriends
 
     def post(self, request, *args, **kwargs):
         phone = request.data["phone"]

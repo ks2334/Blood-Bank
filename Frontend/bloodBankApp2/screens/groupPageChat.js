@@ -76,6 +76,12 @@ export default class GroupPageChat extends Component {
                 obj: navigation.getParam("obj").information
               });
             }
+            else{
+              console.log(navigation.getParam("obj").information)
+              navigation.navigate("ProfileDescriptionPage", {
+                obj: navigation.getParam("obj").information
+              });
+            }
 
             
           }}
@@ -180,13 +186,18 @@ export default class GroupPageChat extends Component {
     
   }
 
-  onSend(messages = []) {
+ onSend(messages = []) {
     this.flag = false
     this.setState(previousState => ({
       messages: GiftedChat.append(previousState.messages, messages)
     }));
 
-    this.props.navigation.state.params.addMessage(this.state.data.information.title,messages[0])
+    if("image" in this.state.data.information){
+      this.props.navigation.state.params.addMessage("groupData",this.state.data.information.title,messages[0])
+    }
+    else{
+      this.props.navigation.state.params.addMessage("userData",this.state.data.information.first_name+" "+this.state.data.information.last_name,messages[0])
+    }
   }
 
 
