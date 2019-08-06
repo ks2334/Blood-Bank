@@ -19,6 +19,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import *
 from django.utils.crypto import get_random_string
+from django.shortcuts import get_object_or_404
 
 
 # Create your views here.
@@ -57,7 +58,6 @@ class Profile(generics.ListAPIView):
     serializer_class = UserSerializer
 
     def get_queryset(self):
-
         return CustomUser.objects.filter(phone=self.request.user.phone)
 
 
@@ -376,7 +376,8 @@ def adminPanel(request):
         for group in groups:
             requests += group.pendingGroupRequest.all()
 
-        return render(request, 'admin-panel.html', {'requests': requests, 'groups': groups, 'posts': posts,'msg':"Post Created Successfully !"})
+        return render(request, 'admin-panel.html',
+                      {'requests': requests, 'groups': groups, 'posts': posts, 'msg': "Post Created Successfully !"})
 
     else:
         return redirect("/")
@@ -519,17 +520,23 @@ class GetChatDataView(APIView):
         textData = textData | tp
 
         token = get_random_string(length=50)
-        w = WSTokens.objects.filter(user=request.user)
+
         while True:
-            try:
-                if w is not None:
-                    w.token=token
-                    w.save()
-                else:
-                    w = WSTokens.objects.create(user=request.user, token=token)
+            flag = True
+            for i in WSTokens.objects.all():
+                if i.token == token:
+                    token = get_random_string(length=50)
+                    flag = False
+                    break
+            if flag:
                 break
-            except Exception as e:
-                token = get_random_string(length=50)
+
+        try:
+            w = WSTokens.objects.get(user=request.user)
+            w.token = token
+            w.save()
+        except Exception as e:
+            w = WSTokens.objects.create(user=request.user, token=token)
 
         chatPosts = Posts(imageData=imageData.distinct(), formData=formData.distinct(), textData=textData.distinct(),
                           availableGroups=Group.objects.exclude(user=request.user),

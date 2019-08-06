@@ -429,12 +429,12 @@ export class Profile extends Component {
                 color: "green"
               }}
             >
-              You Can Donate on or onwards :{this.state.donationDate}
+              You Can Donate on or onwards :
+              {this.props.screenProps.homeState.donationDate}
             </Text>
             <TouchableOpacity
               style={{ marginLeft: 10 }}
               onPress={() => {
-                console.log(this.state.donationDate);
                 fetch(
                   ip +
                     "/resetDonate/" +
@@ -479,6 +479,41 @@ export class Profile extends Component {
                 I Donated Blood Today !
               </Text>
             </TouchableOpacity>
+
+            <TouchableOpacity
+              style={{ marginLeft: 10 }}
+              onPress={() => {
+                console.log(this.state.donationDate);
+                fetch(
+                  ip +
+                    "/resetDonate/" +
+                    this.props.screenProps.homeState.id +
+                    "/",
+                  {
+                    method: "get",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Accept: "application/json"
+                    },
+
+                    credentials: "include"
+                  }
+                )
+                  .then(response => {
+                    console.log(response);
+
+                    if (response.status === 200) {
+                      console.log(response);
+                      token = response._bodyInit.toString();
+                      token = token.substring(10, token.length - 2);
+                      this._onRefresh();
+                    }
+                  })
+                  .catch(err => {
+                    alert(err);
+                  });
+              }}
+            />
             <Text
               style={{
                 alignSelf: "flex-start",
@@ -570,6 +605,7 @@ export class Profile extends Component {
             />
           </View>
         </View>
+
         <Text
           style={{
             alignSelf: "flex-start",

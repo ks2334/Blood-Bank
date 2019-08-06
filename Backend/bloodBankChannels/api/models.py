@@ -26,7 +26,7 @@ class CustomUser(AbstractUser):
     hasChatPrivilege = models.BooleanField(default=False)
     otp = models.CharField(null=True, max_length=6, blank=True)
     channelName = models.CharField(null=True, blank=True, max_length=50, default=None)
-    donationDate = models.DateField(null=True, blank=True, default=datetime.now())
+    donationDate = models.DateField(null=True, blank=True, auto_now=True)
 
     USERNAME_FIELD = 'phone'
     REQUIRED_FIELDS = ['username', 'email']
@@ -105,9 +105,5 @@ class Logs(models.Model):
 
 class WSTokens(models.Model):
     token = models.CharField(max_length=100, unique=True)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
 
-
-"""class Notifications(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE),
-    notification = models.CharField(max_length=50)"""
