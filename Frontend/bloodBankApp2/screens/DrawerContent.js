@@ -10,7 +10,6 @@ import {
   Image,
   Linking
 } from "react-native";
-
 import Entypo from "react-native-vector-icons/Entypo";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
@@ -146,7 +145,20 @@ export default class DrawerContent extends React.Component {
                     this.props.close();
                   }
                   if (item.id === 4) {
-                    alert("Coming soon...");
+                    Linking.canOpenURL(
+                      "https://play.google.com/store/apps/details?id=com.jankalyan.bloodBank"
+                    ).then(supported => {
+                      if (supported) {
+                        Linking.openURL(
+                          "https://play.google.com/store/apps/details?id=com.jankalyan.bloodBank"
+                        );
+                      } else {
+                        console.log(
+                          "Don't know how to open URI: " +
+                            "https://play.google.com/store/apps/details?id=com.jankalyan.bloodBank"
+                        );
+                      }
+                    });
                   }
                 }}
               >
