@@ -304,7 +304,6 @@ export class Register extends React.Component {
       profilePic: null,
       profession: "",
       education: "",
-      secondPhoneNumber: "",
       officeAddress: "",
       aadhar: "",
       error: "",
@@ -554,16 +553,7 @@ export class Register extends React.Component {
               onChangeText={address => this.setState({ address: address })}
             />
           </View>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.inputs}
-              placeholder="Alternate Contact Number"
-              autoCapitalize="none"
-              keyboardType="phone-pad"
-              underlineColorAndroid="transparent"
-              onChangeText={s => this.setState({ secondPhoneNumber: s })}
-            />
-          </View>
+
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.inputs}
@@ -693,13 +683,11 @@ export class Register extends React.Component {
             title="Sign Up"
             style={[styles.buttonContainer, styles.loginButton]}
             onPress={async () => {
-
               this.refs.toast.show("Regitering...", 600);
-              console.log("Registering")
+              console.log("Registering");
               const { status: existingStatus } = await Permissions.getAsync(
                 Permissions.NOTIFICATIONS
               );
-              
 
               let finalStatus = existingStatus;
 
@@ -736,10 +724,7 @@ export class Register extends React.Component {
                 this.formData.append("education", this.state.education);
                 this.formData.append("adhaarNo", this.state.aadhar);
                 this.formData.append("profession", this.state.profession);
-                this.formData.append(
-                  "emergencyContact",
-                  this.state.secondPhoneNumber
-                );
+
                 this.formData.append("officeAddress", this.state.officeAddress);
                 this.formData.append("username", this.state.PhoneNumber);
                 this.formData.append("pushToken", token);
@@ -765,11 +750,8 @@ export class Register extends React.Component {
                   } else if (this.state.gender === null) {
                     alert("Please set a valid gender !");
                     return;
-                  } else if (this.state.secondPhoneNumber.length !== 10) {
-                    alert("Please enter a valid emergency contact !");
-                    return;
                   } else {
-                    fetch(ip + "/post/", {
+                    fetch(ip + "/register/", {
                       method: "post",
                       headers: {
                         Accept: "application/json",

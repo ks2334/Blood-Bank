@@ -7,7 +7,7 @@ class FriendFieldSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ('id', 'first_name', 'last_name', 'email', 'dob', 'address', 'bloodGroup', 'gender',
                   'phone', 'username', 'profilePic', 'friends', 'friendRequests', 'education', 'profession',
-                  'emergencyContact', 'officeAddress', 'donationDate')
+                   'officeAddress', 'donationDate')
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -18,7 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ('id', 'first_name', 'last_name', 'email', 'dob', 'address', 'bloodGroup', 'gender',
                   'phone', 'profilePic', 'friends', 'friendRequests', 'education', 'profession',
-                  'emergencyContact', 'officeAddress',
+                   'officeAddress',
                   'pushToken', 'hasChatPrivilege', 'donationDate')
         extra_kwargs = {'profilePic': {'required': False},
                         'friends': {'required': False},
@@ -35,7 +35,7 @@ class UserSerializerWithoutFriends(serializers.ModelSerializer):
         model = CustomUser
         fields = ('id', 'first_name', 'last_name', 'email', 'dob', 'address', 'bloodGroup', 'gender',
                   'phone', 'profilePic', 'education', 'profession',
-                  'emergencyContact', 'officeAddress',
+                  'officeAddress',
                   'pushToken', 'hasChatPrivilege', 'donationDate')
         extra_kwargs = {'profilePic': {'required': False},
                         'friends': {'required': False},
@@ -52,14 +52,14 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ('id', 'first_name', 'last_name', 'email', 'dob', 'address', 'bloodGroup', 'gender',
                   'phone', 'profilePic', 'education', 'profession',
-                  'emergencyContact', 'officeAddress')
+                 'officeAddress')
         extra_kwargs = {'profilePic': {'required': False},
                         'email': {'required': False},
                         'dob': {'required': False},
                         'address': {'required': False},
                         'education': {'required': False},
                         'profession': {'required': False},
-                        'emergencyContact': {'required': False},
+
                         'officeAddress': {'required': False}, }
 
     def create(self, validated_data):
@@ -75,7 +75,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             username=validated_data['phone'],
             education=validated_data['education'],
             profession=validated_data['profession'],
-            emergencyContact=validated_data['emergencyContact'],
             officeAddress=validated_data['officeAddress'],
             pushToken=validated_data['pushToken']
         )
@@ -100,7 +99,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         instance.username = validated_data.get('phone', instance.username)
         instance.education = validated_data.get('education', instance.education)
         instance.profession = validated_data.get('profession', instance.profession)
-        instance.emergencyContact = validated_data.get('emergencyContact', instance.emergencyContact)
         instance.officeAddress = validated_data.get('officeAddress', instance.officeAddress)
         instance.profilePic = validated_data.get('profilePic', instance.profilePic)
         instance.save()

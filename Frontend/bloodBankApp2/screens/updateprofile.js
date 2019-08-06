@@ -46,7 +46,6 @@ export default class updateprofile extends React.Component {
       profilePic: this.data.profilePic,
       profession: this.data.profession,
       education: this.data.education,
-      secondPhoneNumber: this.data.emergencyContact,
       officeAddress: this.data.officeAddress,
       aadhar: this.data.aadhar,
       error: "",
@@ -285,21 +284,6 @@ export default class updateprofile extends React.Component {
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.inputs}
-              placeholder="Alternate Contact Number"
-              autoCapitalize="none"
-              value={this.state.secondPhoneNumber}
-              underlineColorAndroid="transparent"
-              onChangeText={s =>
-                this.setState({
-                  secondPhoneNumber: s
-                })
-              }
-            />
-          </View>
-
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.inputs}
               placeholder="Education*"
               autoCapitalize="none"
               value={this.state.education}
@@ -402,7 +386,6 @@ export default class updateprofile extends React.Component {
                     gender: false
                   });
                 }
-
               }}
             />
           </View>
@@ -465,10 +448,7 @@ export default class updateprofile extends React.Component {
                 this.formData.append("profession", this.state.profession);
                 this.formData.append("officeAddress", this.state.officeAddress);
                 this.formData.append("education", this.state.education);
-                this.formData.append(
-                  "emergencyContact",
-                  this.state.emergencyContact
-                );
+
                 this.formData.append("adhaarNo", this.state.adhaarNo);
 
                 fetch(ip + "/userUpdate/" + this.data.id + "/", {

@@ -19,7 +19,6 @@ class CustomUser(AbstractUser):
     friendRequests = models.ManyToManyField("self", blank=True, symmetrical=False)
     education = models.CharField(max_length=30, unique=False, default="", editable=True,blank=True,null=True)
     profession = models.CharField(max_length=30, unique=False, default="", editable=True, null=True, blank=True)
-    emergencyContact = models.IntegerField(default=0, editable=True, null=True, blank=True)
     officeAddress = models.CharField(max_length=100, default="", editable=True, null=True, blank=True)
     pushToken = models.CharField(max_length=100, default="", blank=True)
     privilgeLevel = models.IntegerField(default=2)
