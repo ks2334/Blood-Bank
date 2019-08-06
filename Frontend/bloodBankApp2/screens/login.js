@@ -15,7 +15,8 @@ import {
   ImageBackground,
   Animated,
   AsyncStorage,
-  Linking
+  Linking,
+  Platform
 } from "react-native";
 import {
   createAppContainer,
@@ -28,6 +29,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview"
 import { ImagePicker, Permissions, Notifications, SecureStore } from "expo";
 import Toast, { DURATION } from "react-native-easy-toast";
 import { CheckBox } from "react-native-elements";
+import KeyboardSpacer from "react-native-keyboard-spacer";
 
 async function registerForPushNotificationsAsync(authToken) {
   const { status: existingStatus } = await Permissions.getAsync(
@@ -216,7 +218,7 @@ export class Login extends React.Component {
               alert("Please set a valid password !");
               return;
             }
-            this.refs.toast.show("Signing In", 600);
+            this.refs.toast.show("Signing In", 1500);
             fetch(ip + "/api-token-auth/", {
               method: "post",
               headers: {
@@ -254,13 +256,13 @@ export class Login extends React.Component {
                     );
                   }
 
-                  this.props.screenProps.rootNavigation.navigate("Home", {
+                  this.props.screenProps.rootNavigation.replace("Home", {
                     token: token
                   });
                 } else {
                   this.refs.toast.show(
                     "Invalid Mobile Number or Password!",
-                    600
+                    1500
                   );
                 }
               })
@@ -282,6 +284,7 @@ export class Login extends React.Component {
           opacity={0.8}
           textStyle={{ color: "white" }}
         />
+        {Platform.OS === "android" ? <KeyboardSpacer topSpacing={35} /> : null}
       </ScrollView>
     );
   }
@@ -415,7 +418,7 @@ export class Register extends React.Component {
     );
 
     return (
-      <KeyboardAwareScrollView animated={true}>
+      <ScrollView>
         <View
           style={{
             flex: 1,
@@ -424,7 +427,7 @@ export class Register extends React.Component {
             marginTop: 15
           }}
         >
-          <Text style={{ color: "red", fontSize: 12 }}>{this.state.error}</Text>
+          <Text style={{ color: "white", fontSize: 20,marginVertical:10 }}>{this.state.error}</Text>
           <Overlay
             visible={this.state.overlayVisible}
             onClose={() => {
@@ -693,37 +696,63 @@ export class Register extends React.Component {
             title="Sign Up"
             style={[styles.buttonContainer, styles.loginButton]}
             onPress={async () => {
+              if (this.state.firstName === "") {
+                alert("Firstname cannot be empty !");
+                return;
+              } else if (this.state.lastName === "") {
+                alert("Lastname cannot be empty !");
+                return;
+              } else if (this.state.firstName === "") {
+                alert("Firstname cannot be empty !");
+                return;
+              } else if (this.state.PhoneNumber.length !== 10) {
+                alert("Enter a valid phone number !");
+                return;
+              } else if (this.state.password === "") {
+                alert("Please set a valid password !");
+                return;
+              }else if (this.state.cpassword === "") {
+                alert("Please enter confirm password !");
+                return;
+              }else if (this.state.password !== this.state.cpassword) {
+                alert("Password and Confirm Password do not match !");
+                return;
+              } else if (this.state.bg === "") {
+                alert("Blood Group cannot be empty !");
+                return;
+              } else if (this.state.gender === null) {
+                alert("Please set a valid gender !");
+                return;
+              } else {
 
-              this.refs.toast.show("Regitering...", 600);
-              console.log("Registering")
-              const { status: existingStatus } = await Permissions.getAsync(
-                Permissions.NOTIFICATIONS
-              );
-              
+                this.refs.toastRegister.show("Registering", 2000);
 
-              let finalStatus = existingStatus;
-
-              // only ask if permissions have not already been determined, because
-              // iOS won't necessarily prompt the user a second time.
-              if (existingStatus !== "granted") {
-                // Android remote notification permissions are granted during the app
-                // install, so this will only ask on iOS
-                const { status } = await Permissions.askAsync(
+                const { status: existingStatus } = await Permissions.getAsync(
                   Permissions.NOTIFICATIONS
                 );
-                finalStatus = status;
-              }
-
-              // Stop here if the user did not grant permissions
-              if (finalStatus !== "granted") {
-                alert("Not granted");
-                return;
-              }
-
-              // Get the token that uniquely identifies this device
-              let token = await Notifications.getExpoPushTokenAsync();
-
-              if (this.state.password === this.state.cpassword) {
+  
+                let finalStatus = existingStatus;
+  
+                // only ask if permissions have not already been determined, because
+                // iOS won't necessarily prompt the user a second time.
+                if (existingStatus !== "granted") {
+                  // Android remote notification permissions are granted during the app
+                  // install, so this will only ask on iOS
+                  const { status } = await Permissions.askAsync(
+                    Permissions.NOTIFICATIONS
+                  );
+                  finalStatus = status;
+                }
+  
+                // Stop here if the user did not grant permissions
+                if (finalStatus !== "granted") {
+                  alert("Not granted");
+                  return;
+                }
+  
+                // Get the token that uniquely identifies this device
+                let token = await Notifications.getExpoPushTokenAsync();
+  
                 this.formData.append("first_name", this.state.firstName);
                 this.formData.append("last_name", this.state.lastName);
                 this.formData.append("email", this.state.email);
@@ -743,101 +772,74 @@ export class Register extends React.Component {
                 this.formData.append("officeAddress", this.state.officeAddress);
                 this.formData.append("username", this.state.PhoneNumber);
                 this.formData.append("pushToken", token);
-                if (this.state.password === this.state.cpassword) {
-                  if (this.state.firstName === "") {
-                    alert("Firstname cannot be empty !");
-                    return;
-                  } else if (this.state.lastName === "") {
-                    alert("Lastname cannot be empty !");
-                    return;
-                  } else if (this.state.firstName === "") {
-                    alert("Firstname cannot be empty !");
-                    return;
-                  } else if (this.state.PhoneNumber.length !== 10) {
-                    alert("Enter the valid phone number !");
-                    return;
-                  } else if (this.state.password === "") {
-                    alert("Please set a valid password !");
-                    return;
-                  } else if (this.state.bg === "") {
-                    alert("Blood Group cannot be empty !");
-                    return;
-                  } else if (this.state.gender === null) {
-                    alert("Please set a valid gender !");
-                    return;
-                  } else if (this.state.secondPhoneNumber.length !== 10) {
-                    alert("Please enter a valid emergency contact !");
-                    return;
-                  } else {
-                    fetch(ip + "/post/", {
+
+                fetch(ip + "/register/", {
+                  method: "post",
+                  headers: {
+                    Accept: "application/json",
+                    "Content-Type": "multipart/form-data"
+                  },
+                  body: this.formData
+                })
+                  .then(response => {
+                    if (response.status === 400) {
+                      this.setState({ error: response._bodyText });
+                      alert(this.state.error);
+                    } else if (response.status === "201") {
+                      alert("Registered");
+                    }
+                    fetch(ip + "/api-token-auth/", {
                       method: "post",
                       headers: {
-                        Accept: "application/json",
-                        "Content-Type": "multipart/form-data"
+                        "Content-Type": "application/json",
+                        Accept: "application/json"
                       },
-                      body: this.formData
+                      body: JSON.stringify({
+                        username: this.state.PhoneNumber,
+                        password: this.state.password
+                      }),
+
+                      credentials: "include"
                     })
                       .then(response => {
-                        if (response.status === 400) {
-                          this.setState({ error: response._bodyText });
-                          alert(this.state.error);
-                        } else if (response.status === "201") {
-                          alert("Registered");
-                        }
-                        fetch(ip + "/api-token-auth/", {
-                          method: "post",
-                          headers: {
-                            "Content-Type": "application/json",
-                            Accept: "application/json"
-                          },
-                          body: JSON.stringify({
-                            username: this.state.PhoneNumber,
-                            password: this.state.password
-                          }),
+                        if (response.status === 200) {
+                          token = response._bodyInit.toString();
+                          token = token.substring(10, token.length - 2);
 
-                          credentials: "include"
-                        })
-                          .then(response => {
-                            if (response.status === 200) {
-                              token = response._bodyInit.toString();
-                              token = token.substring(10, token.length - 2);
-
-                              this.props.screenProps.rootNavigation.navigate(
-                                "Home",
-                                {
-                                  token: token
-                                }
-                              );
+                          this.props.screenProps.rootNavigation.replace(
+                            "Home",
+                            {
+                              token: token
                             }
-                          })
-                          .catch(err => {
-                            alert(err);
-                          });
+                          );
+                        }
                       })
-                      .catch(err => {});
-                  }
-                } else {
-                  this.setState({
-                    error: "Password and Confirm Password Do not Match!"
-                  });
-                }
+                      .catch(err => {
+                        alert(err);
+                      });
+                  })
+                  .catch(err => {});
               }
+
             }}
           >
             <Text style={styles.loginText}>Register</Text>
           </TouchableOpacity>
-        </View>
-        <Toast
-          ref="toast"
-          style={{ backgroundColor: "black", marginTop: 20 }}
-          position="top"
-          positionValue={200}
+          {Platform.OS === "android" ? <KeyboardSpacer topSpacing={35} /> : null}
+          <Toast
+          ref="toastRegister"
+          style={{ backgroundColor: "black", marginTop: 230 }}
+          position="bottom"
+          positionValue={0}
           fadeInDuration={750}
           fadeOutDuration={1000}
           opacity={0.8}
           textStyle={{ color: "white" }}
         />
-      </KeyboardAwareScrollView>
+        </View>
+        
+        </ScrollView>
+      
     );
   }
 }

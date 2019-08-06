@@ -6,6 +6,7 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
+  TouchableHighlight,
   ScrollView,
   Image,
   Linking
@@ -61,9 +62,12 @@ export default class DrawerContent extends React.Component {
         icon: <AntDesign name="plus" size={25} color={"gray"} />
       }
     ];
+
+    
+
     return (
       <View style={styles.container}>
-        <TouchableOpacity>
+        <TouchableHighlight>
           <View style={styles.innerHead}>
             <View
               style={{
@@ -87,14 +91,15 @@ export default class DrawerContent extends React.Component {
                 />
               )}
               <View>
-                <Text style={styles.name}>{this.props.name}</Text>
+              <Text style={styles.name}>{this.props.name}</Text>
+                
                 <Text style={styles.description}>
                   Blood Group: {this.props.bloodGroup}
                 </Text>
               </View>
             </View>
           </View>
-        </TouchableOpacity>
+        </TouchableHighlight>
         <ScrollView style={{}}>
           <View>
             {list.map((item, i) => (

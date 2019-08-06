@@ -516,9 +516,11 @@ class GetChatDataView(APIView):
                 textData = textData | tp
 
         tp = ChatData.objects.filter(user1=request.user, isGroup=False)
-        textData = textData | tp
+        if tp is not None:
+            textData = textData | tp
         tp = ChatData.objects.filter(user2=request.user, isGroup=False)
-        textData = textData | tp
+        if tp is not None:
+            textData = textData | tp
 
         token = get_random_string(length=50)
 

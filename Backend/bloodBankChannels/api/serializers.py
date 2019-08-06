@@ -52,7 +52,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ('id', 'first_name', 'last_name', 'email', 'dob', 'address', 'bloodGroup', 'gender',
                   'phone', 'profilePic', 'education', 'profession',
-                  'emergencyContact', 'officeAddress')
+                  'emergencyContact', 'officeAddress','pushToken','password')
         extra_kwargs = {'profilePic': {'required': False},
                         'email': {'required': False},
                         'dob': {'required': False},
@@ -60,7 +60,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
                         'education': {'required': False},
                         'profession': {'required': False},
                         'emergencyContact': {'required': False},
-                        'officeAddress': {'required': False}, }
+                        'officeAddress': {'required': False},
+                        'pushToken': {'required': False},}
 
     def create(self, validated_data):
         user = CustomUser(
