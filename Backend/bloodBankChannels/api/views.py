@@ -27,6 +27,7 @@ from django.shortcuts import get_object_or_404
 
 def index(request):
     if request.user.is_authenticated:
+
         return redirect("/admin-panel")
     return render(request, 'login.html')
 
@@ -68,8 +69,7 @@ class Groups(APIView):
         GroupTuple = namedtuple("Groups", ('yourGroups', 'otherGroups'))
 
         yourGroups = request.user.group_set.all()
-        otherGroups = Group.objects.exclude(user=request.user)
-
+        otherGroups = Group.objects.filter(ishidden=False).exclude(user=request.user)
         group = GroupTuple(yourGroups=yourGroups, otherGroups=otherGroups)
         serializer = GroupViewSerializer(group)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -402,7 +402,7 @@ def acceptGroupRequest(request, userid, groupid):
 def removeUser(request, userid, groupid):
     user = CustomUser.objects.get(id=userid)
     group = Group.objects.get(id=groupid)
-    group.user.remove(user)
+    group.pendingGroupRequest.remove(user)
     requests = []
     groups = Group.objects.filter(admin=request.user)
     posts = []
@@ -545,7 +545,7 @@ class GetChatDataView(APIView):
             w = WSTokens.objects.create(user=request.user, token=token)
 
         chatPosts = Posts(imageData=imageData.distinct(), formData=formData.distinct(), textData=textData.distinct(),
-                          availableGroups=Group.objects.exclude(user=request.user),
+                          availableGroups=Group.objects.filter(ishidden=False).exclude(user=request.user),
                           userGroups=request.user.group_set.all(),
                           wsToken=w)
         serializer = GetChatDataSerializer(chatPosts)
