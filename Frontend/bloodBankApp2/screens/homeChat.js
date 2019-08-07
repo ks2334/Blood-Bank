@@ -649,283 +649,6 @@ export class Profile extends Component {
   }
 }
 
-export class Groups extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      token: this.props.screenProps.token,
-      data:""
-    };
-  }  
-
-  componentDidMount(){
-    this.setState({data:this.props.screenProps.homeState.allData})
-  }
-
-  render(){
-    return(
-      <ScrollView
-        style={styles.container}
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.refreshing}
-            onRefresh={this._onRefresh}
-          />
-        }
-      >
-        <Text
-          style={{
-            paddingLeft: 10,
-            paddingTop: 10,
-            paddingBottom: 5,
-            fontSize: 22,
-            color: "gray"
-          }}
-        >
-          Your Groups
-        </Text>
-
-        {this.props.screenProps.homeState.yourGroups==""? (<Text style={{
-            paddingLeft: 15,
-            paddingTop: 8,
-            paddingBottom: 2,
-            fontSize: 15,
-            color: "black"
-          }}>You are not a member of any group yet!</Text>) :(this.props.screenProps.homeState.yourGroups.map((l, i) => (
-          <TouchableOpacity
-            onPress={() => {
-              
-              this.props.screenProps.rootNavigation.push("GroupPage", {
-                obj: this.state.data["groupData"][l.title.toString()],
-                token: this.state.token,
-                addMessage:this.props.screenProps.addMessage
-              });
-              this.props.screenProps.openChat("Group",l.title)
-            }}
-          >
-            {l.image ? (
-              <ListItem
-                key={i}
-                avatar={{
-                  uri: ip + l.image
-                }}
-                title={l.title}
-                subtitle={l.description}
-                rightIcon={
-                  l.messageCount!==0?
-                  <Text style={{color:"white",fontWeight:"bold",backgroundColor:"rgb(25, 80, 120)",fontSize:15,padding:10,borderRadius:10}}>{l.messageCount}</Text>:
-                  undefined
-              
-                }
-              />
-            ) : (
-              <ListItem
-                key={i}
-                avatar={{
-                  uri: ip + l.image
-                }}
-                title={l.title}
-                subtitle={l.description}
-                rightIcon={
-                  l.messageCount!==0?
-                  <Text style={{color:"white",fontWeight:"bold",backgroundColor:"rgb(25, 80, 120)",fontSize:15,padding:10,borderRadius:10}}>{l.messageCount}</Text>:
-                  undefined
-                }
-              />
-            )}
-          </TouchableOpacity>
-        )))}
-
-
-        <Text
-          style={{
-            paddingLeft: 10,
-            paddingTop: 10,
-            paddingBottom: 5,
-            fontSize: 22,
-            color: "gray"
-          }}
-        >
-          Your Chats
-        </Text>
-
-        {this.props.screenProps.homeState.yourChats==""? (<Text style={{
-            paddingLeft: 15,
-            paddingTop: 8,
-            paddingBottom: 2,
-            fontSize: 15,
-            color: "black"
-          }}>You do not have any chats yet!</Text>) :(this.props.screenProps.homeState.yourChats.map((l, i) => (
-          <TouchableOpacity
-            onPress={() => {
-              this.props.screenProps.openChat("User",l.title)
-              this.props.screenProps.rootNavigation.navigate("GroupPage", {
-                obj: this.props.screenProps.homeState.allData["userData"][l.title.toString()],
-                token: this.state.token,
-                addMessage:this.props.screenProps.addMessage
-              });
-            }}
-          >
-            {l.image ? (
-              <ListItem
-                key={i}
-                avatar={{
-                  uri: ip + l.image
-                }}
-                title={l.title}
-                rightIcon={
-                  l.messageCount!==0?
-                  <Text style={{color:"white",fontWeight:"bold",backgroundColor:"rgb(25, 80, 120)",fontSize:15,padding:10,borderRadius:10}}>{l.messageCount}</Text>:undefined
-                }
-              />
-            ) : (
-              <ListItem
-                key={i}
-                avatar={{
-                  uri: ip + l.image
-                }}
-                title={l.title}
-                rightIcon={
-                  l.messageCount!==0?
-                  <Text style={{color:"white",fontWeight:"bold",backgroundColor:"rgb(25, 80, 120)",fontSize:15,padding:10,borderRadius:10}}>{l.messageCount}</Text>:undefined
-                }
-              />
-            )}
-          </TouchableOpacity>
-        )))}
-
-
-        <Text
-          style={{
-            paddingLeft: 10,
-            paddingTop: 15,
-            paddingBottom: 7,
-            fontSize: 22,
-            color: "gray"
-          }}
-        >
-          Available Groups
-        </Text>
-        {this.props.screenProps.homeState.availableGroups==""? (<Text style={{
-            paddingLeft: 15,
-            paddingTop: 8,
-            paddingBottom: 2,
-            fontSize: 15,
-            color: "black"
-          }}>There are no groups to join at the moment!</Text>) : (this.props.screenProps.homeState.availableGroups.map((l, i) => (
-          <TouchableOpacity
-            onPress={() => {
-              fetch(ip + "/joinGroup/", {
-                method: "post",
-                headers: {
-                  Accept: "application/json",
-                  "Content-Type": "application/json",
-                  Authorization: "Token " + this.state.token
-                },
-                body: JSON.stringify({
-                  group: l.id
-                })
-              })
-                .then(response => {
-                  if (response.status === 200) {
-                    alert("Your request has been sent!Thank You!");
-                  } else {
-                    alert("Please Try Again");
-                  }
-                })
-                .catch(err => {
-                  console.log(err);
-                });
-            }}
-          >
-            {l.image ? (
-              <ListItem
-                key={i + 100}
-                avatar={{
-                  uri: ip + l.image
-                }}
-                title={l.title}
-                subtitle={l.description}
-                rightIcon={
-                  <FeatherIcon name={"user-plus"} size={20} color={"gray"} />
-                }
-              />
-            ) : (
-              <ListItem
-                key={i + 100}
-                avatar={{
-                  uri: ip + l.image
-                }}
-                title={l.title}
-                subtitle={l.description}
-                rightIcon={
-                  <FeatherIcon name={"user-plus"} size={20} color={"gray"} />
-                }
-              />
-            )}
-          </TouchableOpacity>)
-        ))}
-
-        <Text
-          style={{
-            paddingLeft: 10,
-            paddingTop: 15,
-            paddingBottom: 7,
-            fontSize: 22,
-            color: "gray"
-          }}
-        >
-          Your Friends
-        </Text>
-
-        {this.props.screenProps.homeState.friends.length===0? (<Text style={{
-            paddingLeft: 15,
-            paddingTop: 8,
-            paddingBottom: 2,
-            fontSize: 15,
-            color: "black"
-          }}>Please Add some friends</Text>) :(this.props.screenProps.homeState.friends.map((element,i) => (
-          <TouchableOpacity
-            onPress={() => {
-              this.props.screenProps.openNewChat(element)
-              this.props.screenProps.rootNavigation.navigate("GroupPage", {
-                obj: this.props.screenProps.homeState.allData["userData"][element.first_name+" "+element.last_name],
-                token: this.state.token,
-                addMessage:this.props.screenProps.addMessage
-              });
-            }}
-          >
-            {element.profilePic ? (
-              <ListItem
-                key={i}
-                avatar={{
-                  uri: element.profilePic
-                }}
-                title={element.first_name+" "+element.last_name}
-                
-              />
-            ) : (
-              <ListItem
-                key={i}
-                avatar={{
-                  uri: element.profilePic
-                }}
-                title={element.first_name+" "+element.last_name}
-                
-              />
-            )}
-          </TouchableOpacity>
-        )))}
-
-             
-            
-        </ScrollView>
-    )
-  }
-
-}
-
-
 export class Post extends Component {
   constructor(props) {
     super(props);
@@ -1593,6 +1316,288 @@ export class Feed extends Component {
 }
 
 
+
+export class Groups extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      token: this.props.screenProps.token,
+      data:""
+    };
+  }  
+
+  componentDidMount(){
+    this.setState({data:this.props.screenProps.homeState.allData})
+  }
+
+  render(){
+    return(
+      <ScrollView
+        style={styles.container}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh}
+          />
+        }
+      >
+        <Text
+          style={{
+            paddingLeft: 10,
+            paddingTop: 10,
+            paddingBottom: 5,
+            fontSize: 22,
+            color: "gray"
+          }}
+        >
+          Your Groups
+        </Text>
+
+        {this.props.screenProps.homeState.yourGroups==""? (<Text style={{
+            paddingLeft: 15,
+            paddingTop: 8,
+            paddingBottom: 2,
+            fontSize: 15,
+            color: "black"
+          }}>You are not a member of any group yet!</Text>) :(this.props.screenProps.homeState.yourGroups.map((l, i) => (
+          <TouchableOpacity
+            onPress={() => {
+              
+              this.props.screenProps.rootNavigation.push("GroupPage", {
+                obj: this.state.data["groupData"][l.title.toString()],
+                token: this.state.token,
+                addMessage:this.props.screenProps.addMessage,
+                type:"group"
+              });
+              this.props.screenProps.openChat("Group",l.title)
+            }}
+          >
+            {l.image ? (
+              <ListItem
+                key={i}
+                avatar={{
+                  uri: ip + l.image
+                }}
+                title={l.title}
+                subtitle={l.description}
+                rightIcon={
+                  l.messageCount!==0?
+                  <Text style={{color:"white",fontWeight:"bold",backgroundColor:"rgb(25, 80, 120)",fontSize:15,padding:10,borderRadius:10}}>{l.messageCount}</Text>:
+                  undefined
+              
+                }
+              />
+            ) : (
+              <ListItem
+                key={i}
+                avatar={{
+                  uri: ip + l.image
+                }}
+                title={l.title}
+                subtitle={l.description}
+                rightIcon={
+                  l.messageCount!==0?
+                  <Text style={{color:"white",fontWeight:"bold",backgroundColor:"rgb(25, 80, 120)",fontSize:15,padding:10,borderRadius:10}}>{l.messageCount}</Text>:
+                  undefined
+                }
+              />
+            )}
+          </TouchableOpacity>
+        )))}
+
+
+        <Text
+          style={{
+            paddingLeft: 10,
+            paddingTop: 10,
+            paddingBottom: 5,
+            fontSize: 22,
+            color: "gray"
+          }}
+        >
+          Your Chats
+        </Text>
+
+        {this.props.screenProps.homeState.yourChats==""? (<Text style={{
+            paddingLeft: 15,
+            paddingTop: 8,
+            paddingBottom: 2,
+            fontSize: 15,
+            color: "black"
+          }}>You do not have any chats yet!</Text>) :(this.props.screenProps.homeState.yourChats.map((l, i) => (
+          <TouchableOpacity
+            onPress={() => {
+              this.props.screenProps.openChat("User",l.title)
+              this.props.screenProps.rootNavigation.navigate("GroupPage", {
+                obj: this.state.data["userData"][l.title.toString()],
+                token: this.state.token,
+                addMessage:this.props.screenProps.addMessage,
+                type:"user"
+              });
+            }}
+          >
+            {l.image ? (
+              <ListItem
+                key={i}
+                avatar={{
+                  uri: ip + l.image
+                }}
+                title={l.title}
+                rightIcon={
+                  l.messageCount!==0?
+                  <Text style={{color:"white",fontWeight:"bold",backgroundColor:"rgb(25, 80, 120)",fontSize:15,padding:10,borderRadius:10}}>{l.messageCount}</Text>:undefined
+                }
+              />
+            ) : (
+              <ListItem
+                key={i}
+                avatar={{
+                  uri: ip + l.image
+                }}
+                title={l.title}
+                rightIcon={
+                  l.messageCount!==0?
+                  <Text style={{color:"white",fontWeight:"bold",backgroundColor:"rgb(25, 80, 120)",fontSize:15,padding:10,borderRadius:10}}>{l.messageCount}</Text>:undefined
+                }
+              />
+            )}
+          </TouchableOpacity>
+        )))}
+
+
+        <Text
+          style={{
+            paddingLeft: 10,
+            paddingTop: 15,
+            paddingBottom: 7,
+            fontSize: 22,
+            color: "gray"
+          }}
+        >
+          Available Groups
+        </Text>
+        {this.props.screenProps.homeState.availableGroups==""? (<Text style={{
+            paddingLeft: 15,
+            paddingTop: 8,
+            paddingBottom: 2,
+            fontSize: 15,
+            color: "black"
+          }}>There are no groups to join at the moment!</Text>) : (this.props.screenProps.homeState.availableGroups.map((l, i) => (
+          <TouchableOpacity
+            onPress={() => {
+              fetch(ip + "/joinGroup/", {
+                method: "post",
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+                  Authorization: "Token " + this.state.token
+                },
+                body: JSON.stringify({
+                  group: l.id
+                })
+              })
+                .then(response => {
+                  if (response.status === 200) {
+                    alert("Your request has been sent!Thank You!");
+                  } else {
+                    alert("Please Try Again");
+                  }
+                })
+                .catch(err => {
+                  console.log(err);
+                });
+            }}
+          >
+            {l.image ? (
+              <ListItem
+                key={i + 100}
+                avatar={{
+                  uri: ip + l.image
+                }}
+                title={l.title}
+                subtitle={l.description}
+                rightIcon={
+                  <FeatherIcon name={"user-plus"} size={20} color={"gray"} />
+                }
+              />
+            ) : (
+              <ListItem
+                key={i + 100}
+                avatar={{
+                  uri: ip + l.image
+                }}
+                title={l.title}
+                subtitle={l.description}
+                rightIcon={
+                  <FeatherIcon name={"user-plus"} size={20} color={"gray"} />
+                }
+              />
+            )}
+          </TouchableOpacity>)
+        ))}
+
+        <Text
+          style={{
+            paddingLeft: 10,
+            paddingTop: 15,
+            paddingBottom: 7,
+            fontSize: 22,
+            color: "gray"
+          }}
+        >
+          Your Friends
+        </Text>
+
+        {this.props.screenProps.homeState.friends.length===0? (<Text style={{
+            paddingLeft: 15,
+            paddingTop: 8,
+            paddingBottom: 2,
+            fontSize: 15,
+            color: "black"
+          }}>Please Add some friends</Text>) :(this.props.screenProps.homeState.friends.map((element,i) => (
+          <TouchableOpacity
+            onPress={() => {
+              this.props.screenProps.rootNavigation.navigate("GroupPage", {
+                obj: {"information":element,"messages":[]},
+                token: this.state.token,
+                addMessage:this.props.screenProps.addMessage,
+                type:"new",
+                addChat:this.props.screenProps.addChat
+              });
+            }}
+          >
+            {element.profilePic ? (
+              <ListItem
+                key={i}
+                avatar={{
+                  uri: element.profilePic
+                }}
+                title={element.first_name+" "+element.last_name}
+                
+              />
+            ) : (
+              <ListItem
+                key={i}
+                avatar={{
+                  uri: element.profilePic
+                }}
+                title={element.first_name+" "+element.last_name}
+                
+              />
+            )}
+          </TouchableOpacity>
+        )))}
+
+             
+            
+        </ScrollView>
+    )
+  }
+
+}
+
+
+
 export default class HomeChat extends Component {
   constructor(props) {
     super(props);
@@ -1641,6 +1646,7 @@ export default class HomeChat extends Component {
     currentPhone = this.state.phone
     let groupData = {}
     let userData = {}
+
     obj["userGroups"].forEach(element => {
       groupData[element.title] = {
         "information":element,
@@ -1662,17 +1668,32 @@ export default class HomeChat extends Component {
       time = new Date(element.time)
       for(i=0;i<element.group.length;i++){
         if(element.group[i] in groupData){
-          groupData[element.group[i]]["messages"].push({
-            _id: 1,
-            text: message,
-            createdAt: time,
-            image:img,
-            user: {
-              _id: 2,
-              name: "Admin",
-              avatar: "https://placeimg.com/140/140/any"
-            }
-          })
+          if(img===null || img===undefined || img===""){
+            groupData[element.group[i]]["messages"].push({
+              _id: 1,
+              text: message,
+              createdAt: time,
+              user: {
+                _id: 2,
+                name: "Admin",
+                avatar: "https://placeimg.com/140/140/any"
+              }
+            })
+          }
+          else{
+            groupData[element.group[i]]["messages"].push({
+              _id: 1,
+              text: message,
+              createdAt: time,
+              image:img,
+              user: {
+                _id: 2,
+                name: "Admin",
+                avatar: "https://placeimg.com/140/140/any"
+              }
+            })
+          }
+          
           groupData[element.group[i]]["unreadMessagesCount"] += 1
           if(time>groupData[element.group[i]]["latest"]){
             groupData[element.group[i]]["latest"] = time
@@ -1921,6 +1942,23 @@ export default class HomeChat extends Component {
             // a message was received
             console.log("Websocket Message Received")
             console.log(e.data);
+            /*setTimeout(()=>{
+          this.addMessage("A+",{
+            _id: 1,
+            text: "Testinngggggg",
+            createdAt: new Date(),
+            user: {
+              _id: 2,
+              name: "Admin",
+              avatar: "https://placeimg.com/140/140/any"
+            }
+          })
+
+          this.props.screenProps.update()
+          
+          console.log("Timer Done")
+        },20000)*/
+
           };
           
           this.ws.onerror = e => {
@@ -1941,32 +1979,6 @@ export default class HomeChat extends Component {
         .catch(err => {
           console.log(err);
         });
-
-
-
-        /*setTimeout(()=>{
-          this.addMessage("A+",{
-            _id: 1,
-            text: "Testinngggggg",
-            createdAt: new Date(),
-            user: {
-              _id: 2,
-              name: "Admin",
-              avatar: "https://placeimg.com/140/140/any"
-            }
-          })
-
-          this.props.screenProps.update()
-          
-          console.log("Timer Done")
-        },20000)*/
-
-        
-
-        
-
-
-        
   }
 
 
@@ -2028,8 +2040,16 @@ export default class HomeChat extends Component {
     
   }
 
+  addChat = (element) => {
+    userArray = this.state.yourChats
+    userArray.push({
+      "title":element.first_name+" "+element.last_name,
+      "image": element.profilePic,
+      "latest": new Date("2018"),
+      "messageCount": 0
 
-  openNewChat = (element) => {
+    })
+
     allData = this.state.allData
 
     allData["userData"][element.first_name+" "+element.last_name] = {
@@ -2040,21 +2060,7 @@ export default class HomeChat extends Component {
     }
 
 
-    this.setState({allData:allData})
-
-  }
-
-
-  addChat = (element) => {
-    userArray = this.state.yourChats
-    userArray.push({
-      "title":element.first_name+" "+element.last_name,
-      "image": element.profilePic,
-      "latest": new Date("2018"),
-      "messageCount": 0
-
-    })
-    this.setState({yourChats:userArray})
+    this.setState({allData:allData,yourChats:userArray})
 
   }
 

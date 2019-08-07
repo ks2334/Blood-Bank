@@ -511,9 +511,12 @@ class GetChatDataView(APIView):
                 formData = fp
                 textData = tp
             else:
-                imageData = imageData | gp
-                formData = formData | fp
-                textData = textData | tp
+                if gp is not None:
+                    imageData = imageData | gp
+                if fp is not None:
+                    formData = formData | fp
+                if tp is not None:
+                    textData = textData | tp
 
         tp = ChatData.objects.filter(user1=request.user, isGroup=False)
         if tp is not None:
