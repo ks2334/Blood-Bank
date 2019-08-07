@@ -27,6 +27,7 @@
     "react-native-phone-input": "^0.2.1",
     "react-native-radio-buttons-group": "^1.0.7",
     "react-native-scalable-image": "^0.5.1",
+    "react-native-share": "^2.0.0",
     "react-native-textinput-effects": "^0.5.1",
     "react-navigation": "^3.0.9"
   },

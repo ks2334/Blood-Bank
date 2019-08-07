@@ -307,7 +307,6 @@ export class Register extends React.Component {
       profilePic: null,
       profession: "",
       education: "",
-      secondPhoneNumber: "",
       officeAddress: "",
       aadhar: "",
       error: "",
@@ -557,16 +556,7 @@ export class Register extends React.Component {
               onChangeText={address => this.setState({ address: address })}
             />
           </View>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.inputs}
-              placeholder="Alternate Contact Number"
-              autoCapitalize="none"
-              keyboardType="phone-pad"
-              underlineColorAndroid="transparent"
-              onChangeText={s => this.setState({ secondPhoneNumber: s })}
-            />
-          </View>
+
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.inputs}
@@ -765,10 +755,7 @@ export class Register extends React.Component {
                 this.formData.append("education", this.state.education);
                 this.formData.append("adhaarNo", this.state.aadhar);
                 this.formData.append("profession", this.state.profession);
-                this.formData.append(
-                  "emergencyContact",
-                  this.state.secondPhoneNumber
-                );
+
                 this.formData.append("officeAddress", this.state.officeAddress);
                 this.formData.append("username", this.state.PhoneNumber);
                 this.formData.append("pushToken", token);
