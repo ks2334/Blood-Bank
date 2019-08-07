@@ -498,9 +498,9 @@ class GetChatDataView(APIView):
         Posts = namedtuple("ChatData",
                            ('imageData', 'formData', 'textData', 'availableGroups', 'userGroups', 'wsToken'))
         g = request.user.group_set.all()
-        imageData = None
-        formData = None
-        textData = None
+        imageData = GroupPost.objects.none()
+        formData = FormPost.objects.none()
+        textData = ChatData.objects.none()
 
         for cnt, i in enumerate(g):
             gp = GroupPost.objects.filter(group=i.pk)

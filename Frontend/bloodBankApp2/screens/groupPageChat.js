@@ -36,7 +36,7 @@ export default class GroupPageChat extends Component {
             alignItems: "center"
           }}
         >
-          {"image" in navigation.getParam("obj").information?(<Image
+          {navigation.getParam("type") === "group" ?(<Image
             style={styles.avatar}
             source={{
               uri: ip + navigation.getParam("obj").information.image
@@ -48,7 +48,7 @@ export default class GroupPageChat extends Component {
             }}
           />)}
 
-          {"image" in navigation.getParam("obj").information?(
+          {navigation.getParam("type") === "group" ?(
           <Text style={{ fontSize: 20, fontWeight: "bold", color: "white" }}>
             {navigation.getParam("obj").information.title}
           </Text>):(
@@ -71,7 +71,7 @@ export default class GroupPageChat extends Component {
         <TouchableOpacity
           style={{ width: 40, paddingLeft: 10 }}
           onPress={() => {
-            if("image" in navigation.getParam("obj").information){
+            if(navigation.getParam("type") === "group"){
               navigation.navigate("GroupDescriptionPage", {
                 obj: navigation.getParam("obj").information
               });
@@ -96,7 +96,8 @@ export default class GroupPageChat extends Component {
     super(props);
     this.state = {
       token: this.props.navigation.getParam("token"),
-      data:this.props.navigation.state.params["obj"]
+      data:this.props.navigation.state.params["obj"],
+      type:this.props.navigation.state.params["type"]
     };
 
   }
@@ -192,10 +193,16 @@ export default class GroupPageChat extends Component {
       messages: GiftedChat.append(previousState.messages, messages)
     }));
 
-    if("image" in this.state.data.information){
+    if(this.state.type==="group"){
       this.props.navigation.state.params.addMessage("groupData",this.state.data.information.title,messages[0])
     }
-    else{
+    else if(this.state.type==="user"){
+      this.props.navigation.state.params.addMessage("userData",this.state.data.information.first_name+" "+this.state.data.information.last_name,messages[0])
+    }
+    else if(this.state.type === "new"){
+      if(this.state.messages.length===0){
+        this.props.navigation.state.params.addChat(this.state.data.information) 
+      }
       this.props.navigation.state.params.addMessage("userData",this.state.data.information.first_name+" "+this.state.data.information.last_name,messages[0])
     }
   }

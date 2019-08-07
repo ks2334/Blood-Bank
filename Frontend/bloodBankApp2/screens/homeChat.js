@@ -1942,6 +1942,12 @@ export default class HomeChat extends Component {
             // a message was received
             console.log("Websocket Message Received")
             console.log(e.data);
+
+            msg = e.data
+            msg = msg.split(": ")
+            console.log(msg)
+
+
             /*setTimeout(()=>{
           this.addMessage("A+",{
             _id: 1,
@@ -2073,6 +2079,8 @@ export default class HomeChat extends Component {
       flag:true
     })
     this.setState({allData:allData})
+
+    //this.ws.send
 
     //this.props.screenProps.update()
   }
