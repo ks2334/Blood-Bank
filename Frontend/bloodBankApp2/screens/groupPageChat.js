@@ -6,6 +6,7 @@ import {
   View,
   Image,
   TouchableOpacity,
+  TouchableHighlight,
   AppRegistry,
   ScrollView,
   ListItem,
@@ -22,6 +23,7 @@ import { GiftedChat } from "react-native-gifted-chat";
 import KeyboardSpacer from "react-native-keyboard-spacer";
 import { Makiko,Sae } from "react-native-textinput-effects";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 export default class GroupPageChat extends Component {
   
@@ -88,6 +90,15 @@ export default class GroupPageChat extends Component {
         >
           <Icon name="arrow-right" size={20} color={"white"} />
         </TouchableOpacity>
+      ),
+      headerLeft: (
+        <TouchableHighlight
+				onPress={() => {
+          navigation.state.params["resetChatOpened"]()
+          navigation.pop()
+        }}>
+          <Icon name="arrow-left" size={20} color={"white"} style={{marginLeft:10}} />
+			</TouchableHighlight>
       )
     };
   };
@@ -135,6 +146,8 @@ export default class GroupPageChat extends Component {
       </View>
     );
   };
+
+
 
 
   componentDidMount() {
@@ -197,13 +210,13 @@ export default class GroupPageChat extends Component {
       this.props.navigation.state.params.addMessage("groupData",this.state.data.information.title,messages[0])
     }
     else if(this.state.type==="user"){
-      this.props.navigation.state.params.addMessage("userData",this.state.data.information.first_name+" "+this.state.data.information.last_name,messages[0])
+      this.props.navigation.state.params.addMessage("userData",this.state.data.information.first_name+" "+this.state.data.information.last_name,messages[0],send=true)
     }
     else if(this.state.type === "new"){
       if(this.state.messages.length===0){
         this.props.navigation.state.params.addChat(this.state.data.information) 
       }
-      this.props.navigation.state.params.addMessage("userData",this.state.data.information.first_name+" "+this.state.data.information.last_name,messages[0])
+      this.props.navigation.state.params.addMessage("userData",this.state.data.information.first_name+" "+this.state.data.information.last_name,messages[0],send=true)
     }
   }
 
@@ -218,6 +231,8 @@ export default class GroupPageChat extends Component {
             _id: 1
           }}
           renderQuickReplies={this.renderQuickReply}
+          renderInputToolbar={this.props.navigation.state.params.hasChatPrivilege || this.props.navigation.state.params.type!=="group" ?  undefined : () =>null}
+          renderUsernameOnMessage={true}
         />
         {Platform.OS === "android" ? <KeyboardSpacer topSpacing={35} /> : null}
       </View>
