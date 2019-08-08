@@ -34,7 +34,7 @@ import {
 import Drawer from "react-native-drawer";
 import DrawerContent from "./DrawerContent";
 import { ListItem, ButtonGroup } from "react-native-elements";
-import { Camera, Permissions, ImagePicker,AppLoading } from "expo";
+import { Camera, Permissions, ImagePicker,AppLoading,SecureStore } from "expo";
 import Toast, { DURATION } from "react-native-easy-toast";
 import ImageView from "react-native-image-view";
 
@@ -693,6 +693,16 @@ export class Post extends Component {
   async componentDidMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({ hasCameraPermission: status === "granted" });
+    
+  }
+
+  async componentDidUpdate() {
+      if(this.camera.hasCameraPermission===false){
+        const { status } = await Permissions.askAsync(Permissions.CAMERA);
+        this.setState({ hasCameraPermission: status === "granted" });
+      }
+      
+      
   }
 
   async remount(payload) {
@@ -1367,7 +1377,9 @@ export class Groups extends Component {
                 obj: this.state.data["groupData"][l.title.toString()],
                 token: this.state.token,
                 addMessage:this.props.screenProps.addMessage,
-                type:"group"
+                type:"group",
+                resetChatOpened:this.props.screenProps.resetChatOpened,
+                hasChatPrivilege:this.props.screenProps.homeState.hasChatPrivilege
               });
               this.props.screenProps.openChat("Group",l.title)
             }}
@@ -1432,7 +1444,8 @@ export class Groups extends Component {
                 obj: this.state.data["userData"][l.title.toString()],
                 token: this.state.token,
                 addMessage:this.props.screenProps.addMessage,
-                type:"user"
+                type:"user",
+                resetChatOpened:this.props.screenProps.resetChatOpened
               });
             }}
           >
@@ -1562,7 +1575,8 @@ export class Groups extends Component {
                 token: this.state.token,
                 addMessage:this.props.screenProps.addMessage,
                 type:"new",
-                addChat:this.props.screenProps.addChat
+                addChat:this.props.screenProps.addChat,
+                resetChatOpened:this.props.screenProps.resetChatOpened
               });
             }}
           >
@@ -1599,9 +1613,48 @@ export class Groups extends Component {
 
 
 export default class HomeChat extends Component {
+
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTitle: "Janakalyan Blood Bank",
+      headerLeft: (
+        <TouchableOpacity
+          style={{ marginLeft: 10 }}
+          onPress={navigation.getParam("openDrawer")}
+        >
+          <Entypo name="menu" size={25} color={"white"} />
+        </TouchableOpacity>
+      ),
+      headerRight: (
+        <TouchableOpacity
+          style={{ marginRight: 10 }}
+          onPress={navigation.getParam("openDrawer")}
+        >
+          <FeatherIcon name="search" size={25} color={"white"} />
+        </TouchableOpacity>
+      ),
+      headerStyle: {
+        backgroundColor: "#660000"
+      },
+      headerTintColor: "#fff",
+      headerTitleStyle: {
+        fontWeight: "bold",
+        color: "#fff"
+      }
+    };
+  };
+
   constructor(props) {
     super(props);
     self = this.openControlPanel;
+    let latest = "";
+    SecureStore.getItemAsync("latestChat").then(response => {
+      latest = response;
+      console.log("Response",response)
+    });
+
+
     this.state = {
       name: "",
       email: "",
@@ -1624,7 +1677,9 @@ export default class HomeChat extends Component {
       availableGroups:"",
       yourFriends:"",
       yourChats:"",
-      allData:""
+      allData:"",
+      chatOpened:"",
+      latestChat:latest
     };
 
     this.ws = undefined 
@@ -1640,6 +1695,176 @@ export default class HomeChat extends Component {
   openControlPanel = () => {
     this._drawer.open();
   };
+
+  componentDidMount() {
+    this.props.navigation.setParams({
+      openDrawer: this.openControlPanel
+    });
+    fetch(ip + "/profile.json", {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: "Token " + this.props.navigation.getParam("token")
+      }
+    })
+      .then(response => {
+        obj = JSON.parse(response._bodyInit)[0];
+        this.setState({
+          name: obj.first_name + " " + obj.last_name,
+          email: obj.email,
+          phone: obj.phone,
+          dob: obj.dob,
+          bg: obj.bloodGroup,
+          address: obj.address,
+          profilePic: obj.profilePic,
+          donationDate: obj.donationDate,
+          aadhar: obj.adhaarNo,
+          officeAddress: obj.officeAddress,
+          profession: obj.profession,
+          emergencyContact: obj.emergencyContact,
+          education: obj.education,
+          friends: obj.friends,
+          friendRequest: obj.friendRequests,
+          id: obj.id,
+          hasChatPrivilege:obj.hasChatPrivilege
+        });
+
+        console.log("Chat",this.state.hasChatPrivilege)
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+     
+      fetch(ip + "/chatFetch/", {
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Token " + this.props.navigation.getParam("token")
+        }
+      })
+        .then(response => {
+          obj = JSON.parse(response._bodyInit);
+          this.setState({ wsToken:obj["wsToken"]["token"], availableGroups:obj["availableGroups"]});
+          this.sort(obj)
+
+          this.ws = new WebSocket(wsip + '/ws/chat/appRoom/',["Token",this.state.wsToken]);
+
+          allData = this.state.allData
+
+          this.ws.onopen = () => {
+            console.log("Websocket Opened")
+            //this.ws.send('something'); // send a message
+          };
+          
+          this.ws.onmessage = e => {
+
+            console.log("Websocket Message Received")
+            msg = JSON.parse(e.data)["message"].split(": ")
+
+            if(msg[0]==="UR"){
+
+              msg[1] = this.getNameFromPhone(msg[1])
+              name = msg[1].first_name + " " + msg[1].last_name
+              console.log((name in allData["userData"]))
+              if(!(name in allData["userData"])){
+                this.addChat(msg[1])
+              }
+              if(msg[1].profilePic !== null){
+                this.addMessage("userData",name,{
+                  _id: 1,
+                  text: msg[2],
+                  createdAt: new Date(),
+                  user: {
+                    _id: 2,
+                    name: name,
+                    avatar: msg[1].profilePic
+                  }
+                })
+              }
+              else{
+                this.addMessage("userData",name,{
+                  _id: 1,
+                  text: msg[2],
+                  createdAt: new Date(),
+                  user: {
+                    _id: 2,
+                    name: name,
+                  }
+                })
+              }
+              
+              this.sortChatOrder()
+              this.incChatCounter("User",name)
+            }
+
+            else if(msg[0]==="GR"){
+              
+            }
+
+            else if(msg[0]==="US"){
+
+            }
+
+            else if(msg[0]==="GS"){
+
+            }
+
+            this.props.screenProps.update()
+
+            /*setTimeout(()=>{
+          this.addMessage("A+",{
+            _id: 1,
+            text: "Testinngggggg",
+            createdAt: new Date(),
+            user: {
+              _id: 2,
+              name: "Admin",
+              avatar: "https://placeimg.com/140/140/any"
+            }
+          })
+
+          this.props.screenProps.update()
+          
+          console.log("Timer Done")
+        },20000)*/
+
+          };
+          
+          this.ws.onerror = e => {
+            // an error occurred
+            console.log("Websocket Error")
+            console.log(e.message);
+            this.ws = new WebSocket(wsip + '/ws/chat/appRoom/',["Token",this.state.wsToken]);
+            SecureStore.setItemAsync("latestChat", new Date()).then(
+              response => {
+                console.log("Latest Date Saved");
+              }
+            );
+          };
+          
+          this.ws.onclose = e => {
+            // connection closed
+            console.log("Websocket Closed")
+            this.ws = new WebSocket(wsip + '/ws/chat/appRoom/',["Token",this.state.wsToken]);
+            SecureStore.setItemAsync("latestChat", new Date()).then(
+              response => {
+                console.log("Latest Date Saved");
+              }
+            );
+            //console.log(e.code);
+          };
+  
+          //console.log(this.state.yourGroups)
+          //console.log(this.state.yourChats)
+        })
+        .catch(err => {
+          console.log(err);
+        });
+  }
+
 
 
   sort(obj){
@@ -1694,7 +1919,10 @@ export default class HomeChat extends Component {
             })
           }
           
-          groupData[element.group[i]]["unreadMessagesCount"] += 1
+          if(time>this.state.latestChat){
+            groupData[element.group[i]]["unreadMessagesCount"] += 1
+          }
+          
           if(time>groupData[element.group[i]]["latest"]){
             groupData[element.group[i]]["latest"] = time
           }
@@ -1719,7 +1947,11 @@ export default class HomeChat extends Component {
               avatar: "https://placeimg.com/140/140/any"
             }
           })
-          groupData[element.group[i]]["unreadMessagesCount"] += 1
+
+          if(time>this.state.latestChat){
+            groupData[element.group[i]]["unreadMessagesCount"] += 1
+          }
+          
           if(time>groupData[element.group[i]]["latest"]){
             groupData[element.group[i]]["latest"] = time
           }
@@ -1757,7 +1989,10 @@ export default class HomeChat extends Component {
                 avatar: ip + element.user1.profilePic
               }
             })
-            groupData[element.group]["unreadMessagesCount"] += 1
+            if(time>this.state.latestChat){
+              groupData[element.group]["unreadMessagesCount"] += 1
+            }
+            
           }
           
           if(time>groupData[element.group]["latest"]){
@@ -1789,14 +2024,15 @@ export default class HomeChat extends Component {
             }
           })
           
-          userData[name]["unreadMessagesCount"] += 1
+          if(time>this.state.latestChat){
+            userData[name]["unreadMessagesCount"] += 1
+          }
           if(time>userData[name]["latest"]){
             userData[name]["latest"] = time
           }
         }
 
         else if(element.user2.phone === currentPhone){
-          console.log("You are User2: ",message)
           name = element.user1.first_name + " " + element.user1.last_name
           if(!(name in userData)){
             userData[name] = {
@@ -1817,7 +2053,9 @@ export default class HomeChat extends Component {
               avatar: ip + element.user1.profilePic
             }
           })
-          userData[name]["unreadMessagesCount"] += 1
+          if(time>this.state.latestChat){
+            userData[name]["unreadMessagesCount"] += 1
+          }
 
           if(time>userData[name]["latest"]){
             userData[name]["latest"] = time
@@ -1834,6 +2072,20 @@ export default class HomeChat extends Component {
 
     groupArray = []
     userArray = []
+
+    
+    this.setState({yourGroups:groupArray,yourChats:userArray, allData:{"groupData":groupData,"userData":userData}});
+
+    this.sortChatOrder()
+
+  }
+
+
+  sortChatOrder(){
+    groupArray = []
+    userArray = []
+    groupData = this.state.allData["groupData"]
+    userData = this.state.allData["userData"]
 
     for (var key in groupData) {
       if (groupData.hasOwnProperty(key)) {
@@ -1872,155 +2124,41 @@ export default class HomeChat extends Component {
     userArray.sort(function(a,b) {
         return b.latest - a.latest;
     });
+    
+    console.log(userArray)
 
+    this.setState({yourGroups:groupArray,yourChats:userArray});
 
-    this.setState({yourGroups:groupArray,yourChats:userArray, allData:{"groupData":groupData,"userData":userData}});
 
   }
 
-  componentDidMount() {
-    this.props.navigation.setParams({
-      openDrawer: this.openControlPanel
-    });
-    fetch(ip + "/profile.json", {
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: "Token " + this.props.navigation.getParam("token")
-      }
-    })
-      .then(response => {
-        obj = JSON.parse(response._bodyInit)[0];
-        this.setState({
-          name: obj.first_name + " " + obj.last_name,
-          email: obj.email,
-          phone: obj.phone,
-          dob: obj.dob,
-          bg: obj.bloodGroup,
-          address: obj.address,
-          profilePic: obj.profilePic,
-          donationDate: obj.donationDate,
-          aadhar: obj.adhaarNo,
-          officeAddress: obj.officeAddress,
-          profession: obj.profession,
-          emergencyContact: obj.emergencyContact,
-          education: obj.education,
-          friends: obj.friends,
-          friendRequest: obj.friendRequests,
-          id: obj.id
-        });
-      })
-      .catch(err => {
-        console.log(err);
+  
+
+  resetChatOpened = ()=>{
+    this.setState({chatOpened:""})
+  }
+
+
+  incChatCounter(type,name){
+    if(type==="User"){
+      allData =this.state.allData
+      userArray = this.state.yourChats
+      userArray.forEach(element => {
+        
+        if(element.title===name && this.state.chatOpened !== name){
+          console.log(element.title)
+          element.messageCount += 1;
+          console.log(element.messageCount)
+          allData["userData"][name]["unreadMessagesCount"] += 1
+        }
       });
 
-     
-      fetch(ip + "/chatFetch/", {
-        method: "get",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: "Token " + this.props.navigation.getParam("token")
-        }
-      })
-        .then(response => {
-          obj = JSON.parse(response._bodyInit);
-          this.setState({ wsToken:obj["wsToken"]["token"], availableGroups:obj["availableGroups"]});
-          this.sort(obj)
+      
 
-          this.ws = new WebSocket(wsip + '/ws/chat/appRoom/',["Token",this.state.wsToken]);
-
-
-          this.ws.onopen = () => {
-            // connection opened
-            console.log("Websocket Opened")
-            //this.ws.send('something'); // send a message
-          };
-          
-          this.ws.onmessage = e => {
-            // a message was received
-            console.log("Websocket Message Received")
-            console.log(e.data);
-
-            msg = e.data
-            msg = msg.split(": ")
-            console.log(msg)
-
-
-            /*setTimeout(()=>{
-          this.addMessage("A+",{
-            _id: 1,
-            text: "Testinngggggg",
-            createdAt: new Date(),
-            user: {
-              _id: 2,
-              name: "Admin",
-              avatar: "https://placeimg.com/140/140/any"
-            }
-          })
-
-          this.props.screenProps.update()
-          
-          console.log("Timer Done")
-        },20000)*/
-
-          };
-          
-          this.ws.onerror = e => {
-            // an error occurred
-            console.log("Websocket Error")
-            console.log(e.message);
-          };
-          
-          this.ws.onclose = e => {
-            // connection closed
-            console.log("Websocket Closed")
-            //console.log(e.code);
-          };
-  
-          //console.log(this.state.yourGroups)
-          //console.log(this.state.yourChats)
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      this.setState({yourChats:userArray,allData:allData})
+    }
+    
   }
-
-
-
-  
-
-  static navigationOptions = ({ navigation }) => {
-    return {
-      headerTitle: "Janakalyan Blood Bank",
-      headerLeft: (
-        <TouchableOpacity
-          style={{ marginLeft: 10 }}
-          onPress={navigation.getParam("openDrawer")}
-        >
-          <Entypo name="menu" size={25} color={"white"} />
-        </TouchableOpacity>
-      ),
-      headerRight: (
-        <TouchableOpacity
-          style={{ marginRight: 10 }}
-          onPress={navigation.getParam("openDrawer")}
-        >
-          <FeatherIcon name="search" size={25} color={"white"} />
-        </TouchableOpacity>
-      ),
-      headerStyle: {
-        backgroundColor: "#660000"
-      },
-      headerTintColor: "#fff",
-      headerTitleStyle: {
-        fontWeight: "bold",
-        color: "#fff"
-      }
-    };
-  };
-
 
   openChat = (type,name) => {
     if(type==="Group"){
@@ -2031,7 +2169,10 @@ export default class HomeChat extends Component {
         }
       });
 
-      this.setState({yourGroups:groupArray})
+      allData =this.state.allData
+      allData["groupData"][name]["unreadMessagesCount"] = 0
+
+      this.setState({yourGroups:groupArray,chatOpened:name,allData:allData})
     }
     else if(type==="User"){
       userArray = this.state.yourChats
@@ -2041,9 +2182,11 @@ export default class HomeChat extends Component {
         }
       });
 
-      this.setState({yourChats:userArray})
+      allData =this.state.allData
+      allData["userData"][name]["unreadMessagesCount"] = 0
+
+      this.setState({yourChats:userArray,chatOpened:name,allData:allData})
     }
-    
   }
 
   addChat = (element) => {
@@ -2070,27 +2213,68 @@ export default class HomeChat extends Component {
 
   }
 
-  addMessage = (type,name,message)=>{
+  addMessage = (type,name,message,send=false)=>{
+    if(!(name in this.state.allData[type])){
+      this.addChat(this.getElement(name))
+    }
     allData = this.state.allData 
     allData[type][name].messages.push(message)
-    allData[type][name].unreadMessagesCount += 1
+    //allData[type][name].unreadMessagesCount += 1
     this.props.navigation.setParams({
       obj:this.state.allData[type][name],
       flag:true
     })
     this.setState({allData:allData})
 
+
+    if(type==="userData" && send){
+      phone = this.getPhoneFromName(name)
+      this.ws.send(JSON.stringify({
+        "message":"User: "+ phone.phone + ": "+ message.text
+      }))
+    }
     //this.ws.send
 
     //this.props.screenProps.update()
   }
 
+  
+  getNameFromPhone(phone){
+    for(i=0;i<this.state.friends.length;i++){
+      element = this.state.friends[i]
+      if(element.phone.toString()===phone.toString()){
+        return element//element.first_name + " " + element.last_name
+      }
+    }
 
-
+    return ""
+  }
   
 
-  
 
+  getPhoneFromName(name){
+    for(i=0;i<this.state.friends.length;i++){
+      element = this.state.friends[i]
+      if(element.first_name+" "+element.last_name===name){
+        return element//element.first_name + " " + element.last_name
+      }
+    }
+
+    return ""
+    
+  }
+
+  getElement(name){
+    for(i=0;i<this.state.friends.length;i++){
+      element = this.state.friends[i]
+      if(element.first_name+" "+element.last_name===name){
+        return element//element.first_name + " " + element.last_name
+      }
+    }
+
+    return ""
+    
+  }
 
 
   render() {
@@ -2128,8 +2312,8 @@ export default class HomeChat extends Component {
               openChat:this.openChat,
               addMessage:this.addMessage,
               addChat:this.addChat,
-              openNewChat:this.openNewChat
-
+              openNewChat:this.openNewChat,
+              resetChatOpened:this.resetChatOpened
             }}
           />
         </View>

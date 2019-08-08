@@ -19,6 +19,7 @@ class TokenAuthMiddleware:
             try:
                 print(headers[b'sec-websocket-protocol'].decode())
                 token_name, token_key = headers[b'sec-websocket-protocol'].decode().split(",")
+                token_key = token_key.replace(" ","")
                 print(token_name,token_key)
                 if token_name == 'Token':
                     token = get_object_or_404(WSTokens, token=token_key)

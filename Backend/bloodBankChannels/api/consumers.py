@@ -34,6 +34,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         try:
+            print(message)
             msgType, receiver, msg = message.split(": ")
             print(msgType, receiver, msg)
             if msgType == "User":
@@ -44,15 +45,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
                         receiver.channelName,
                         {
                             'type': 'chat_message',
-                            'message': "UR: " + self.scope["user"].phone + ": " + msg
+                            'message': "UR: " + str(self.scope["user"].phone) + ": " + str(msg)
                         }
                     )
+
                 if self.user.channelName is not None:
                     await self.channel_layer.send(
                         self.user.channelName,
                         {
                             'type': 'chat_message',
-                            'message': "US: " + receiver.phone + ": " + msg
+                            'message': "US: " + str(receiver.phone) + ": " + str(msg)
                         }
                     )
             elif msgType == "Group":
@@ -64,7 +66,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                         self.user.channelName,
                         {
                             'type': 'chat_message',
-                            'message': "GS: " + group.title + ": " + msg
+                            'message': "GS: " + str(group.title) + ": " + str(msg)
                         }
                     )
 
@@ -73,7 +75,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                         i.channelName,
                         {
                             'type': 'chat_message',
-                            'message': "GR: " + group.title + ": " + self.scope["user"].phone + ": " + msg
+                            'message': "GR: " + str(group.title) + ": " + str(self.scope["user"].phone) + ": " + str(msg)
                         }
                     )
 
@@ -91,7 +93,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             # receiver = CustomUser.objects.get(phone=receiver)
             # Send message to User
 
-        except:
+        except Exception as e:
+            print(e)
             if self.user.channelName is not None:
                 await self.channel_layer.send(
                     self.user.channelName,
