@@ -27,7 +27,8 @@ urlpatterns = [
     path('register/', views.Register.as_view()),
     path('profile/', views.Profile.as_view()),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
-
+    path('broadcast/', views.giveBroadcastView),
+    path('sendbroadcast/', views.sendBroadcastView),
     path('groups/', views.Groups.as_view()),
     path('friend/', views.Friend.as_view()),
     path('userUpdate/<int:pk>/', views.UserUpdateView.as_view()),
