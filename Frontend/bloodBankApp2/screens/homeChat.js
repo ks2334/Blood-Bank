@@ -33,11 +33,7 @@ import {
 import Drawer from "react-native-drawer";
 import DrawerContent from "./DrawerContent";
 import { ListItem, ButtonGroup } from "react-native-elements";
-<<<<<<< HEAD
-import { Camera, Permissions, ImagePicker, AppLoading } from "expo";
-=======
 import { Camera, Permissions, ImagePicker,AppLoading,SecureStore } from "expo";
->>>>>>> 92ca5c6a787329450f0d1d2c2d9e9fd5fc2d460c
 import Toast, { DURATION } from "react-native-easy-toast";
 import ImageView from "react-native-image-view";
 
@@ -1366,7 +1362,6 @@ export class Groups extends Component {
           Your Groups
         </Text>
 
-<<<<<<< HEAD
         {this.props.screenProps.homeState.yourGroups == "" ? (
           <Text
             style={{
@@ -1375,27 +1370,6 @@ export class Groups extends Component {
               paddingBottom: 2,
               fontSize: 15,
               color: "black"
-=======
-        {this.props.screenProps.homeState.yourGroups==""? (<Text style={{
-            paddingLeft: 15,
-            paddingTop: 8,
-            paddingBottom: 2,
-            fontSize: 15,
-            color: "black"
-          }}>You are not a member of any group yet!</Text>) :(this.props.screenProps.homeState.yourGroups.map((l, i) => (
-          <TouchableOpacity
-            onPress={() => {
-              
-              this.props.screenProps.rootNavigation.push("GroupPage", {
-                obj: this.state.data["groupData"][l.title.toString()],
-                token: this.state.token,
-                addMessage:this.props.screenProps.addMessage,
-                type:"group",
-                resetChatOpened:this.props.screenProps.resetChatOpened,
-                hasChatPrivilege:this.props.screenProps.homeState.hasChatPrivilege
-              });
-              this.props.screenProps.openChat("Group",l.title)
->>>>>>> 92ca5c6a787329450f0d1d2c2d9e9fd5fc2d460c
             }}
           >
             You are not a member of any group yet!
@@ -1408,7 +1382,9 @@ export class Groups extends Component {
                   obj: this.state.data["groupData"][l.title.toString()],
                   token: this.state.token,
                   addMessage: this.props.screenProps.addMessage,
-                  type: "group"
+                  type: "group",
+                  resetChatOpened:this.props.screenProps.resetChatOpened,
+                  hasChatPrivilege:this.props.screenProps.homeState.hasChatPrivilege
                 });
                 this.props.screenProps.openChat("Group", l.title);
               }}
@@ -1484,7 +1460,6 @@ export class Groups extends Component {
           Your Chats
         </Text>
 
-<<<<<<< HEAD
         {this.props.screenProps.homeState.yourChats == "" ? (
           <Text
             style={{
@@ -1493,25 +1468,6 @@ export class Groups extends Component {
               paddingBottom: 2,
               fontSize: 15,
               color: "black"
-=======
-        {this.props.screenProps.homeState.yourChats==""? (<Text style={{
-            paddingLeft: 15,
-            paddingTop: 8,
-            paddingBottom: 2,
-            fontSize: 15,
-            color: "black"
-          }}>You do not have any chats yet!</Text>) :(this.props.screenProps.homeState.yourChats.map((l, i) => (
-          <TouchableOpacity
-            onPress={() => {
-              this.props.screenProps.openChat("User",l.title)
-              this.props.screenProps.rootNavigation.navigate("GroupPage", {
-                obj: this.state.data["userData"][l.title.toString()],
-                token: this.state.token,
-                addMessage:this.props.screenProps.addMessage,
-                type:"user",
-                resetChatOpened:this.props.screenProps.resetChatOpened
-              });
->>>>>>> 92ca5c6a787329450f0d1d2c2d9e9fd5fc2d460c
             }}
           >
             You do not have any chats yet!
@@ -1525,7 +1481,8 @@ export class Groups extends Component {
                   obj: this.state.data["userData"][l.title.toString()],
                   token: this.state.token,
                   addMessage: this.props.screenProps.addMessage,
-                  type: "user"
+                  type: "user",
+                  resetChatOpened:this.props.screenProps.resetChatOpened,
                 });
               }}
             >
@@ -1677,7 +1634,6 @@ export class Groups extends Component {
           Your Friends
         </Text>
 
-<<<<<<< HEAD
         {this.props.screenProps.homeState.friends.length === 0 ? (
           <Text
             style={{
@@ -1686,25 +1642,6 @@ export class Groups extends Component {
               paddingBottom: 2,
               fontSize: 15,
               color: "black"
-=======
-        {this.props.screenProps.homeState.friends.length===0? (<Text style={{
-            paddingLeft: 15,
-            paddingTop: 8,
-            paddingBottom: 2,
-            fontSize: 15,
-            color: "black"
-          }}>Please Add some friends</Text>) :(this.props.screenProps.homeState.friends.map((element,i) => (
-          <TouchableOpacity
-            onPress={() => {
-              this.props.screenProps.rootNavigation.navigate("GroupPage", {
-                obj: {"information":element,"messages":[]},
-                token: this.state.token,
-                addMessage:this.props.screenProps.addMessage,
-                type:"new",
-                addChat:this.props.screenProps.addChat,
-                resetChatOpened:this.props.screenProps.resetChatOpened
-              });
->>>>>>> 92ca5c6a787329450f0d1d2c2d9e9fd5fc2d460c
             }}
           >
             Please Add some friends
@@ -1718,7 +1655,8 @@ export class Groups extends Component {
                   token: this.state.token,
                   addMessage: this.props.screenProps.addMessage,
                   type: "new",
-                  addChat: this.props.screenProps.addChat
+                  addChat: this.props.screenProps.addChat,
+                  resetChatOpened:this.props.screenProps.resetChatOpened,
                 });
               }}
             >
@@ -1807,14 +1745,6 @@ export default class HomeChat extends Component {
       friends: [],
       friendRequest: [],
       id: "",
-<<<<<<< HEAD
-      wsToken: "",
-      yourGroups: "",
-      availableGroups: "",
-      yourFriends: "",
-      yourChats: "",
-      allData: ""
-=======
       wsToken : "",
       yourGroups:"",
       availableGroups:"",
@@ -1823,7 +1753,6 @@ export default class HomeChat extends Component {
       allData:"",
       chatOpened:"",
       latestChat:latest
->>>>>>> 92ca5c6a787329450f0d1d2c2d9e9fd5fc2d460c
     };
 
     this.ws = undefined;
@@ -1840,12 +1769,6 @@ export default class HomeChat extends Component {
     this._drawer.open();
   };
 
-<<<<<<< HEAD
-  sort(obj) {
-    currentPhone = this.state.phone;
-    let groupData = {};
-    let userData = {};
-=======
   componentDidMount() {
     this.props.navigation.setParams({
       openDrawer: this.openControlPanel
@@ -2021,7 +1944,6 @@ export default class HomeChat extends Component {
     currentPhone = this.state.phone
     let groupData = {}
     let userData = {}
->>>>>>> 92ca5c6a787329450f0d1d2c2d9e9fd5fc2d460c
 
     obj["userGroups"].forEach(element => {
       groupData[element.title] = {
@@ -2068,12 +1990,6 @@ export default class HomeChat extends Component {
               }
             });
           }
-<<<<<<< HEAD
-
-          groupData[element.group[i]]["unreadMessagesCount"] += 1;
-          if (time > groupData[element.group[i]]["latest"]) {
-            groupData[element.group[i]]["latest"] = time;
-=======
           
           if(time>this.state.latestChat){
             groupData[element.group[i]]["unreadMessagesCount"] += 1
@@ -2081,7 +1997,6 @@ export default class HomeChat extends Component {
           
           if(time>groupData[element.group[i]]["latest"]){
             groupData[element.group[i]]["latest"] = time
->>>>>>> 92ca5c6a787329450f0d1d2c2d9e9fd5fc2d460c
           }
         }
       }
@@ -2102,12 +2017,6 @@ export default class HomeChat extends Component {
               name: "Admin",
               avatar: "https://placeimg.com/140/140/any"
             }
-<<<<<<< HEAD
-          });
-          groupData[element.group[i]]["unreadMessagesCount"] += 1;
-          if (time > groupData[element.group[i]]["latest"]) {
-            groupData[element.group[i]]["latest"] = time;
-=======
           })
 
           if(time>this.state.latestChat){
@@ -2116,7 +2025,6 @@ export default class HomeChat extends Component {
           
           if(time>groupData[element.group[i]]["latest"]){
             groupData[element.group[i]]["latest"] = time
->>>>>>> 92ca5c6a787329450f0d1d2c2d9e9fd5fc2d460c
           }
         }
       }
@@ -2149,16 +2057,11 @@ export default class HomeChat extends Component {
                 name: element.user1.first_name + " " + element.user1.last_name,
                 avatar: ip + element.user1.profilePic
               }
-<<<<<<< HEAD
-            });
-            groupData[element.group]["unreadMessagesCount"] += 1;
-=======
             })
             if(time>this.state.latestChat){
               groupData[element.group]["unreadMessagesCount"] += 1
             }
             
->>>>>>> 92ca5c6a787329450f0d1d2c2d9e9fd5fc2d460c
           }
 
           if (time > groupData[element.group]["latest"]) {
@@ -2186,18 +2089,6 @@ export default class HomeChat extends Component {
               name: element.user1.first_name + " " + element.user1.last_name,
               avatar: ip + element.user1.profilePic
             }
-<<<<<<< HEAD
-          });
-
-          userData[name]["unreadMessagesCount"] += 1;
-          if (time > userData[name]["latest"]) {
-            userData[name]["latest"] = time;
-          }
-        } else if (element.user2.phone === currentPhone) {
-          console.log("You are User2: ", message);
-          name = element.user1.first_name + " " + element.user1.last_name;
-          if (!(name in userData)) {
-=======
           })
           
           if(time>this.state.latestChat){
@@ -2211,7 +2102,6 @@ export default class HomeChat extends Component {
         else if(element.user2.phone === currentPhone){
           name = element.user1.first_name + " " + element.user1.last_name
           if(!(name in userData)){
->>>>>>> 92ca5c6a787329450f0d1d2c2d9e9fd5fc2d460c
             userData[name] = {
               information: element.user1,
               unreadMessagesCount: 0,
@@ -2229,15 +2119,10 @@ export default class HomeChat extends Component {
               name: element.user1.first_name + " " + element.user1.last_name,
               avatar: ip + element.user1.profilePic
             }
-<<<<<<< HEAD
-          });
-          userData[name]["unreadMessagesCount"] += 1;
-=======
           })
           if(time>this.state.latestChat){
             userData[name]["unreadMessagesCount"] += 1
           }
->>>>>>> 92ca5c6a787329450f0d1d2c2d9e9fd5fc2d460c
 
           if (time > userData[name]["latest"]) {
             userData[name]["latest"] = time;
@@ -2303,159 +2188,6 @@ export default class HomeChat extends Component {
     
     console.log(userArray)
 
-<<<<<<< HEAD
-    this.setState({
-      yourGroups: groupArray,
-      yourChats: userArray,
-      allData: { groupData: groupData, userData: userData }
-    });
-  }
-
-  componentDidMount() {
-    this.props.navigation.setParams({
-      openDrawer: this.openControlPanel
-    });
-    fetch(ip + "/profile.json", {
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: "Token " + this.props.navigation.getParam("token")
-      }
-    })
-      .then(response => {
-        obj = JSON.parse(response._bodyInit)[0];
-        this.setState({
-          name: obj.first_name + " " + obj.last_name,
-          email: obj.email,
-          phone: obj.phone,
-          dob: obj.dob,
-          bg: obj.bloodGroup,
-          address: obj.address,
-          profilePic: obj.profilePic,
-          donationDate: obj.donationDate,
-          aadhar: obj.adhaarNo,
-          officeAddress: obj.officeAddress,
-          profession: obj.profession,
-          emergencyContact: obj.emergencyContact,
-          education: obj.education,
-          friends: obj.friends,
-          friendRequest: obj.friendRequests,
-          id: obj.id
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-
-    fetch(ip + "/chatFetch/", {
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: "Token " + this.props.navigation.getParam("token")
-      }
-    })
-      .then(response => {
-        obj = JSON.parse(response._bodyInit);
-        this.setState({
-          wsToken: obj["wsToken"]["token"],
-          availableGroups: obj["availableGroups"]
-        });
-        this.sort(obj);
-
-        this.ws = new WebSocket(wsip + "/ws/chat/appRoom/", [
-          "Token",
-          this.state.wsToken
-        ]);
-
-        this.ws.onopen = () => {
-          // connection opened
-          console.log("Websocket Opened");
-          //this.ws.send('something'); // send a message
-        };
-
-        this.ws.onmessage = e => {
-          // a message was received
-          console.log("Websocket Message Received");
-          console.log(e.data);
-
-          msg = e.data;
-          msg = msg.split(": ");
-          console.log(msg);
-
-          /*setTimeout(()=>{
-          this.addMessage("A+",{
-            _id: 1,
-            text: "Testinngggggg",
-            createdAt: new Date(),
-            user: {
-              _id: 2,
-              name: "Admin",
-              avatar: "https://placeimg.com/140/140/any"
-            }
-          })
-
-          this.props.screenProps.update()
-          
-          console.log("Timer Done")
-        },20000)*/
-        };
-
-        this.ws.onerror = e => {
-          // an error occurred
-          console.log("Websocket Error");
-          console.log(e.message);
-        };
-
-        this.ws.onclose = e => {
-          // connection closed
-          console.log("Websocket Closed");
-          //console.log(e.code);
-        };
-
-        //console.log(this.state.yourGroups)
-        //console.log(this.state.yourChats)
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-
-  static navigationOptions = ({ navigation }) => {
-    return {
-      headerTitle: "Janakalyan Blood Bank",
-      headerLeft: (
-        <TouchableOpacity
-          style={{ marginLeft: 10 }}
-          onPress={navigation.getParam("openDrawer")}
-        >
-          <Entypo name="menu" size={25} color={"white"} />
-        </TouchableOpacity>
-      ),
-      headerRight: (
-        <TouchableOpacity
-          style={{ marginRight: 10 }}
-          onPress={navigation.getParam("openDrawer")}
-        >
-          <FeatherIcon name="search" size={25} color={"white"} />
-        </TouchableOpacity>
-      ),
-      headerStyle: {
-        backgroundColor: "#660000"
-      },
-      headerTintColor: "#fff",
-      headerTitleStyle: {
-        fontWeight: "bold",
-        color: "#fff"
-      }
-    };
-  };
-
-  openChat = (type, name) => {
-    if (type === "Group") {
-      groupArray = this.state.yourGroups;
-=======
     this.setState({yourGroups:groupArray,yourChats:userArray});
 
 
@@ -2492,18 +2224,12 @@ export default class HomeChat extends Component {
   openChat = (type,name) => {
     if(type==="Group"){
       groupArray = this.state.yourGroups
->>>>>>> 92ca5c6a787329450f0d1d2c2d9e9fd5fc2d460c
       groupArray.forEach(element => {
         if (element.title === name) {
           element.messageCount = 0;
         }
       });
 
-<<<<<<< HEAD
-      this.setState({ yourGroups: groupArray });
-    } else if (type === "User") {
-      userArray = this.state.yourChats;
-=======
       allData =this.state.allData
       allData["groupData"][name]["unreadMessagesCount"] = 0
 
@@ -2511,25 +2237,18 @@ export default class HomeChat extends Component {
     }
     else if(type==="User"){
       userArray = this.state.yourChats
->>>>>>> 92ca5c6a787329450f0d1d2c2d9e9fd5fc2d460c
       userArray.forEach(element => {
         if (element.title === name) {
           element.messageCount = 0;
         }
       });
 
-<<<<<<< HEAD
-      this.setState({ yourChats: userArray });
-    }
-  };
-=======
       allData =this.state.allData
       allData["userData"][name]["unreadMessagesCount"] = 0
 
       this.setState({yourChats:userArray,chatOpened:name,allData:allData})
     }
   }
->>>>>>> 92ca5c6a787329450f0d1d2c2d9e9fd5fc2d460c
 
   addChat = element => {
     userArray = this.state.yourChats;
@@ -2552,12 +2271,6 @@ export default class HomeChat extends Component {
     this.setState({ allData: allData, yourChats: userArray });
   };
 
-<<<<<<< HEAD
-  addMessage = (type, name, message) => {
-    allData = this.state.allData;
-    allData[type][name].messages.push(message);
-    allData[type][name].unreadMessagesCount += 1;
-=======
   addMessage = (type,name,message,send=false)=>{
     if(!(name in this.state.allData[type])){
       this.addChat(this.getElement(name))
@@ -2565,7 +2278,6 @@ export default class HomeChat extends Component {
     allData = this.state.allData 
     allData[type][name].messages.push(message)
     //allData[type][name].unreadMessagesCount += 1
->>>>>>> 92ca5c6a787329450f0d1d2c2d9e9fd5fc2d460c
     this.props.navigation.setParams({
       obj: this.state.allData[type][name],
       flag: true
@@ -2582,10 +2294,8 @@ export default class HomeChat extends Component {
     //this.ws.send
 
     //this.props.screenProps.update()
-<<<<<<< HEAD
   };
-=======
-  }
+  
 
   
   getNameFromPhone(phone){
@@ -2625,7 +2335,6 @@ export default class HomeChat extends Component {
     
   }
 
->>>>>>> 92ca5c6a787329450f0d1d2c2d9e9fd5fc2d460c
 
   render() {
     return (
@@ -2659,18 +2368,11 @@ export default class HomeChat extends Component {
               rootNavigation: this.props.navigation,
               token: this.props.navigation.getParam("token"),
               homeState: this.state,
-<<<<<<< HEAD
-              openChat: this.openChat,
-              addMessage: this.addMessage,
-              addChat: this.addChat,
-              openNewChat: this.openNewChat
-=======
               openChat:this.openChat,
               addMessage:this.addMessage,
               addChat:this.addChat,
               openNewChat:this.openNewChat,
               resetChatOpened:this.resetChatOpened
->>>>>>> 92ca5c6a787329450f0d1d2c2d9e9fd5fc2d460c
             }}
           />
         </View>
