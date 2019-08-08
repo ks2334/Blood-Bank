@@ -41,7 +41,7 @@ class Group(models.Model):
     image = models.ImageField(upload_to="media/", blank=True, null=True)
     pendingGroupRequest = models.ManyToManyField(CustomUser, related_name="user_content_type", blank=True)
     admin = models.ForeignKey(CustomUser, related_name="subadmin_user", on_delete=models.CASCADE, null=True)
-
+    ishidden = models.BooleanField(default=False,editable=True)
     def __str__(self):
         return self.title
 
