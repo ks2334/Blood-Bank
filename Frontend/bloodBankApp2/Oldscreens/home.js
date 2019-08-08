@@ -1507,14 +1507,7 @@ export default class Home extends Component {
           <Entypo name="menu" size={25} color={"white"} />
         </TouchableOpacity>
       ),
-      headerRight: (
-        <TouchableOpacity
-          style={{ marginRight: 10 }}
-          onPress={navigation.getParam("openDrawer")}
-        >
-          <FeatherIcon name="search" size={25} color={"white"} />
-        </TouchableOpacity>
-      ),
+
       headerStyle: {
         backgroundColor: "#660000"
       },

@@ -71,13 +71,9 @@ export default class DrawerContent extends React.Component {
           />
         )
       },
+
       {
         id: 3,
-        title: "Contact Us",
-        icon: <AntDesign name="mail" size={25} color={"gray"} />
-      },
-      {
-        id: 4,
         title: "Invite Friends",
         icon: <AntDesign name="plus" size={25} color={"gray"} />
       }
@@ -165,10 +161,6 @@ export default class DrawerContent extends React.Component {
                     this.props.close();
                   }
                   if (item.id === 3) {
-                    this.props.nav.navigate("Contact");
-                    this.props.close();
-                  }
-                  if (item.id === 4) {
                     onShare();
                   }
                 }}

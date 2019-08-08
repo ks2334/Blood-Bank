@@ -87,16 +87,18 @@ const styles = StyleSheet.create({
     color: "#FFFFFF"
   },
   slogan: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: "600",
     color: "#228B22",
+    textAlign: "center",
     marginTop: 10
   },
   descriptionContent: {
     padding: 30
   },
   description: {
-    fontSize: 18,
+    fontSize: 20,
+    fontWeight: "600",
     textAlign: "center",
     marginTop: 10,
     color: "#FFFFFF"
