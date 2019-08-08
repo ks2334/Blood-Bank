@@ -20,14 +20,21 @@ from rest_framework.views import APIView
 from .serializers import *
 from django.utils.crypto import get_random_string
 from django.shortcuts import get_object_or_404
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 
 # Create your views here.
 
+def send_push_message(token, message, extra=None):
+    response = PushClient().publish(
+        PushMessage(to=token,
+                    body=message,
+                    data=extra))
+
 
 def index(request):
-    if request.user.is_authenticated:
-
+    if request.user.is_authenticated and request.user.privilgeLevel == 1:
         return redirect("/admin-panel")
     return render(request, 'login.html')
 
@@ -263,9 +270,41 @@ class AddGroupPost(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = GroupPostSerializerAdmin(data=request.data)
-        print(request.data)
         if serializer.is_valid():
             serializer.save()
+            channel_layer = get_channel_layer()
+            data = dict(request.data)
+
+            image = "/media/media/" +str(data["image"][0]).replace(" ","_")
+            print(image)
+            for i in data["group"]:
+                group = Group.objects.get(id=i)
+                for j in CustomUser.objects.filter(group__id=i):
+                    if j.channelName is not None:
+                        if(image=="/media/media/"):
+                            async_to_sync(channel_layer.send)(
+                                j.channelName,
+                                {
+                                    'type': 'chat_message',
+                                    'message': "GR: " + str(group.title) + ": Admin" + ": " + str(
+                                        data["postDetails"][0])
+                                }
+                            )
+                        else:
+                            async_to_sync(channel_layer.send)(
+                                j.channelName,
+                                {
+                                    'type': 'chat_message',
+                                    'message': "GR: " + str(group.title) + ": Admin" + ": " + str(
+                                        data["postDetails"][0]) + ": Image: " + image
+                                }
+                            )
+                    if j.pushToken is not None and j.pushToken != "":
+                        try:
+                            send_push_message(j.pushToken, "You Have New Messages in Group: " + str(group.title))
+                        except:
+                            print("Unable to send notification")
+
             return adminPanel(request)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -302,10 +341,33 @@ class createFormPost(APIView):
         if serializer.is_valid():
             serializer.save()
             requests = []
-            groups = Group.objects.filter(admin=request.user)
+            groups = Group.objects.filter(admin=request.user.id)
             posts = FormPost.objects.all()
             for group in groups:
                 requests += group.pendingGroupRequest.all()
+
+            channel_layer = get_channel_layer()
+            data = dict(request.data)
+            for i in data["group"]:
+                group = Group.objects.get(id=i)
+                for j in CustomUser.objects.filter(group__id=i):
+                    if j.channelName is not None:
+                        print(group.admin.phone)
+                        async_to_sync(channel_layer.send)(
+                            j.channelName,
+                            {
+                                'type': 'chat_message',
+                                'message': "GR: " + str(group.title) + ": Admin" + ": " + str(
+                                    data["postDetails"][0]) + ": Form: " + str(FormPost.objects.last().id)
+                            }
+                        )
+                    if j.pushToken is not None and j.pushToken != "":
+                        try:
+                            print(j)
+                            send_push_message(j.pushToken, "You Have New Messages in Group: " + str(group.title))
+                        except:
+                            print("Unable to send notification")
+
             return render(request, 'admin-panel.html', {'requests': requests, 'groups': groups, 'posts': posts})
         return HttpResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

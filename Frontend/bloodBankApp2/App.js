@@ -23,14 +23,7 @@ export default class App extends React.Component {
     this.setState({})
   }
   
-  componentWillUnmount(){
-    console.log("Unmounted")
-    SecureStore.setItemAsync("latestChat", new Date()).then(
-      response => {
-        console.log("Latest Date Saved");
-      }
-    );
-  }
+  
 
   render() {
     return <Screens screenProps={{

@@ -432,7 +432,7 @@ export class Profile extends Component {
               {this.props.screenProps.homeState.donationDate}
             </Text>
             <TouchableOpacity
-              style={{ marginLeft: 10 }}
+              style={{ borderWidth:1,borderRadius:5,padding:10,backgroundColor:"rgb(173, 10, 10)",paddingHorizontal:50 }}
               onPress={() => {
                 fetch(
                   ip +
@@ -450,11 +450,9 @@ export class Profile extends Component {
                   }
                 )
                   .then(response => {
-                    console.log(response);
-
                     if (response.status === 200) {
                       alert(
-                        "Congratulations! you are someone's hero !\nYour next donation date will be reset soon !"
+                        "Congratulations! You are someone's hero !\nYour next donation date will be reset soon !"
                       );
                       token = response._bodyInit.toString();
                       token = token.substring(10, token.length - 2);
@@ -470,14 +468,11 @@ export class Profile extends Component {
                 style={{
                   alignSelf: "flex-start",
                   fontSize: 20,
-                  marginLeft: 10,
-                  marginTop: 12,
-                  marginBottom: 3,
                   fontWeight: "bold",
-                  color: "red"
+                  color: "white"
                 }}
               >
-                I Donated Blood Today !
+                I Donated Blood Today
               </Text>
             </TouchableOpacity>
 
@@ -1721,12 +1716,6 @@ export default class HomeChat extends Component {
   constructor(props) {
     super(props);
     self = this.openControlPanel;
-    let latest = "";
-    SecureStore.getItemAsync("latestChat").then(response => {
-      latest = response;
-      console.log("Response",response)
-    });
-
 
     this.state = {
       name: "",
@@ -1752,7 +1741,7 @@ export default class HomeChat extends Component {
       yourChats:"",
       allData:"",
       chatOpened:"",
-      latestChat:latest
+
     };
 
     this.ws = undefined;
@@ -1822,7 +1811,7 @@ export default class HomeChat extends Component {
           obj = JSON.parse(response._bodyInit);
           this.setState({ wsToken:obj["wsToken"]["token"], availableGroups:obj["availableGroups"]});
           this.sort(obj)
-
+          
           this.ws = new WebSocket(wsip + '/ws/chat/appRoom/',["Token",this.state.wsToken]);
 
           allData = this.state.allData
@@ -1841,7 +1830,7 @@ export default class HomeChat extends Component {
 
               msg[1] = this.getNameFromPhone(msg[1])
               name = msg[1].first_name + " " + msg[1].last_name
-              console.log((name in allData["userData"]))
+              //console.log((name in allData["userData"]))
               if(!(name in allData["userData"])){
                 this.addChat(msg[1])
               }
@@ -1874,7 +1863,60 @@ export default class HomeChat extends Component {
             }
 
             else if(msg[0]==="GR"){
+              groupName = msg[1]
+              if(msg[2]==="Admin"){
+                senderName = "Admin"
+              }
+              else{
+                u = this.getNameFromPhoneGroup(msg[2],groupName)
+                senderName = u.first_name+" "+u.last_name
+              }
               
+              message = msg[3]
+              console.log(msg.length)
+              if(msg.length===4){
+                this.addMessage("groupData",groupName,{
+                  _id: Math.random().toString(36).substring(2),
+                  text: message,
+                  createdAt: new Date(),
+                  user: {
+                    _id: 2,
+                    name: senderName,
+                  }
+                })
+              }
+              else if(msg.length===6){
+                if(msg[4]==="Image"){
+                  this.addMessage("groupData",groupName,{
+                    _id: Math.random().toString(36).substring(2),
+                    text: message,
+                    image:ip+msg[4],
+                    createdAt: new Date(),
+                    user: {
+                      _id: 2,
+                      name: senderName,
+                    }
+                  })
+                }
+                else if(msg[4]==="Form"){
+                  this.addMessage("groupData",groupName,{
+                    _id: Math.random().toString(36).substring(2),
+                    text: message,
+                    quickReplies:{id:msg[5]},
+                    createdAt: new Date(),
+                    user: {
+                      _id: 2,
+                      name: senderName,
+                    }
+                  })
+                }
+                
+              }
+              
+              
+              this.sortChatOrder()
+              this.incChatCounter("Group",groupName)
+
             }
 
             else if(msg[0]==="US"){
@@ -1886,24 +1928,6 @@ export default class HomeChat extends Component {
             }
 
             this.props.screenProps.update()
-
-            /*setTimeout(()=>{
-          this.addMessage("A+",{
-            _id: 1,
-            text: "Testinngggggg",
-            createdAt: new Date(),
-            user: {
-              _id: 2,
-              name: "Admin",
-              avatar: "https://placeimg.com/140/140/any"
-            }
-          })
-
-          this.props.screenProps.update()
-          
-          console.log("Timer Done")
-        },20000)*/
-
           };
           
           this.ws.onerror = e => {
@@ -1911,22 +1935,12 @@ export default class HomeChat extends Component {
             console.log("Websocket Error")
             console.log(e.message);
             this.ws = new WebSocket(wsip + '/ws/chat/appRoom/',["Token",this.state.wsToken]);
-            SecureStore.setItemAsync("latestChat", new Date()).then(
-              response => {
-                console.log("Latest Date Saved");
-              }
-            );
           };
           
           this.ws.onclose = e => {
             // connection closed
             console.log("Websocket Closed")
             this.ws = new WebSocket(wsip + '/ws/chat/appRoom/',["Token",this.state.wsToken]);
-            SecureStore.setItemAsync("latestChat", new Date()).then(
-              response => {
-                console.log("Latest Date Saved");
-              }
-            );
             //console.log(e.code);
           };
   
@@ -2011,7 +2025,7 @@ export default class HomeChat extends Component {
             _id: 1,
             text: message,
             createdAt: time,
-            quickReplies: {},
+            quickReplies: {"id":element.id},
             user: {
               _id: 2,
               name: "Admin",
@@ -2186,7 +2200,6 @@ export default class HomeChat extends Component {
       return b.latest - a.latest;
     });
     
-    console.log(userArray)
 
     this.setState({yourGroups:groupArray,yourChats:userArray});
 
@@ -2207,16 +2220,23 @@ export default class HomeChat extends Component {
       userArray.forEach(element => {
         
         if(element.title===name && this.state.chatOpened !== name){
-          console.log(element.title)
           element.messageCount += 1;
-          console.log(element.messageCount)
           allData["userData"][name]["unreadMessagesCount"] += 1
         }
       });
-
-      
-
       this.setState({yourChats:userArray,allData:allData})
+    }
+    else if(type==="Group"){
+      allData =this.state.allData
+      groupArray = this.state.yourGroups
+      groupArray.forEach(element => {
+        
+        if(element.title===name && this.state.chatOpened !== name){
+          element.messageCount += 1;
+          allData["groupData"][name]["unreadMessagesCount"] += 1
+        }
+      });
+      this.setState({yourGroups:groupArray,allData:allData})
     }
     
   }
@@ -2282,6 +2302,7 @@ export default class HomeChat extends Component {
       obj: this.state.allData[type][name],
       flag: true
     });
+    allData[type][name].latest = new Date()
     this.setState({ allData: allData });
 
 
@@ -2291,12 +2312,34 @@ export default class HomeChat extends Component {
         "message":"User: "+ phone.phone + ": "+ message.text
       }))
     }
-    //this.ws.send
+    else if(type==="groupData" && send){
+      this.ws.send(JSON.stringify({
+        "message":"Group: "+ name + ": "+ message.text
+      }))
+    }
+
+    SecureStore.setItemAsync("latestChat", (new Date()).toString()).then(
+      response => {
+        console.log("Latest Date Saved");
+      }
+    );
 
     //this.props.screenProps.update()
   };
   
 
+  getNameFromPhoneGroup(phone,groupName){
+    allData = this.state.allData
+    users = allData["groupData"][groupName].information.user
+    for(i=0;i<users.length;i++){
+      element = users[i]
+      if(element.phone.toString()===phone.toString()){
+        return element//element.first_name + " " + element.last_name
+      }
+    }
+
+    return ""
+  }
   
   getNameFromPhone(phone){
     for(i=0;i<this.state.friends.length;i++){
