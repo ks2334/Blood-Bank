@@ -4,6 +4,7 @@ import {
   AppRegistry,
   Text,
   View,
+  Share,
   StyleSheet,
   TouchableOpacity,
   TouchableHighlight,
@@ -28,6 +29,26 @@ export default class DrawerContent extends React.Component {
   }
 
   render() {
+    onShare = async () => {
+      try {
+        const result = await Share.share({
+          message:
+            'Try some social cause in a different way -\n follow the link to download "Jankalyan Blood Bank App, pune" - \n https://play.google.com/store/apps/details?id=com.jankalyan.bloodBank'
+        });
+
+        if (result.action === Share.sharedAction) {
+          if (result.activityType) {
+            // shared with activity type of result.activityType
+          } else {
+            // shared
+          }
+        } else if (result.action === Share.dismissedAction) {
+          // dismissed
+        }
+      } catch (error) {
+        alert(error.message);
+      }
+    };
     const list = [
       {
         id: 0,
@@ -50,19 +71,13 @@ export default class DrawerContent extends React.Component {
           />
         )
       },
+
       {
         id: 3,
-        title: "Contact Us",
-        icon: <AntDesign name="mail" size={25} color={"gray"} />
-      },
-      {
-        id: 4,
         title: "Invite Friends",
         icon: <AntDesign name="plus" size={25} color={"gray"} />
       }
     ];
-
-    
 
     return (
       <View style={styles.container}>
@@ -90,8 +105,8 @@ export default class DrawerContent extends React.Component {
                 />
               )}
               <View>
-              <Text style={styles.name}>{this.props.name}</Text>
-                
+                <Text style={styles.name}>{this.props.name}</Text>
+
                 <Text style={styles.description}>
                   Blood Group: {this.props.bloodGroup}
                 </Text>
@@ -146,24 +161,7 @@ export default class DrawerContent extends React.Component {
                     this.props.close();
                   }
                   if (item.id === 3) {
-                    this.props.nav.navigate("Contact");
-                    this.props.close();
-                  }
-                  if (item.id === 4) {
-                    Linking.canOpenURL(
-                      "https://play.google.com/store/apps/details?id=com.jankalyan.bloodBank"
-                    ).then(supported => {
-                      if (supported) {
-                        Linking.openURL(
-                          "https://play.google.com/store/apps/details?id=com.jankalyan.bloodBank"
-                        );
-                      } else {
-                        console.log(
-                          "Don't know how to open URI: " +
-                            "https://play.google.com/store/apps/details?id=com.jankalyan.bloodBank"
-                        );
-                      }
-                    });
+                    onShare();
                   }
                 }}
               >
