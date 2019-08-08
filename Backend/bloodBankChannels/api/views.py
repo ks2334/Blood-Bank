@@ -32,7 +32,6 @@ def send_push_message(token, message, extra=None):
                     body=message,
                     data=extra))
 
-
 def index(request):
     if request.user.is_authenticated and request.user.privilgeLevel == 1:
         return redirect("/admin-panel")
@@ -233,7 +232,6 @@ class SetNotificationToken(APIView):
         user = request.user
         try:
             token = request.data["token"]
-            print(token)
             user.pushToken = token
             user.save()
             return Response(status=status.HTTP_200_OK)
@@ -317,7 +315,6 @@ class CreateGroup(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = GroupSerializer(data=request.data)
-        print(request.data)
         if serializer.is_valid():
             serializer.save()
             return redirect("../admin-panel")
@@ -337,7 +334,6 @@ class createFormPost(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = FormPostSerializer(data=request.data)
-        print(request.data)
         if serializer.is_valid():
             serializer.save()
             requests = []
@@ -435,7 +431,6 @@ def adminPanel(request):
         posts = []
         for group in groups:
             posts += FormPost.objects.filter(group=group)
-        print(posts)
         for group in groups:
             requests += group.pendingGroupRequest.all()
 
@@ -524,10 +519,8 @@ def resetPassword(request):
         user = CustomUser.objects.filter(phone=phone).first()
         user.otp = random.randint(100000, 999999)
         user.save()
-        print(user.phone)
         resp = sendSMS("DEr70itGrxI-ik05lJzaFlxONNzyD5uYTHYKWzwWUW", user.phone, "TXTLCL",
                        "your otp is : " + str(user.otp))
-        print(resp)
         return render(request, 'password_confirm.html',
                       {"a": "Password reset otp has been sent on your phone ...", "phone": user.phone})
     return render(request, 'reset_password.html', {"msg": "This user is not on our records ..."})
@@ -631,3 +624,29 @@ class getWSToken(APIView):
 
         serializer = WSTokenSerializer(w, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+def giveBroadcastView(request):
+    groups = Group.objects.filter(admin=request.user)
+    return render(request, "broadcast.html", {'groups': groups})
+
+
+def sendBroadcastView(request):
+    title = request.POST['title']
+    text = request.POST['textbody']
+    groupsid = request.POST.getlist('groupsend')
+    groupsid = list(map(int, groupsid))
+    groupslist = Group.objects.filter(admin=request.user)
+    groups = []
+    users =[]
+    for i in groupsid:
+        groups += Group.objects.filter(id=i)
+    for g in groups:
+        users += g.user.all()
+    users = list(set(users))
+    for user in users:
+        resp = sendSMS("7/E+qrsb/mk-VfKW5dQQBz6thbwQwiUt21rNUMnwKl", user.phone, "TXTLCL",
+                       title + " " + text)
+        print(resp)
+        pass
+    return render(request, "broadcast.html", {'groups': groupslist})
