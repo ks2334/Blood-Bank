@@ -70,7 +70,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                         }
                     )
 
-                for i in CustomUser.objects.filter(group__id=group.id).exclude(channelName=None):
+                for i in CustomUser.objects.filter(group__id=group.id).exclude(channelName=None).exclude(phone=self.scope["user"].phone):
                     await self.channel_layer.send(
                         i.channelName,
                         {

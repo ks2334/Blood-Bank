@@ -115,6 +115,8 @@ export default class GroupPageChat extends Component {
 
   renderQuickReply = props => {
     let text = "";
+    let id = props["currentMessage"]["quickReplies"]["id"]
+    formData = new FormData();
     return (
       <View style={{marginBottom:13}}>
         
@@ -130,7 +132,8 @@ export default class GroupPageChat extends Component {
             borderRightWidth: 0.5,
             borderTopWidth:0.3,
             borderRadius: 5,
-            paddingVertical: 10
+            paddingVertical: 10,
+            marginBottom:2
           }}
           placeholder="Enter your Response ..."
           autoCapitalize="none"
@@ -140,7 +143,31 @@ export default class GroupPageChat extends Component {
           title="Send Response"
           style={{ color: "#00f", marginBottom: 10 }}
           onPress={() => {
-            alert("Response Sent");
+            formData.append("time", text);
+            formData.append("id", id);
+            fetch(ip + "/send-response/", {
+              method: "post",
+              headers: {
+                "Content-Type": "multipart/form-data",
+                Accept: "application/json",
+                Authorization: "Token " + this.state.token
+              },
+              body: formData,
+
+              credentials: "include"
+            })
+              .then(response => {
+                if (response.status === 201) {
+                  alert(
+                    "We have received your response! Thank You!"
+                  );
+                } else {
+                  alert("Please Try Again!");
+                }
+              })
+              .catch(err => {
+                alert(err);
+              });
           }}
         />
       </View>
@@ -207,7 +234,8 @@ export default class GroupPageChat extends Component {
     }));
 
     if(this.state.type==="group"){
-      this.props.navigation.state.params.addMessage("groupData",this.state.data.information.title,messages[0])
+      
+      this.props.navigation.state.params.addMessage("groupData",this.state.data.information.title,messages[0],send=true)
     }
     else if(this.state.type==="user"){
       this.props.navigation.state.params.addMessage("userData",this.state.data.information.first_name+" "+this.state.data.information.last_name,messages[0],send=true)

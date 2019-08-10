@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import *
+from channels.layers import get_channel_layer
 
 
 class FriendFieldSerializer(serializers.ModelSerializer):

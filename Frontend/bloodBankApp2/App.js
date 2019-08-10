@@ -23,12 +23,21 @@ export default class App extends React.Component {
     this.setState({});
   };
 
+<<<<<<< HEAD
   componentWillUnmount() {
     console.log("Unmounted");
     SecureStore.setItemAsync("latestChat", new Date()).then(response => {
       console.log("Latest Date Saved");
     });
   }
+=======
+  update = ()=>{
+    console.log("Update Called")
+    this.setState({})
+  }
+  
+  
+>>>>>>> 97db116060066d5d1e5dc50ba2eca8e1d0b95f21
 
   render() {
     return (
