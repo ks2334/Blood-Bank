@@ -297,7 +297,7 @@ class createFormPost(APIView):
         if serializer.is_valid():
             serializer.save()
             requests = []
-            groups = Group.objects.filter(admin=request.user)
+            groups = Group.objects.filter(admin=request.user.id)
             posts = FormPost.objects.all()
             for group in groups:
                 requests += group.pendingGroupRequest.all()
@@ -586,4 +586,4 @@ def sendBroadcastView(request):
                        title + " " + text)
         print(resp)
         pass
-    return render(request, "broadcast.html", {'groups': groupslist})
+    return redirect("/admin-panel")
