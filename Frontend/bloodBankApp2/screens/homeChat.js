@@ -1791,8 +1791,6 @@ export default class HomeChat extends Component {
           id: obj.id,
           hasChatPrivilege:obj.hasChatPrivilege
         });
-
-        console.log("Chat",this.state.hasChatPrivilege)
       })
       .catch(err => {
         console.log(err);
@@ -1809,8 +1807,9 @@ export default class HomeChat extends Component {
       })
         .then(response => {
           obj = JSON.parse(response._bodyInit);
-          this.setState({ wsToken:obj["wsToken"]["token"], availableGroups:obj["availableGroups"]});
+          this.setState({ wsToken:obj["wsToken"]["token"], availableGroups:obj["availableGroups"],userGroups:obj["userGroups"]});
           this.sort(obj)
+          //this.saveMessages()
           
           this.ws = new WebSocket(wsip + '/ws/chat/appRoom/',["Token",this.state.wsToken]);
 
@@ -1818,6 +1817,7 @@ export default class HomeChat extends Component {
 
           this.ws.onopen = () => {
             console.log("Websocket Opened")
+            this.setState({websocketConnected:true})
             //this.ws.send('something'); // send a message
           };
           
@@ -1934,13 +1934,17 @@ export default class HomeChat extends Component {
             // an error occurred
             console.log("Websocket Error")
             console.log(e.message);
+            this.setState({websocketConnected:false})
             this.ws = new WebSocket(wsip + '/ws/chat/appRoom/',["Token",this.state.wsToken]);
+            alert("Could not send/receive Messages!Please restart the app or try again after sometime!")
           };
           
           this.ws.onclose = e => {
             // connection closed
             console.log("Websocket Closed")
+            this.setState({websocketConnected:false})
             this.ws = new WebSocket(wsip + '/ws/chat/appRoom/',["Token",this.state.wsToken]);
+            alert("Could not send/receive Messages!Please restart the app or try again after sometime!")
             //console.log(e.code);
           };
   
@@ -1952,9 +1956,62 @@ export default class HomeChat extends Component {
         });
   }
 
+  encryptName(name){
+    name = name.replace(" ","_")
+    name = name.replace("+","plusSymbol")
+    name = name.replace("-","minusSymbol")
+    name = name.replace("(","openBracketSymbol")
+    name = name.replace(")","closeBracketSymbol")
+    name = name.replace("/","slashSymbol")
+    name = name.replace(":","colonSymbol")
+    return(name)
+  }
+
+  decryptName(name){
+    name = name.replace("_"," ")
+    name = name.replace("plusSymbol","+")
+    name = name.replace("minusSymbol","-")
+    name = name.replace("openBracketSymbol","(")
+    name = name.replace("closeBracketSymbol",")")
+    name = name.replace("slashSymbol","/")
+    name = name.replace("colonSymbol",":")
+    return(name)
+  }
+
+  
+
+  async retrieveLatestDates(){
+    latestDates = {}
+
+    for(i=0;i<this.state.userGroups.length;i++){
+      element = this.state.userGroups[i]
+      name = element.title
+      response = await SecureStore.getItemAsync(this.encryptName(name))
+      if(response !== null){
+        latestDates[name] = JSON.parse(response)["date"]
+        console.log(name,JSON.parse(response))
+      }
+    }
 
 
-  sort(obj){
+    for(i=0;i<this.state.friends.length;i++){
+      element = this.state.friends[i]
+      name = element.first_name + " " + element.last_name
+      response = await SecureStore.getItemAsync(this.encryptName(name))
+      if(response !== null){
+        latestDates[name] = JSON.parse(response)["date"]
+        console.log(name,JSON.parse(response))
+      }
+    }
+
+    this.setState({latestDates:latestDates})
+    console.log("Latest Dates: ",this.state.latestDates)
+  }
+
+
+  async sort(obj){
+    await this.retrieveLatestDates()
+
     currentPhone = this.state.phone
     let groupData = {}
     let userData = {}
@@ -2004,11 +2061,17 @@ export default class HomeChat extends Component {
               }
             });
           }
-          
-          if(time>this.state.latestChat){
+
+
+          if(element.group[i] in this.state.latestDates){
+            if(time>this.state.latestDates[element.group[i]]){
+              groupData[element.group[i]]["unreadMessagesCount"] += 1
+            }
+          }
+          else{
             groupData[element.group[i]]["unreadMessagesCount"] += 1
           }
-          
+    
           if(time>groupData[element.group[i]]["latest"]){
             groupData[element.group[i]]["latest"] = time
           }
@@ -2033,7 +2096,12 @@ export default class HomeChat extends Component {
             }
           })
 
-          if(time>this.state.latestChat){
+          if(element.group[i] in this.state.latestDates){
+            if(time>this.state.latestDates[element.group[i]]){
+              groupData[element.group[i]]["unreadMessagesCount"] += 1
+            }
+          }
+          else{
             groupData[element.group[i]]["unreadMessagesCount"] += 1
           }
           
@@ -2075,6 +2143,15 @@ export default class HomeChat extends Component {
             if(time>this.state.latestChat){
               groupData[element.group]["unreadMessagesCount"] += 1
             }
+
+            if(element.group in this.state.latestDates){
+              if(time>this.state.latestDates[element.group]){
+                groupData[element.group]["unreadMessagesCount"] += 1
+              }
+            }
+            else{
+              groupData[element.group]["unreadMessagesCount"] += 1
+            }
             
           }
 
@@ -2105,9 +2182,10 @@ export default class HomeChat extends Component {
             }
           })
           
-          if(time>this.state.latestChat){
+          /*if(time>this.state.latestChat){
             userData[name]["unreadMessagesCount"] += 1
-          }
+          }*/
+
           if(time>userData[name]["latest"]){
             userData[name]["latest"] = time
           }
@@ -2134,7 +2212,13 @@ export default class HomeChat extends Component {
               avatar: ip + element.user1.profilePic
             }
           })
-          if(time>this.state.latestChat){
+      
+          if(name in this.state.latestDates){
+            if(time>this.state.latestDates[name]){
+              userData[name]["unreadMessagesCount"] += 1
+            }
+          }
+          else{
             userData[name]["unreadMessagesCount"] += 1
           }
 
@@ -2158,6 +2242,8 @@ export default class HomeChat extends Component {
 
   }
 
+
+  
 
   sortChatOrder(){
     groupArray = []
@@ -2247,6 +2333,9 @@ export default class HomeChat extends Component {
       groupArray.forEach(element => {
         if (element.title === name) {
           element.messageCount = 0;
+          SecureStore.setItemAsync(this.encryptName(name),JSON.stringify({
+            "date":new Date()
+          }))
         }
       });
 
@@ -2260,6 +2349,9 @@ export default class HomeChat extends Component {
       userArray.forEach(element => {
         if (element.title === name) {
           element.messageCount = 0;
+          SecureStore.setItemAsync(this.encryptName(name),JSON.stringify({
+            "date":new Date()
+          }))
         }
       });
 
@@ -2292,38 +2384,42 @@ export default class HomeChat extends Component {
   };
 
   addMessage = (type,name,message,send=false)=>{
-    if(!(name in this.state.allData[type])){
-      this.addChat(this.getElement(name))
-    }
-    allData = this.state.allData 
-    allData[type][name].messages.push(message)
-    //allData[type][name].unreadMessagesCount += 1
-    this.props.navigation.setParams({
-      obj: this.state.allData[type][name],
-      flag: true
-    });
-    allData[type][name].latest = new Date()
-    this.setState({ allData: allData });
-
-
-    if(type==="userData" && send){
-      phone = this.getPhoneFromName(name)
-      this.ws.send(JSON.stringify({
-        "message":"User: "+ phone.phone + ": "+ message.text
-      }))
-    }
-    else if(type==="groupData" && send){
-      this.ws.send(JSON.stringify({
-        "message":"Group: "+ name + ": "+ message.text
-      }))
-    }
-
-    SecureStore.setItemAsync("latestChat", (new Date()).toString()).then(
-      response => {
-        console.log("Latest Date Saved");
+    console.log("Connection: ",this.state.websocketConnected)
+    if(this.state.websocketConnected){
+      if(!(name in this.state.allData[type])){
+        this.addChat(this.getElement(name))
       }
-    );
+      allData = this.state.allData 
+      allData[type][name].messages.push(message)
+      //allData[type][name].unreadMessagesCount += 1
+      this.props.navigation.setParams({
+        obj: this.state.allData[type][name],
+        flag: true
+      });
+      allData[type][name].latest = new Date()
+      this.setState({ allData: allData });
+  
+  
+      if(type==="userData" && send){
+        phone = this.getPhoneFromName(name)
+        this.ws.send(JSON.stringify({
+          "message":"User: "+ phone.phone + ": "+ message.text
+        }))
+      }
+      else if(type==="groupData" && send){
+        this.ws.send(JSON.stringify({
+          "message":"Group: "+ name + ": "+ message.text
+        }))
+      }
+  
 
+      SecureStore.setItemAsync(this.encryptName(name),JSON.stringify({
+        "date":new Date()
+      }))
+    }
+    else{
+      alert("Could Not Connect to Server!Please Restart App or try again after sometime!")
+    }
     //this.props.screenProps.update()
   };
   
@@ -2749,3 +2845,58 @@ const drawerStyles = {
 };
 
 AppRegistry.registerComponent("bloodBankApp2", () => Home);
+
+
+
+/*
+
+async retrieveMessages(){
+    allData = {"groupData":{},"userData":{}}
+
+    for(i=0;i<this.state.userGroups.length;i++){
+      element = this.state.userGroups[i]
+      name = element.title
+      response = await SecureStore.getItemAsync(this.encryptName(name))
+      if(response !== null){
+        allData["groupData"][name] = JSON.parse(response)
+      }
+    }
+
+
+    for(i=0;i<this.state.friends.length;i++){
+      element = this.state.friends[i]
+      name = element.first_name + " " + element.last_name
+      response = await SecureStore.getItemAsync(this.encryptName(name))
+      if(response !== null){
+        allData["userData"][name] = JSON.parse(response)
+      }
+    }
+
+    console.log(all)
+  }
+
+
+  saveMessages(){
+    console.log("Saving")
+    groupData = this.state.allData["groupData"]
+    userData = this.state.allData["userData"]
+    Object.keys(groupData).forEach(item => {
+      SecureStore.setItemAsync(this.encryptName(item),JSON.stringify(groupData[item])).then(()=>{
+        console.log(item," Chat Saved")
+      })
+    });
+
+    Object.keys(userData).forEach(item => {
+      SecureStore.setItemAsync(this.encryptName(item),JSON.stringify(userData[item])).then(()=>{
+        console.log(item," Chat Saved")
+      })
+    });
+
+    SecureStore.setItemAsync("isChatSaved",JSON.stringify(true)).then(()=>{
+      console.log("Chat Saved")
+    })
+
+    this.retrieveMessages()
+  }
+
+*/

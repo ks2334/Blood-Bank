@@ -3,7 +3,7 @@ import random
 import urllib.parse
 import urllib.request
 from collections import namedtuple
-from datetime import timedelta
+from datetime import timedelta, datetime
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
@@ -31,6 +31,7 @@ def send_push_message(token, message, extra=None):
         PushMessage(to=token,
                     body=message,
                     data=extra))
+
 
 def index(request):
     if request.user.is_authenticated and request.user.privilgeLevel == 1:
@@ -273,13 +274,13 @@ class AddGroupPost(APIView):
             channel_layer = get_channel_layer()
             data = dict(request.data)
 
-            image = "/media/media/" +str(data["image"][0]).replace(" ","_")
+            image = "/media/media/" + str(data["image"][0]).replace(" ", "_")
             print(image)
             for i in data["group"]:
                 group = Group.objects.get(id=i)
                 for j in CustomUser.objects.filter(group__id=i):
                     if j.channelName is not None:
-                        if(image=="/media/media/"):
+                        if (image == "/media/media/"):
                             async_to_sync(channel_layer.send)(
                                 j.channelName,
                                 {
@@ -607,6 +608,70 @@ class GetChatDataView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class GetChatDataViewDate(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, date):
+        Posts = namedtuple("ChatData",
+                           ('imageData', 'formData', 'textData', 'availableGroups', 'userGroups', 'wsToken'))
+        g = request.user.group_set.all()
+        imageData = GroupPost.objects.none()
+        formData = FormPost.objects.none()
+        textData = ChatData.objects.none()
+        date = date.replace("'","")
+        date = datetime.strptime(date, '%b %d %Y %I:%M:%S%p')
+        print(date)
+
+        for cnt, i in enumerate(g):
+            gp = GroupPost.objects.filter(group=i.pk, time__gte=date)
+            fp = FormPost.objects.filter(group=i.pk, time__gte=date)
+            tp = ChatData.objects.filter(group=i.pk, isGroup=True, time__gte=date)
+            if cnt == 0:
+                imageData = gp
+                formData = fp
+                textData = tp
+            else:
+                if gp is not None:
+                    imageData = imageData | gp
+                if fp is not None:
+                    formData = formData | fp
+                if tp is not None:
+                    textData = textData | tp
+
+        tp = ChatData.objects.filter(user1=request.user, isGroup=False, time__gte=date)
+        if tp is not None:
+            textData = textData | tp
+        tp = ChatData.objects.filter(user2=request.user, isGroup=False, time__gte=date)
+        if tp is not None:
+            textData = textData | tp
+
+        token = get_random_string(length=50)
+
+        while True:
+            flag = True
+            for i in WSTokens.objects.all():
+                if i.token == token:
+                    token = get_random_string(length=50)
+                    flag = False
+                    break
+            if flag:
+                break
+
+        try:
+            w = WSTokens.objects.get(user=request.user)
+            w.token = token
+            w.save()
+        except Exception as e:
+            w = WSTokens.objects.create(user=request.user, token=token)
+
+        chatPosts = Posts(imageData=imageData.distinct(), formData=formData.distinct(), textData=textData.distinct(),
+                          availableGroups=Group.objects.filter(ishidden=False).exclude(user=request.user),
+                          userGroups=request.user.group_set.all(),
+                          wsToken=w)
+        serializer = GetChatDataSerializer(chatPosts)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 class getWSToken(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -638,7 +703,7 @@ def sendBroadcastView(request):
     groupsid = list(map(int, groupsid))
     groupslist = Group.objects.filter(admin=request.user)
     groups = []
-    users =[]
+    users = []
     for i in groupsid:
         groups += Group.objects.filter(id=i)
     for g in groups:

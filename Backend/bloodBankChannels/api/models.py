@@ -3,6 +3,7 @@ from datetime import datetime
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group
+from django.utils import timezone
 
 
 # Create your models here.
@@ -48,7 +49,7 @@ class Group(models.Model):
 
 class GroupPost(models.Model):
     postDetails = models.CharField(max_length=300)
-    time = models.DateTimeField(auto_now_add=True)
+    time = models.DateTimeField(default=timezone.now)
     group = models.ManyToManyField(Group)
     image = models.ImageField(upload_to="media/", blank=True, null=True)
 
@@ -62,7 +63,7 @@ class GroupPost(models.Model):
 class ProfilePost(models.Model):
     postDetails = models.CharField(max_length=300)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    time = models.DateTimeField(auto_now_add=True)
+    time = models.DateTimeField(default=timezone.now)
     image = models.ImageField(upload_to="media/", blank=True, null=True)
     likes = models.IntegerField(default=0)
 
@@ -73,7 +74,7 @@ class ProfilePost(models.Model):
 class FormPost(models.Model):
     postDetails = models.CharField(max_length=200, null=True)
     group = models.ManyToManyField(Group, blank=True)
-    time = models.DateTimeField(auto_now_add=True)
+    time = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return str(self.postDetails)
@@ -94,15 +95,17 @@ class ChatData(models.Model):
     user2 = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True, related_name="User2")
     group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, blank=True)
     message = models.CharField(max_length=5000)
-    time = models.DateTimeField(auto_now_add=True)
+    time = models.DateTimeField(default=timezone.now)
 
 
 class Logs(models.Model):
     log = models.CharField(max_length=300)
-    time = models.DateTimeField(auto_now_add=True)
+    time = models.DateTimeField(default=timezone.now)
 
 
 class WSTokens(models.Model):
     token = models.CharField(max_length=100, unique=True)
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
 
+
+# d = datetime.datetime.strptime('Jun 1 2018  1:33:35PM', '%b %d %Y %I:%M:%S%p')
