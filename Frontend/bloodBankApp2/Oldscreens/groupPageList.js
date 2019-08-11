@@ -127,7 +127,7 @@ export default class GroupDescriptionPage extends Component {
                         style={styles.image}
                         source={{
                           uri:
-                            "https://bootdey.com/img/Content/avatar/avatar6.png"
+                            ip + "/media/media/avatar.png"
                         }}
                       />
                     )}

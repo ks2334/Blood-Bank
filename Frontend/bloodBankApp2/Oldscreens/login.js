@@ -410,7 +410,7 @@ export class Register extends React.Component {
     const image2 = (
       <Image
         style={styles.avatar}
-        source={{ uri: "https://bootdey.com/img/Content/avatar/avatar6.png" }}
+        source={{ uri: ip + "/media/media/avatar.png" }}
       />
     );
 

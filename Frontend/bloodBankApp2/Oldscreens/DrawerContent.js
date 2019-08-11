@@ -82,7 +82,7 @@ export default class DrawerContent extends React.Component {
                 <Image
                   style={styles.avatar}
                   source={{
-                    uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
+                    uri: ip + "/media/media/avatar.png"
                   }}
                 />
               )}

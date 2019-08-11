@@ -386,7 +386,7 @@ export class Profile extends Component {
           <Image
             style={styles.avatar}
             source={{
-              uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
+              uri: ip + "/media/media/avatar.png"
             }}
           />
         )}
@@ -473,7 +473,7 @@ export class Profile extends Component {
                         style={styles.userImage}
                         source={{
                           uri:
-                            "https://bootdey.com/img/Content/avatar/avatar6.png"
+                            ip + "/media/media/avatar.png"
                         }}
                       />
                     )}

@@ -98,7 +98,7 @@ export default class ProfileNotFriend extends Component {
             <Image
               style={styles.avatar}
               source={{
-                uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
+                uri: ip + "/media/media/avatar.png"
               }}
             />
           )}

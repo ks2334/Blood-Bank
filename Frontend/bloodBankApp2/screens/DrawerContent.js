@@ -106,7 +106,7 @@ export default class DrawerContent extends React.Component {
                 <Image
                   style={styles.avatar}
                   source={{
-                    uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
+                    uri: ip + "/media/media/avatar.png"
                   }}
                 />
               )}
@@ -171,11 +171,11 @@ export default class DrawerContent extends React.Component {
                   }
                   if (item.id === 4) {
                     Linking.canOpenURL(
-                      "http://192.168.0.107:8000/media/media/mannual.pdf"
+                      ip + "/media/media/mannual.pdf"
                     ).then(supported => {
                       if (supported) {
                         Linking.openURL(
-                          "http://192.168.0.107:8000/media/media/mannual.pdf"
+                          ip + "/media/media/mannual.pdf"
                         );
                       } else {
                         console.log(

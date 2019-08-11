@@ -164,7 +164,7 @@ export default class updateprofile extends React.Component {
       <Image
         style={styles.avatar}
         source={{
-          uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
+          uri: ip + "/media/media/avatar.png"
         }}
       />
     );
@@ -467,9 +467,10 @@ export default class updateprofile extends React.Component {
                       this.setState({
                         error: response._bodyText
                       });
-                    } else if (response.status === "201") {
+                    } else if (response.status === 201) {
                       console.log("Registered");
                       alert("Registered");
+                      this.props.navigation.pop()
                     }
                   })
                   .catch(err => {

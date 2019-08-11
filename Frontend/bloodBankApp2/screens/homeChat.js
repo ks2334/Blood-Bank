@@ -388,7 +388,7 @@ export class Profile extends Component {
           <Image
             style={styles.avatar}
             source={{
-              uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
+              uri: ip + "/media/media/avatar.png"
             }}
           />
         )}
@@ -529,7 +529,7 @@ export class Profile extends Component {
               showsHorizontalScrollIndicator={false}
               keyExtractor={item => {
                 return item.id.toString();
-              }}
+              }}  
               renderItem={({ item }) => {
                 return (
                   <TouchableOpacity
@@ -567,7 +567,7 @@ export class Profile extends Component {
                         style={styles.userImage}
                         source={{
                           uri:
-                            "https://bootdey.com/img/Content/avatar/avatar6.png"
+                            ip + "/media/media/avatar.png"
                         }}
                       />
                     )}
@@ -1084,13 +1084,13 @@ export class Feed extends Component {
                     <View style={{ flex: 1 }}>
                       <TouchableOpacity
                         onPress={() => {
-                          this.props.screenProps.rootNavigation.navigate(
+                          /*this.props.screenProps.rootNavigation.navigate(
                             "GroupPage",
                             {
                               obj: item.group[0],
                               token: this.state.token
                             }
-                          );
+                          );*/
                         }}
                       >
                         <View
@@ -1113,7 +1113,18 @@ export class Feed extends Component {
                                 uri: ip + item.group[0].image
                               }}
                             />
-                          ) : null}
+                          ) : <Image
+                          style={{
+                            width: 30,
+                            height: 30,
+                            borderRadius: 15,
+                            marginLeft: 1,
+                            marginRight: 5
+                          }}
+                          source={{
+                            uri: ip + "/media/media/groupDefault.png"
+                          }}
+                        />}
                           <Text style={styles.title}>
                             {item.group[0].title}
                           </Text>
@@ -1223,7 +1234,19 @@ export class Feed extends Component {
                                 uri: ip + item.user.profilePic
                               }}
                             />
-                          ) : null}
+                          ) : <Image
+                          resizeMode="contain"
+                          style={{
+                            width: 30,
+                            height: 30,
+                            borderRadius: 15,
+                            marginLeft: 1,
+                            marginRight: 5
+                          }}
+                          source={{
+                            uri: ip + "/media/media/avatar.png"
+                          }}
+                        />}
                           <Text style={styles.title}>
                             {item.user.first_name + " " + item.user.last_name}
                           </Text>
@@ -1415,7 +1438,7 @@ export class Groups extends Component {
                 <ListItem
                   key={i}
                   avatar={{
-                    uri: ip + l.image
+                    uri: ip + "/media/media/groupDefault.png"
                   }}
                   title={l.title}
                   subtitle={l.description}
@@ -1511,7 +1534,7 @@ export class Groups extends Component {
                 <ListItem
                   key={i}
                   avatar={{
-                    uri: ip + l.image
+                    uri: ip + "/media/media/avatar.png"
                   }}
                   title={l.title}
                   rightIcon={
@@ -1604,7 +1627,7 @@ export class Groups extends Component {
                 <ListItem
                   key={i + 100}
                   avatar={{
-                    uri: ip + l.image
+                    uri: ip + "/media/media/groupDefault.png"
                   }}
                   title={l.title}
                   subtitle={l.description}
@@ -1667,7 +1690,7 @@ export class Groups extends Component {
                 <ListItem
                   key={i}
                   avatar={{
-                    uri: element.profilePic
+                    uri: ip + "/media/media/avatar.png"
                   }}
                   title={element.first_name + " " + element.last_name}
                 />
@@ -1697,7 +1720,7 @@ export default class HomeChat extends Component {
       headerRight: (
         <TouchableOpacity
           style={{ marginRight: 10 }}
-          onPress={navigation.getParam("openDrawer")}
+          onPress={()=>{navigation.navigate("FriendsList")}}
         >
           <FeatherIcon name="search" size={25} color={"white"} />
         </TouchableOpacity>
@@ -1791,6 +1814,14 @@ export default class HomeChat extends Component {
           id: obj.id,
           hasChatPrivilege:obj.hasChatPrivilege
         });
+
+        this.props.navigation.setParams({
+          friends: this.state.friends,
+            friendRequests: this.state.friendRequest,
+            token: this.props.navigation.getParam("token"),
+            name: this.state.name
+        })
+
       })
       .catch(err => {
         console.log(err);

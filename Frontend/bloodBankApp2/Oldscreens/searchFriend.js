@@ -42,7 +42,7 @@ export default class FriendsList extends Component {
           description: "User 5"
         },
         {
-          icon: "https://bootdey.com/img/Content/avatar/avatar6.png",
+          icon: ip + "/media/media/avatar.png",
           description: "User 6"
         },
         {

@@ -15,7 +15,7 @@ class CustomUser(AbstractUser):
     address = models.CharField(max_length=200, null=True, blank=True)
     phone = models.IntegerField(default=0, unique=True)
     username = models.CharField(max_length=20, unique=False, default="")
-    profilePic = models.ImageField(upload_to="media/", blank=True, null=True)
+    profilePic = models.ImageField(upload_to="media/", blank=True, null=True,default="media/avatar.png")
     friends = models.ManyToManyField("self", blank=True)
     friendRequests = models.ManyToManyField("self", blank=True, symmetrical=False)
     education = models.CharField(max_length=30, unique=False, default="", editable=True,blank=True,null=True)
