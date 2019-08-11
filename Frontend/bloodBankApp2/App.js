@@ -19,12 +19,10 @@ import GroupDescriptionPage from "./screens/groupPageList";
 import ProfileDescriptionPage from "./screens/profilePageFromChat";
 export default class App extends React.Component {
   update = () => {
-    console.log("Update Called");
     this.setState({});
   };
   
   update = () => {
-    console.log("Update Called");
     this.setState({});
   };
 

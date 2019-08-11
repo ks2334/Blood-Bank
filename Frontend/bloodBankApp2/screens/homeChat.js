@@ -97,6 +97,17 @@ export class Details extends Component {
             marginBottom: 0
           }}
         >
+          Gender: {this.props.screenProps.homeState.gender}
+        </Text>
+        <Text
+          style={{
+            alignSelf: "flex-start",
+            fontSize: 15,
+            marginLeft: 15,
+            marginTop: 5,
+            marginBottom: 0
+          }}
+        >
           Address: {this.props.screenProps.homeState.address}
         </Text>
         <Text
@@ -479,7 +490,6 @@ export class Profile extends Component {
             <TouchableOpacity
               style={{ marginLeft: 10 }}
               onPress={() => {
-                console.log(this.state.donationDate);
                 fetch(
                   ip +
                     "/resetDonate/" +
@@ -496,10 +506,8 @@ export class Profile extends Component {
                   }
                 )
                   .then(response => {
-                    console.log(response);
 
                     if (response.status === 200) {
-                      console.log(response);
                       token = response._bodyInit.toString();
                       token = token.substring(10, token.length - 2);
                       this._onRefresh();
@@ -678,7 +686,6 @@ export class Post extends Component {
     });
 
     if (!result.cancelled) {
-      //console.log(result);
       this.props.screenProps.rootNavigation.navigate("Post", {
         photo: result,
         token: this.props.screenProps.token
@@ -773,7 +780,6 @@ export class Post extends Component {
                   if (this.camera) {
                     result = await this.camera.takePictureAsync();
                     if (result) {
-                      //console.log(result);
                       this.props.screenProps.rootNavigation.navigate("Post", {
                         photo: result,
                         token: this.props.screenProps.token
@@ -1805,6 +1811,7 @@ export default class HomeChat extends Component {
           profilePic: obj.profilePic,
           donationDate: obj.donationDate,
           aadhar: obj.adhaarNo,
+          gender:obj.gender,
           officeAddress: obj.officeAddress,
           profession: obj.profession,
           emergencyContact: obj.emergencyContact,
@@ -1847,21 +1854,18 @@ export default class HomeChat extends Component {
           allData = this.state.allData
 
           this.ws.onopen = () => {
-            console.log("Websocket Opened")
             this.setState({websocketConnected:true})
             //this.ws.send('something'); // send a message
           };
           
           this.ws.onmessage = e => {
 
-            console.log("Websocket Message Received")
             msg = JSON.parse(e.data)["message"].split(": ")
 
             if(msg[0]==="UR"){
 
               msg[1] = this.getNameFromPhone(msg[1])
               name = msg[1].first_name + " " + msg[1].last_name
-              //console.log((name in allData["userData"]))
               if(!(name in allData["userData"])){
                 this.addChat(msg[1])
               }
@@ -1904,7 +1908,6 @@ export default class HomeChat extends Component {
               }
               
               message = msg[3]
-              console.log(msg.length)
               if(msg.length===4){
                 this.addMessage("groupData",groupName,{
                   _id: Math.random().toString(36).substring(2),
@@ -1963,8 +1966,6 @@ export default class HomeChat extends Component {
           
           this.ws.onerror = e => {
             // an error occurred
-            console.log("Websocket Error")
-            console.log(e.message);
             this.setState({websocketConnected:false})
             this.ws = new WebSocket(wsip + '/ws/chat/appRoom/',["Token",this.state.wsToken]);
             alert("Could not send/receive Messages!Please restart the app or try again after sometime!")
@@ -1972,15 +1973,11 @@ export default class HomeChat extends Component {
           
           this.ws.onclose = e => {
             // connection closed
-            console.log("Websocket Closed")
             this.setState({websocketConnected:false})
             this.ws = new WebSocket(wsip + '/ws/chat/appRoom/',["Token",this.state.wsToken]);
             alert("Could not send/receive Messages!Please restart the app or try again after sometime!")
-            //console.log(e.code);
           };
   
-          //console.log(this.state.yourGroups)
-          //console.log(this.state.yourChats)
         })
         .catch(err => {
           console.log(err);
@@ -2020,7 +2017,6 @@ export default class HomeChat extends Component {
       response = await SecureStore.getItemAsync(this.encryptName(name))
       if(response !== null){
         latestDates[name] = JSON.parse(response)["date"]
-        console.log(name,JSON.parse(response))
       }
     }
 
@@ -2031,16 +2027,12 @@ export default class HomeChat extends Component {
       response = await SecureStore.getItemAsync(this.encryptName(name))
       if(response !== null){
         latestDates[name] = JSON.parse(response)["date"]
-        console.log(name,JSON.parse(response))
       }
     }
 
     this.setState({latestDates:latestDates})
-    console.log("Latest Dates: ",this.state.latestDates)
   }omponentWillUnmount() {
-    console.log("Unmounted");
     SecureStore.setItemAsync("latestChat", new Date()).then(response => {
-      console.log("Latest Date Saved");
     });
   }
 
@@ -2061,7 +2053,6 @@ export default class HomeChat extends Component {
       };
     });
 
-    //console.log(Object.keys(data))
 
     imageData = obj["imageData"];
     formData = obj["formData"];
@@ -2265,8 +2256,7 @@ export default class HomeChat extends Component {
       }
     });
 
-    //console.log(groupData);
-    //console.log(userData);
+
 
     groupArray = [];
     userArray = [];
@@ -2289,7 +2279,6 @@ export default class HomeChat extends Component {
 
     for (var key in groupData) {
       if (groupData.hasOwnProperty(key)) {
-        //console.log(key + " -> " + groupData[key]);
         groupArray.push({
           title: key,
           description: groupData[key]["information"]["description"],
@@ -2302,7 +2291,6 @@ export default class HomeChat extends Component {
 
     for (var key in userData) {
       if (userData.hasOwnProperty(key)) {
-        //console.log(key + " -> " + groupData[key]);
         userArray.push({
           title: key,
           image: userData[key]["information"]["profilePic"],
@@ -2420,7 +2408,6 @@ export default class HomeChat extends Component {
   };
 
   addMessage = (type,name,message,send=false)=>{
-    console.log("Connection: ",this.state.websocketConnected)
     if(this.state.websocketConnected){
       if(!(name in this.state.allData[type])){
         this.addChat(this.getElement(name))
@@ -2908,28 +2895,23 @@ async retrieveMessages(){
       }
     }
 
-    console.log(all)
   }
 
 
   saveMessages(){
-    console.log("Saving")
     groupData = this.state.allData["groupData"]
     userData = this.state.allData["userData"]
     Object.keys(groupData).forEach(item => {
       SecureStore.setItemAsync(this.encryptName(item),JSON.stringify(groupData[item])).then(()=>{
-        console.log(item," Chat Saved")
       })
     });
 
     Object.keys(userData).forEach(item => {
       SecureStore.setItemAsync(this.encryptName(item),JSON.stringify(userData[item])).then(()=>{
-        console.log(item," Chat Saved")
       })
     });
 
     SecureStore.setItemAsync("isChatSaved",JSON.stringify(true)).then(()=>{
-      console.log("Chat Saved")
     })
 
     this.retrieveMessages()

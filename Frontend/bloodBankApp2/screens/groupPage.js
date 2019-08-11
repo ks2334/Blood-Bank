@@ -95,7 +95,6 @@ export default class GroupPage extends Component {
           data: object["groupPosts"],
           data1: object["formPosts"]
         });
-        console.log(object);
         this.setState({ refreshing: false });
       })
       .catch(err => {
@@ -118,7 +117,6 @@ export default class GroupPage extends Component {
           data: object["groupPosts"],
           data1: object["formPosts"]
         });
-        console.log(object);
       })
       .catch(err => {
         console.log(err);

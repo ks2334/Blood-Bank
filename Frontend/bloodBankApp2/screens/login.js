@@ -69,7 +69,6 @@ async function registerForPushNotificationsAsync(authToken) {
   })
     .then(response => {
       if (response.status === 200) {
-        console.log("Registered for notifications");
       }
     })
     .catch(err => {
@@ -240,18 +239,15 @@ export class Login extends React.Component {
                   if (this.state.checked) {
                     SecureStore.setItemAsync("isLoggedIn", "true").then(
                       response => {
-                        console.log("saved");
                       }
                     );
 
                     SecureStore.setItemAsync("token", token).then(response => {
-                      console.log("saved");
                     });
                     registerForPushNotificationsAsync(token);
                   } else {
                     SecureStore.setItemAsync("isLoggedIn", "false").then(
                       response => {
-                        console.log("saved");
                       }
                     );
                   }
@@ -376,7 +372,6 @@ export class Register extends React.Component {
       aspect: [4, 3]
     });
 
-    console.log(result);
     if (!result.cancelled) {
       this.formData.append("profilePic", {
         uri: result.uri,
@@ -393,7 +388,6 @@ export class Register extends React.Component {
       aspect: [4, 3]
     });
 
-    console.log(result);
 
     if (!result.cancelled) {
       this.formData.append("profilePic", {

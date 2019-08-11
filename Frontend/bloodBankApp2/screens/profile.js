@@ -358,7 +358,7 @@ export default class Profile extends Component {
                               <TouchableOpacity
                                 style={styles.socialBarButton}
                                 onPress={() => {
-                                  fetch("http://192.168.43.66:8000/likePost/", {
+                                  fetch(ip + "/likePost/", {
                                     method: "post",
                                     headers: {
                                       Accept: "application/json",

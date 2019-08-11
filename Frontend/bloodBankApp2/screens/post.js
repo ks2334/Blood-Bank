@@ -107,7 +107,6 @@ export default class PostForm extends React.Component {
                 })
                   .then(response => {
                     if (response.status === 400) {
-                      console.log("Error");
                       this.setState({ error: response._bodyText });
                     } else if (response.status === 201) {
                       this.props.navigation.navigate("Home");

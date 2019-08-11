@@ -68,7 +68,6 @@ export default class ProfileNotFriend extends Component {
   componentDidMount() {}
 
   render() {
-    console.log("Profile - " + this.state.token);
     return (
       <ImageBackground
         source={require("../bg3.jpg")}

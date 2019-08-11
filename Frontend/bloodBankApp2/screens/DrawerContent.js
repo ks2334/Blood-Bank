@@ -134,11 +134,9 @@ export default class DrawerContent extends React.Component {
                     this.props.nav.navigate("login");
                     SecureStore.setItemAsync("isLoggedIn", "false").then(
                       response => {
-                        console.log("saved");
                       }
                     );
                     SecureStore.deleteItemAsync("token").then(response => {
-                      console.log("Deleted");
                       fetch(ip + "/setNotificationToken/", {
                         method: "post",
                         headers: {
@@ -153,7 +151,6 @@ export default class DrawerContent extends React.Component {
                       })
                         .then(r => {
                           if (r.status === 200) {
-                            console.log("Notification token deleted");
                           }
                         })
                         .catch(err => {

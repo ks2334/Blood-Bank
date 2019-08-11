@@ -448,10 +448,7 @@ export class Profile extends Component {
                   }
                 )
                   .then(response => {
-                    console.log(response);
-
                     if (response.status === 200) {
-                      console.log(response);
                       token = response._bodyInit.toString();
                       token = token.substring(10, token.length - 2);
                       this._onRefresh();
@@ -480,7 +477,6 @@ export class Profile extends Component {
             <TouchableOpacity
               style={{ marginLeft: 10 }}
               onPress={() => {
-                console.log(this.state.donationDate);
                 fetch(
                   ip +
                     "/resetDonate/" +
@@ -497,10 +493,7 @@ export class Profile extends Component {
                   }
                 )
                   .then(response => {
-                    console.log(response);
-
                     if (response.status === 200) {
-                      console.log(response);
                       token = response._bodyInit.toString();
                       token = token.substring(10, token.length - 2);
                       this._onRefresh();
@@ -567,8 +560,7 @@ export class Profile extends Component {
                       <Image
                         style={styles.userImage}
                         source={{
-                          uri:
-                            ip + "/media/media/avatar.png"
+                          uri: ip + "/media/media/avatar.png"
                         }}
                       />
                     )}
@@ -670,7 +662,6 @@ export class Groups extends Component {
       .then(response => {
         obj = JSON.parse(response._bodyInit);
         this.setState({ data: obj["yourGroups"], data1: obj["otherGroups"] });
-        console.log(obj["yourGroups"]);
         this.setState({ refreshing: false });
       })
       .catch(err => {
@@ -689,7 +680,6 @@ export class Groups extends Component {
       .then(response => {
         obj = JSON.parse(response._bodyInit);
         this.setState({ data: obj["yourGroups"], data1: obj["otherGroups"] });
-        console.log(obj["yourGroups"]);
       })
       .catch(err => {
         console.log(err);
@@ -883,7 +873,6 @@ export class Post extends Component {
     });
 
     if (!result.cancelled) {
-      console.log(result);
       this.props.screenProps.rootNavigation.navigate("Post", {
         photo: result,
         token: this.props.screenProps.token
@@ -968,7 +957,6 @@ export class Post extends Component {
                   if (this.camera) {
                     result = await this.camera.takePictureAsync();
                     if (result) {
-                      console.log(result);
                       this.props.screenProps.rootNavigation.navigate("Post", {
                         photo: result,
                         token: this.props.screenProps.token
@@ -1346,7 +1334,6 @@ export class Feed extends Component {
             data={this.state.data1}
             keyExtractor={item => {
               item.id.toString();
-              console.log(item["likes"]);
             }}
             ItemSeparatorComponent={() => {
               return <View style={styles.separator} />;

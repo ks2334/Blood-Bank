@@ -127,7 +127,6 @@ export default class updateprofile extends React.Component {
       aspect: [4, 3]
     });
 
-    console.log(result);
     if (!result.cancelled) {
       this.formData.append("profilePic", {
         uri: result.uri,
@@ -143,8 +142,6 @@ export default class updateprofile extends React.Component {
       allowsEditing: true,
       aspect: [4, 3]
     });
-
-    console.log(result);
 
     if (!result.cancelled) {
       this.formData.append("profilePic", {
@@ -461,19 +458,20 @@ export default class updateprofile extends React.Component {
                   body: this.formData
                 })
                   .then(response => {
-                    alert(response.status + " - " + response._bodyText);
                     if (response.status === 400) {
-                      console.log("Error");
+                      alert(response.status + " - " + response._bodyText);
+
                       this.setState({
                         error: response._bodyText
                       });
-                    } else if (response.status === 201) {
-                      console.log("Registered");
-                      alert("Registered");
-                      this.props.navigation.pop()
+                    } else if (response.status === 200) {
+                      alert("Updated !\nRestart the app to see changes !");
+                      this.props.navigation.pop();
                     }
                   })
                   .catch(err => {
+                    alert(response.status + " - " + response._bodyText);
+
                     console.log(err);
                   });
               } else {

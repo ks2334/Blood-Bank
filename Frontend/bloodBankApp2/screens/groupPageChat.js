@@ -79,7 +79,6 @@ export default class GroupPageChat extends Component {
               });
             }
             else{
-              console.log(navigation.getParam("obj").information)
               navigation.navigate("ProfileDescriptionPage", {
                 obj: navigation.getParam("obj").information
               });
@@ -202,7 +201,6 @@ export default class GroupPageChat extends Component {
   flag = true
 
   componentDidUpdate(p){
-    console.log("Update Called")
     if(this.flag){
       messages = this.state.data.messages.slice(0);
       messages.sort(function(a,b) {

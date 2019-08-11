@@ -115,7 +115,6 @@ export default class Contact extends React.Component {
                     if (response.status === 200) {
                       token = response._bodyInit.toString();
                       token = token.substring(10, token.length - 2);
-                      console.log(token);
                       this.props.screenProps.rootNavigation.navigate("Home", {
                         token: token
                       });

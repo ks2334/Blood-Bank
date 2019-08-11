@@ -44,7 +44,6 @@ export default class GroupDescriptionPage extends Component {
       data: ds.cloneWithRows(obj.user)
     };
 
-    console.log(obj.user)
   }
 
   render() {
@@ -110,7 +109,6 @@ export default class GroupDescriptionPage extends Component {
               return (
                 <TouchableOpacity
                   onPress={() => {
-                    //console.log(user);
                     alert(user.first_name + " " + user.last_name + "\n" 
                     + "Phone Number: " + user.phone + "\n" 
                     + "Blood Group: " + user.bloodGroup + "\n"

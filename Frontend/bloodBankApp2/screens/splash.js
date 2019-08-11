@@ -20,7 +20,6 @@ export default class Splash extends React.Component {
 
     setTimeout(() => {
       /*SecureStore.setItemAsync("test1", "value1").then(response => {
-        console.log("saved");
       });
       
       SecureStore.deleteItemAsync("test1").then(response => {
