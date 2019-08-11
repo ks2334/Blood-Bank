@@ -12,6 +12,7 @@ import {
   Image,
   Linking
 } from "react-native";
+
 import Entypo from "react-native-vector-icons/Entypo";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
@@ -76,6 +77,11 @@ export default class DrawerContent extends React.Component {
         id: 3,
         title: "Invite Friends",
         icon: <AntDesign name="plus" size={25} color={"gray"} />
+      },
+      {
+        id: 4,
+        title: "How to use this app",
+        icon: <AntDesign name="question" size={25} color={"gray"} />
       }
     ];
 
@@ -162,6 +168,23 @@ export default class DrawerContent extends React.Component {
                   }
                   if (item.id === 3) {
                     onShare();
+                  }
+                  if (item.id === 4) {
+                    Linking.canOpenURL(
+                      "http://192.168.0.107:8000/media/media/mannual.pdf"
+                    ).then(supported => {
+                      if (supported) {
+                        Linking.openURL(
+                          "http://192.168.0.107:8000/media/media/mannual.pdf"
+                        );
+                      } else {
+                        console.log(
+                          "Don't know how to open URI: " +
+                            ip +
+                            "/forgotPassword/"
+                        );
+                      }
+                    });
                   }
                 }}
               >

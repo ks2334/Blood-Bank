@@ -69,8 +69,6 @@ urlpatterns = [
     path('resetDonate/<int:id>/', views.resetDonate),
     path('wsToken/', views.getWSToken.as_view()),
     path('chatFetch/', views.GetChatDataView.as_view()),
-    path('chatFetch/<str:date>/', views.GetChatDataViewDate.as_view())
-
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

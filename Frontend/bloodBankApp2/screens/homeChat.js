@@ -2006,6 +2006,11 @@ export default class HomeChat extends Component {
 
     this.setState({latestDates:latestDates})
     console.log("Latest Dates: ",this.state.latestDates)
+  }omponentWillUnmount() {
+    console.log("Unmounted");
+    SecureStore.setItemAsync("latestChat", new Date()).then(response => {
+      console.log("Latest Date Saved");
+    });
   }
 
 
