@@ -104,8 +104,10 @@ class FriendRequest(generics.ListAPIView):
     def post(self, request, *args, **kwargs):
         phone = request.data["phone"]
         u = CustomUser.objects.get(phone=phone)
-
+        print("asdsd")
         if request.user.friendRequests.filter(phone=u.phone).exists():
+            print("aaaaa")
+
             request.user.friendRequests.remove(u)
             request.user.friends.add(u)
             return Response(status=status.HTTP_200_OK)
@@ -131,7 +133,7 @@ class FeedView(APIView):
             for i in g.grouppost_set.all().order_by('-id')[:3]:
                 groupPostList.add(i)
 
-            for j in g.formpost_set.all().order_by('-id')[:3]:
+            for j in g.formpost_set.all().order_by('-time')[:4]:
                 formPostList.add(j)
         profilePostList += request.user.profilepost_set.all().order_by('-id')[:2]
         for f in friends:
@@ -186,7 +188,7 @@ class PostProfile(APIView):
     def post(self, request, *args, **kwargs):
         p = ProfilePost.objects.create(user=request.user, postDetails=request.data["postDetails"])
         try:
-            p.image = request.data["image"]
+            p.image = request.POST.get("image",None)
         except():
             p.image = None
         p.save()
@@ -245,7 +247,7 @@ class Search(APIView):
 
     def get(self, request, query):
         res = CustomUser.objects.filter(first_name__startswith=query) or CustomUser.objects.filter(
-            last_name__startswith=query)
+            last_name__startswith=query).exclude(request.user)
         serializer = UserSerializer(res, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -395,8 +397,9 @@ class GetFormPosts(APIView):
 class getFriendPosts(APIView):
     permission_classes = (IsAuthenticated,)
 
-    def get(self, request, pk):
-        p = CustomUser.objects.get(pk=pk)
+    def get(self, request):
+        print(self)
+        p = CustomUser.objects.get(pk=request.data["id"])
         posts = p.profilepost_set.all()
 
         serializer = ProfilePostFriendSerializer(posts, many=True)
@@ -418,6 +421,7 @@ def logged(request):
                     # Super Admin Panel
                     return redirect("../admin/")
                 else:
+                    logout(request)
                     return HttpResponse("<h1>Not Authorized to access!</h1>")
         else:
             return redirect('/')
@@ -426,7 +430,7 @@ def logged(request):
 
 
 def adminPanel(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user is not None:
         requests = []
         groups = Group.objects.filter(admin=request.user)
         posts = []
@@ -436,14 +440,15 @@ def adminPanel(request):
             requests += group.pendingGroupRequest.all()
 
         return render(request, 'admin-panel.html',
-                      {'requests': requests, 'groups': groups, 'posts': posts, 'msg': "Post Created Successfully !"})
+                      {'requests': requests, 'groups': groups, 'posts': posts})
 
-    else:
-        return redirect("/")
+
+    return redirect("../")
 
 
 def acceptGroupRequest(request, userid, groupid):
     user = CustomUser.objects.get(id=userid)
+    user.friends.add(request.user)
     group = Group.objects.get(id=groupid)
     group.pendingGroupRequest.remove(user)
     group.user.add(user)
@@ -520,8 +525,8 @@ def resetPassword(request):
         user = CustomUser.objects.filter(phone=phone).first()
         user.otp = random.randint(100000, 999999)
         user.save()
-        resp = sendSMS("DEr70itGrxI-ik05lJzaFlxONNzyD5uYTHYKWzwWUW", user.phone, "TXTLCL",
-                       "your otp is : " + str(user.otp))
+        resp = sendSMS("7/E+qrsb/mk-VfKW5dQQBz6thbwQwiUt21rNUMnwKl", user.phone, "TXTLCL",
+                       "Jankalyan Blood Bank \nYour OTP for password reset is : " + str(user.otp))
         return render(request, 'password_confirm.html',
                       {"a": "Password reset otp has been sent on your phone ...", "phone": user.phone})
     return render(request, 'reset_password.html', {"msg": "This user is not on our records ..."})

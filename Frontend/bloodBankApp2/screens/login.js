@@ -238,17 +238,16 @@ export class Login extends React.Component {
 
                   if (this.state.checked) {
                     SecureStore.setItemAsync("isLoggedIn", "true").then(
-                      response => {
-                      }
+                      response => {}
                     );
 
-                    SecureStore.setItemAsync("token", token).then(response => {
-                    });
+                    SecureStore.setItemAsync("token", token).then(
+                      response => {}
+                    );
                     registerForPushNotificationsAsync(token);
                   } else {
                     SecureStore.setItemAsync("isLoggedIn", "false").then(
-                      response => {
-                      }
+                      response => {}
                     );
                   }
 
@@ -388,7 +387,6 @@ export class Register extends React.Component {
       aspect: [4, 3]
     });
 
-
     if (!result.cancelled) {
       this.formData.append("profilePic", {
         uri: result.uri,
@@ -420,7 +418,9 @@ export class Register extends React.Component {
             marginTop: 15
           }}
         >
-          <Text style={{ color: "white", fontSize: 20,marginVertical:10 }}>{this.state.error}</Text>
+          <Text style={{ color: "white", fontSize: 20, marginVertical: 10 }}>
+            {this.state.error}
+          </Text>
           <Overlay
             visible={this.state.overlayVisible}
             onClose={() => {
@@ -695,10 +695,10 @@ export class Register extends React.Component {
               } else if (this.state.password === "") {
                 alert("Please set a valid password !");
                 return;
-              }else if (this.state.cpassword === "") {
+              } else if (this.state.cpassword === "") {
                 alert("Please enter confirm password !");
                 return;
-              }else if (this.state.password !== this.state.cpassword) {
+              } else if (this.state.password !== this.state.cpassword) {
                 alert("Password and Confirm Password do not match !");
                 return;
               } else if (this.state.bg === "") {
@@ -708,15 +708,14 @@ export class Register extends React.Component {
                 alert("Please set a valid gender !");
                 return;
               } else {
-
                 this.refs.toastRegister.show("Registering", 2000);
 
                 const { status: existingStatus } = await Permissions.getAsync(
                   Permissions.NOTIFICATIONS
                 );
-  
+
                 let finalStatus = existingStatus;
-  
+
                 // only ask if permissions have not already been determined, because
                 // iOS won't necessarily prompt the user a second time.
                 if (existingStatus !== "granted") {
@@ -727,16 +726,16 @@ export class Register extends React.Component {
                   );
                   finalStatus = status;
                 }
-  
+
                 // Stop here if the user did not grant permissions
                 if (finalStatus !== "granted") {
                   alert("Not granted");
                   return;
                 }
-  
+
                 // Get the token that uniquely identifies this device
                 let token = await Notifications.getExpoPushTokenAsync();
-  
+
                 this.formData.append("first_name", this.state.firstName);
                 this.formData.append("last_name", this.state.lastName);
                 this.formData.append("email", this.state.email);
@@ -801,26 +800,25 @@ export class Register extends React.Component {
                   })
                   .catch(err => {});
               }
-
             }}
           >
             <Text style={styles.loginText}>Register</Text>
           </TouchableOpacity>
-          {Platform.OS === "android" ? <KeyboardSpacer topSpacing={35} /> : null}
+          {Platform.OS === "android" ? (
+            <KeyboardSpacer topSpacing={35} />
+          ) : null}
           <Toast
-          ref="toastRegister"
-          style={{ backgroundColor: "black", marginTop: 230 }}
-          position="bottom"
-          positionValue={0}
-          fadeInDuration={750}
-          fadeOutDuration={1000}
-          opacity={0.8}
-          textStyle={{ color: "white" }}
-        />
+            ref="toastRegister"
+            style={{ backgroundColor: "black", marginTop: 230 }}
+            position="bottom"
+            positionValue={0}
+            fadeInDuration={750}
+            fadeOutDuration={1000}
+            opacity={0.8}
+            textStyle={{ color: "white" }}
+          />
         </View>
-        
-        </ScrollView>
-      
+      </ScrollView>
     );
   }
 }

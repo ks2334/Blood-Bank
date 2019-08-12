@@ -125,6 +125,8 @@ class ProfilePostSerializer(serializers.ModelSerializer):
             'id', 'postDetails', 'time', 'user', 'image', 'likes'
         )
 
+        extra_kwargs = {'image': {'required': False}}
+
 
 class ProfilePostFriendSerializer(serializers.ModelSerializer):
     class Meta:
