@@ -21,12 +21,8 @@ import {
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 import { GiftedChat } from "react-native-gifted-chat";
 import KeyboardSpacer from "react-native-keyboard-spacer";
-import { Makiko,Sae } from "react-native-textinput-effects";
-import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 export default class GroupPageChat extends Component {
-  
   static navigationOptions = ({ navigation }) => {
     return {
       headerTitle: (
@@ -38,26 +34,33 @@ export default class GroupPageChat extends Component {
             alignItems: "center"
           }}
         >
-          {navigation.getParam("type") === "group" ?(<Image
-            style={styles.avatar}
-            source={{
-              uri: ip + navigation.getParam("obj").information.image
-            }}
-          />):(<Image
-            style={styles.avatar}
-            source={{
-              uri: ip + navigation.getParam("obj").information.profilePic
-            }}
-          />)}
+          {navigation.getParam("type") === "group" ? (
+            <Image
+              style={styles.avatar}
+              source={{
+                uri: ip + navigation.getParam("obj").information.image
+              }}
+            />
+          ) : (
+            <Image
+              style={styles.avatar}
+              source={{
+                uri: ip + navigation.getParam("obj").information.profilePic
+              }}
+            />
+          )}
 
-          {navigation.getParam("type") === "group" ?(
-          <Text style={{ fontSize: 20, fontWeight: "bold", color: "white" }}>
-            {navigation.getParam("obj").information.title}
-          </Text>):(
-          <Text style={{ fontSize: 20, fontWeight: "bold", color: "white" }}>
-            {navigation.getParam("obj").information.first_name + " " + navigation.getParam("obj").information.last_name}
-          </Text>)}
-          
+          {navigation.getParam("type") === "group" ? (
+            <Text style={{ fontSize: 20, fontWeight: "bold", color: "white" }}>
+              {navigation.getParam("obj").information.title}
+            </Text>
+          ) : (
+            <Text style={{ fontSize: 20, fontWeight: "bold", color: "white" }}>
+              {navigation.getParam("obj").information.first_name +
+                " " +
+                navigation.getParam("obj").information.last_name}
+            </Text>
+          )}
         </View>
       ),
 
@@ -73,18 +76,15 @@ export default class GroupPageChat extends Component {
         <TouchableOpacity
           style={{ width: 40, paddingLeft: 10 }}
           onPress={() => {
-            if(navigation.getParam("type") === "group"){
+            if (navigation.getParam("type") === "group") {
               navigation.navigate("GroupDescriptionPage", {
                 obj: navigation.getParam("obj").information
               });
-            }
-            else{
+            } else {
               navigation.navigate("ProfileDescriptionPage", {
                 obj: navigation.getParam("obj").information
               });
             }
-
-            
           }}
         >
           <Icon name="arrow-right" size={20} color={"white"} />
@@ -92,33 +92,37 @@ export default class GroupPageChat extends Component {
       ),
       headerLeft: (
         <TouchableHighlight
-				onPress={() => {
-          navigation.state.params["resetChatOpened"]()
-          navigation.pop()
-        }}>
-          <Icon name="arrow-left" size={20} color={"white"} style={{marginLeft:10}} />
-			</TouchableHighlight>
+          onPress={() => {
+            navigation.state.params["resetChatOpened"]();
+            navigation.pop();
+          }}
+        >
+          <Icon
+            name="arrow-left"
+            size={20}
+            color={"white"}
+            style={{ marginLeft: 10 }}
+          />
+        </TouchableHighlight>
       )
     };
   };
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       token: this.props.navigation.getParam("token"),
-      data:this.props.navigation.state.params["obj"],
-      type:this.props.navigation.state.params["type"]
+      data: this.props.navigation.state.params["obj"],
+      type: this.props.navigation.state.params["type"]
     };
-
   }
 
   renderQuickReply = props => {
     let text = "";
-    let id = props["currentMessage"]["quickReplies"]["id"]
+    let id = props["currentMessage"]["quickReplies"]["id"];
     formData = new FormData();
     return (
-      <View style={{marginBottom:13}}>
-        
+      <View style={{ marginBottom: 13 }}>
         <TextInput
           style={{
             marginLeft: 2,
@@ -129,10 +133,10 @@ export default class GroupPageChat extends Component {
             paddingLeft: 10,
             borderLeftWidth: 0.5,
             borderRightWidth: 0.5,
-            borderTopWidth:0.3,
+            borderTopWidth: 0.3,
             borderRadius: 5,
             paddingVertical: 10,
-            marginBottom:2
+            marginBottom: 2
           }}
           placeholder="Enter your Response ..."
           autoCapitalize="none"
@@ -157,9 +161,7 @@ export default class GroupPageChat extends Component {
             })
               .then(response => {
                 if (response.status === 201) {
-                  alert(
-                    "We have received your response! Thank You!"
-                  );
+                  alert("We have received your response! Thank You!");
                 } else {
                   alert("Please Try Again!");
                 }
@@ -173,21 +175,17 @@ export default class GroupPageChat extends Component {
     );
   };
 
-
-
-
   componentDidMount() {
-
     messages = this.state.data.messages.slice(0);
-    messages.sort(function(a,b) {
-        return b.createdAt - a.createdAt;
+    messages.sort(function(a, b) {
+      return b.createdAt - a.createdAt;
     });
 
-    let cnt=1;
+    let cnt = 1;
     messages.forEach(element => {
-      element["_id"] = cnt
-      if("image" in element){
-        element["image"] = ip + element["image"]
+      element["_id"] = cnt;
+      if ("image" in element) {
+        element["image"] = ip + element["image"];
       }
       cnt++;
     });
@@ -195,57 +193,69 @@ export default class GroupPageChat extends Component {
     this.setState({
       messages: messages
     });
-
   }
-  
-  flag = true
 
-  componentDidUpdate(p){
-    if(this.flag){
+  flag = true;
+
+  componentDidUpdate(p) {
+    if (this.flag) {
       messages = this.state.data.messages.slice(0);
-      messages.sort(function(a,b) {
-          return b.createdAt - a.createdAt;
+      messages.sort(function(a, b) {
+        return b.createdAt - a.createdAt;
       });
 
-      let cnt=1;
+      let cnt = 1;
       messages.forEach(element => {
-        element["_id"] = cnt
+        element["_id"] = cnt;
         cnt++;
       });
 
-      if(this.state.messages.length !== messages.length){
+      if (this.state.messages.length !== messages.length) {
         this.setState({
           messages: messages
         });
       }
+    } else {
+      this.flag = true;
     }
-    else{
-      this.flag = true
-    }
-    
   }
 
- onSend(messages = []) {
-    this.flag = false
+  onSend(messages = []) {
+    this.flag = false;
     this.setState(previousState => ({
       messages: GiftedChat.append(previousState.messages, messages)
     }));
 
-    if(this.state.type==="group"){
-      
-      this.props.navigation.state.params.addMessage("groupData",this.state.data.information.title,messages[0],send=true)
-    }
-    else if(this.state.type==="user"){
-      this.props.navigation.state.params.addMessage("userData",this.state.data.information.first_name+" "+this.state.data.information.last_name,messages[0],send=true)
-    }
-    else if(this.state.type === "new"){
-      if(this.state.messages.length===0){
-        this.props.navigation.state.params.addChat(this.state.data.information) 
+    if (this.state.type === "group") {
+      this.props.navigation.state.params.addMessage(
+        "groupData",
+        this.state.data.information.title,
+        messages[0],
+        (send = true)
+      );
+    } else if (this.state.type === "user") {
+      this.props.navigation.state.params.addMessage(
+        "userData",
+        this.state.data.information.first_name +
+          " " +
+          this.state.data.information.last_name,
+        messages[0],
+        (send = true)
+      );
+    } else if (this.state.type === "new") {
+      if (this.state.messages.length === 0) {
+        this.props.navigation.state.params.addChat(this.state.data.information);
       }
-      this.props.navigation.state.params.addMessage("userData",this.state.data.information.first_name+" "+this.state.data.information.last_name,messages[0],send=true)
+      this.props.navigation.state.params.addMessage(
+        "userData",
+        this.state.data.information.first_name +
+          " " +
+          this.state.data.information.last_name,
+        messages[0],
+        (send = true)
+      );
     }
   }
-
 
   render() {
     return (
@@ -257,7 +267,12 @@ export default class GroupPageChat extends Component {
             _id: 1
           }}
           renderQuickReplies={this.renderQuickReply}
-          renderInputToolbar={this.props.navigation.state.params.hasChatPrivilege || this.props.navigation.state.params.type!=="group" ?  undefined : () =>null}
+          renderInputToolbar={
+            this.props.navigation.state.params.hasChatPrivilege ||
+            this.props.navigation.state.params.type !== "group"
+              ? undefined
+              : () => null
+          }
           renderUsernameOnMessage={true}
         />
         {Platform.OS === "android" ? <KeyboardSpacer topSpacing={35} /> : null}
@@ -335,7 +350,6 @@ renderInputToolbar={()=>{
         />
 
 */
-
 
 /*
 [

@@ -18,27 +18,23 @@ export default class Splash extends React.Component {
     super(props);
 
     setTimeout(() => {
-      /*SecureStore.setItemAsync("test1", "value1").then(response => {
-      });
-      
-      SecureStore.deleteItemAsync("test1").then(response => {
-        
-      });
+      //this.props.navigation.replace("login");
+      /*SecureStore.setItemAsync("test1", "value1").then(response => {});
 
-      */
+      SecureStore.deleteItemAsync("test1").then(response => {});*/
 
       let isLoggedIn = "false";
       SecureStore.getItemAsync("isLoggedIn").then(response => {
         isLoggedIn = response;
-        if (isLoggedIn === "true") {
-          SecureStore.getItemAsync("token").then(response => {
-            this.props.navigation.replace("Home", {
-              token: response
-            });
+        //if (isLoggedIn === "true") {
+        SecureStore.getItemAsync("token").then(response => {
+          this.props.navigation.replace("Home", {
+            token: response
           });
-        } else {
-          this.props.navigation.replace("login");
-        }
+        });
+        //} else {
+        this.props.navigation.replace("login");
+        // }
       });
     }, 3000);
   }

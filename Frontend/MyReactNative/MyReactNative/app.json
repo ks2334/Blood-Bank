@@ -17,12 +17,12 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true
+    },
     "android": {
       "package": "com.jankalyan.bloodBank",
-      "versionCode": 15
-    },
-    "entryPoint": "node_modules/expo/AppEntry.js"
-  },
-  "displayName": "Jankalyan Blood Bank",
-  "name": "JankalyanBloodBank"
+      "versionCode": 12
+    }
+  }
 }

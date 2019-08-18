@@ -13,9 +13,7 @@ import {
   Linking
 } from "react-native";
 
-import Entypo from "react-native-vector-icons/Entypo";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import EvilIcons from "react-native-vector-icons/EvilIcons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 

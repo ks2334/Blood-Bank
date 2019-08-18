@@ -21,20 +21,16 @@ import {
 
 import FeatherIcon from "react-native-vector-icons/Feather";
 import Entypo from "react-native-vector-icons/Entypo";
-import EvilIcons from "react-native-vector-icons/EvilIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {
   createAppContainer,
   createBottomTabNavigator,
   NavigationEvents,
   createMaterialTopTabNavigator,
-  NavigationActions
 } from "react-navigation";
 import Drawer from "react-native-drawer";
 import DrawerContent from "./DrawerContent";
 import { ListItem, ButtonGroup } from "react-native-elements";
-import { AppLoading } from "expo";
 import * as SecureStore from "expo-secure-store";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";

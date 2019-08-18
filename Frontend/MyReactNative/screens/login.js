@@ -24,8 +24,6 @@ import {
 import Overlay from "react-native-modal-overlay";
 import RadioGroup from "react-native-radio-buttons-group";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
-import * as Expo from "expo";
 import * as SecureStore from "expo-secure-store";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
@@ -174,11 +172,7 @@ export class Login extends React.Component {
             }}
           />
         </View>
-
-        <TouchableOpacity
-          style={styles.btnKeepMeLoggedIn}
-          onPress={() => this.onClickListener("restore_password")}
-        >
+        <TouchableOpacity style={styles.btnKeepMeLoggedIn}>
           <CheckBox
             title="Keep Me Logged In"
             containerStyle={{
@@ -239,19 +233,19 @@ export class Login extends React.Component {
                   response.json().then(data => {
                     token = data["token"];
                     if (this.state.checked) {
-                      SecureStore.setItemAsync("isLoggedIn", "true").then(
+                      /*SecureStore.setItemAsync("isLoggedIn", "true").then(
                         response => {}
-                      );
+                      );*/
 
                       SecureStore.setItemAsync("token", token).then(
                         response => {}
                       );
                       registerForPushNotificationsAsync(token);
-                    } else {
+                    } /* else {
                       SecureStore.setItemAsync("isLoggedIn", "false").then(
                         response => {}
                       );
-                    }
+                    }*/
 
                     this.props.screenProps.rootNavigation.replace("Home", {
                       token: token
